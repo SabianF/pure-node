@@ -2,6 +2,7 @@ import http from "http";
 
 const valid_methods = [
   "GET",
+  "POST",
 ];
 
 export default class Router {
@@ -20,12 +21,14 @@ export default class Router {
    * @param {handleRequest} handler_function
    */
   get(url, handler_function) {
-    const handler = new Handler({
-      method: "GET",
+    this.#addHandler(new Handler({
+      method: this.get.name.toUpperCase(),
       url: url,
       handler_function: handler_function,
-    });
+    }));
+  }
 
+  #addHandler(handler, handler_function) {
     if (this.handlers.includes(handler)) {
       throw new Error(`Handler has already been added: [${handler_function}]`);
     }
@@ -118,7 +121,7 @@ function validateMethod(method) {
   const normalized_method = method.trim().toUpperCase();
   const isNotValid = valid_methods.includes(normalized_method) === false;
   if (isNotValid) {
-    throw new Error(`Invalid method provided [${normalized_method}]. Valid methods are ${valid_methods.toString()}.`);
+    throw new Error(`Invalid method provided [${normalized_method}]. Valid methods are ${JSON.stringify(valid_methods, " ", 2)}.`);
   }
 }
 
