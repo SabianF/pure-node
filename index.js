@@ -1,27 +1,19 @@
-import http from "http";
+import RoutingRepo from "./src/data/repositories/routing_repo.js";
+import Router from "./src/data/sources/router.js";
 
 function runApp() {
-  /**
-   *
-   * @param {http.IncomingMessage} request
-   * @param {http.ServerResponse<http.IncomingMessage>} response
-   */
-  const handle_requests = (request, response) => {
-    switch (request.method.toUpperCase()) {
-      case "GET":
-        response.write("Hello");
-        break;
+  const router_library = new Router();
+  const routing_repo = new RoutingRepo({
+    router_library: router_library,
+  });
 
-      default:
-        response.write(`Invalid request method [${request.method}].`);
-        break;
-    }
-
-    response.end();
-  }
-
-  const router = http.createServer(handle_requests);
+  const router = routing_repo.createRouter();
   const port = 3333;
+
+  router.get("/", (request, response) => {
+    response.write("<h1>Hello</h1>");
+    response.end();
+  });
 
   router.listen(port, () => {
     console.log(`Server started at http://localhost:${port}/`);
