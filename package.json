@@ -1,0 +1,13 @@
+{
+  "name": "pure-node",
+  "version": "1.0.0",
+  "description": "A pure NodeJS website with no dependencies",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest test --maxWorkers 50%",
+    "dev": "node index.js"
+  },
+  "author": "Sabian Finogwar",
+  "license": "MIT"
+}
