@@ -9,5 +9,8 @@
     "dev": "node index.js"
   },
   "author": "Sabian Finogwar",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "mustache": "^4.2.0"
+  }
 }

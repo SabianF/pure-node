@@ -42,7 +42,7 @@ export default class Router {
    * @param {function()} listener_handler
    */
   listen(port, listener_handler) {
-    const server = http.createServer((request, response) => {
+    const server = http.createServer(async (request, response) => {
       if (!request.url) {
         response.write(`URL was not provided in Request: [${request.url}]`);
         response.end();
@@ -69,8 +69,9 @@ export default class Router {
 
         response.setHeader("Content-Type", "text/html; charset=utf-8");
 
-        handler.handler_function(request, response);
+        await handler.handler_function(request, response);
         response.end();
+        break;
       }
     });
 
@@ -138,4 +139,4 @@ function validateUrl(url) {
  * @param {http.ClientRequest} request
  * @param {http.ServerResponse<http.ClientRequest>} response
  */
-export function handleRequest(request, response) {}
+export async function handleRequest(request, response) { }

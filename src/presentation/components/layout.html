@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"  content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"  content="ie=edge">
+    <title>{{title}}</title>
+  </head>
+  <body>
+    <header>
+      {{#custom_header}}
+        {{&.}}
+      {{/custom_header}}
+      {{^custom_header}}
+        <nav id="header_nav">
+          <p>Logo</p>
+          <ul class="links">
+            <li><a href="/">Home</a></li>
+          </ul>
+        </nav>
+      {{/custom_header}}
+    </header>
+    <main>
+      {{#body}}
+        {{&.}}
+      {{/body}}
+    </main>
+    <footer>
+      {{#custom_footer}}
+        {{&.}}
+      {{/custom_footer}}
+      {{^custom_footer}}
+        <p>Copyright <span id="copyright_year"></span> Sabian Finogwar</p>
+        <script id="footer_script">
+          document.getElementById("copyright_year").innerHTML = new Date().getFullYear();
+        </script>
+      {{/custom_footer}}
+    </footer>
+  </body>
+</html>
