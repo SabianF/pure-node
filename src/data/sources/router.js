@@ -64,7 +64,10 @@ export default class Router {
           continue;
         }
 
+        response.setHeader("Content-Type", "text/html; charset=utf-8");
+
         handler.handler_function(request, response);
+        response.end();
       }
     });
 

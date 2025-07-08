@@ -12,7 +12,6 @@ function runApp() {
 
   router.get("/", (request, response) => {
     response.write("<h1>Hello</h1>");
-    response.end();
   });
 
   router.listen(port, () => {
