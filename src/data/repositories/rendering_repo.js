@@ -65,7 +65,7 @@ export default class RenderingRepo {
    * @param {Component} component
    */
   async renderComponent(component) {
-    const rendered_component = await this.#buildComponentTree(component);
+    const rendered_component = await this.#renderNestedComponents(component);
     return rendered_component;
   }
 
@@ -81,7 +81,7 @@ export default class RenderingRepo {
    * @param {Component} [parent_component]
    * @param {string} [parent_placeholder_key]
    */
-  async #buildComponentTree(
+  async #renderNestedComponents(
     component,
     parent_component,
     parent_placeholder_key,
@@ -95,7 +95,7 @@ export default class RenderingRepo {
         const is_component = !!placeholder_value.placeholders;
         if (is_component) {
           // Search through the child component
-          await this.#buildComponentTree(
+          await this.#renderNestedComponents(
             placeholder_value,
             component,
             placeholder_key,
