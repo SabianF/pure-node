@@ -1,6 +1,7 @@
 import Component from "../../domain/entities/component.js";
 import Page from "../../domain/entities/page.js";
 import { getNameOfVariable, loopThroughNested } from "../../domain/repositories/utilities.js";
+import layout from "../../presentation/components/layout.js";
 import FileSystemIo from "../sources/file_system_io.js";
 import HtmlRenderer from "../sources/html_renderer.js";
 
@@ -46,7 +47,13 @@ export default class RenderingRepo {
    */
   async renderPage(name, placeholders) {
     const raw_page = await this.#getFileAsString(`${PAGES_BASE_PATH}/${name}.html`);
-    return this.html_renderer_library.render(raw_page, placeholders);
+    const rendered_page = await this.html_renderer_library.render(raw_page, placeholders);
+    const layout_component = layout({
+      title: "Root Page",
+      body: rendered_page,
+    });
+    const rendered_layout = await this.renderComponent(layout_component);
+    return rendered_layout;
   }
 
   /**
