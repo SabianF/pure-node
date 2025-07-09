@@ -61,5 +61,6 @@ describe(RenderingRepo.name, () => {
       assert.strictEqual(rendered_component.includes("nested2 body text"), true, `Did not include [nested2 body text]: [${rendered_component}].`);
       assert.strictEqual(rendered_component.includes("original title text"), true, `Did not include [original title text]: [${rendered_component}].`);
     });
+    // TODO: Write a case study for rendering nested components (binary tree? navigating nested structures, recursion)
   });
 });
