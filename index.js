@@ -3,6 +3,7 @@ import RoutingRepo from "./src/data/repositories/routing_repo.js";
 import FileSystemIo from "./src/data/sources/file_system_io.js";
 import HtmlRenderer from "./src/data/sources/html_renderer.js";
 import Router from "./src/data/sources/router.js";
+import rootPage from "./src/presentation/pages/root.js";
 
 function runApp() {
   const router_library = new Router();
@@ -21,7 +22,9 @@ function runApp() {
   const port = 3333;
 
   router.get("/", async (request, response) => {
-    const page = await rendering_repo.renderPage("root");
+    const page = await rendering_repo.renderPage(rootPage({
+      message: "Greetings, humans!",
+    }));
     response.write(page);
   });
 

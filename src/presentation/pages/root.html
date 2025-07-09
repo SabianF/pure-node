@@ -1,2 +1,17 @@
-<h1>The root page</h1>
-<p>WoOoOow</p>
+<div id="root_page">
+  <section>
+    <h1>The root page</h1>
+    <p>WoOoOow</p>
+  </section>
+  <section>
+    <h1>Message</h1>
+    <p>
+      {{#message}}
+        {{.}}
+      {{/message}}
+      {{^message}}
+        Oh, well!
+      {{/message}}
+    </p>
+  </section>
+</div>

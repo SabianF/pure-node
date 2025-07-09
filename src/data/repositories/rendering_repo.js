@@ -42,10 +42,14 @@ export default class RenderingRepo {
 
   /**
    *
-   * @param {string} name of HTML file in `presentation/pages`
-   * @param {object} placeholders
+   * @param {Page} page
    */
-  async renderPage(name, placeholders) {
+  async renderPage(page) {
+    const {
+      name,
+      placeholders,
+    } = page;
+
     const raw_page = await this.#getFileAsString(`${PAGES_BASE_PATH}/${name}.html`);
     const rendered_page = await this.html_renderer_library.render(raw_page, placeholders);
     const layout_component = layout({
