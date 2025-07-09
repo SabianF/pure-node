@@ -91,6 +91,11 @@ class Handler {
   url;
 
   /**
+   * @type {boolean}
+   */
+  is_middleware;
+
+  /**
    * @type {handleRequest}
    */
   handler_function;
@@ -101,15 +106,19 @@ class Handler {
    * @param {string} props.method
    * @param {string} props.url
    * @param {handleRequest} props.handler_function
+   * @param {boolean} [props.is_middleware]
    */
   constructor({
     method,
     url,
     handler_function,
+    is_middleware,
   }) {
-    validateMethod(method);
-    validateUrl(url);
-    this.method = method;
+    if (!is_middleware) {
+      this.method = validateMethod(method);
+      this.url = validateUrl(url);
+    }
+
     this.handler_function = handler_function;
   }
 }
@@ -120,18 +129,23 @@ class Handler {
  */
 function validateMethod(method) {
   const normalized_method = method.trim().toUpperCase();
+
   const isNotValid = valid_methods.includes(normalized_method) === false;
   if (isNotValid) {
     throw new Error(`Invalid method provided [${normalized_method}]. Valid methods are ${JSON.stringify(valid_methods, " ", 2)}.`);
   }
+
+  return normalized_method;
 }
 
 function validateUrl(url) {
-  const normalized_url = URL.parse(`https://localhost:3333${url}`);
+  const normalized_url = URL.parse(`https://localhost:3333${url}`).pathname;
 
   if (!normalized_url) {
     throw new Error(`Invalid URL provided to Router: [${url}]`);
   }
+
+  return normalized_url;
 }
 
 /**
