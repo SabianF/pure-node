@@ -37,20 +37,29 @@ describe(RenderingRepo.name, () => {
         },
       });
 
+      const nested_component_2 = new Component({
+        name: "layout",
+        placeholders: {
+          title: "nested2 title text",
+          body: "nested2 body text",
+        },
+      });
+
       const component = new Component({
         name: "layout",
         placeholders: {
           title: "original title text",
           body: nested_component,
+          custom_footer: nested_component_2,
         },
       });
 
       const rendered_component = await rendering_repo.renderComponent(component);
-      console.log(rendered_component);
 
       assert.strictEqual(rendered_component.includes("[object Object]"), false, `Did not render [object Object]: [${rendered_component}].`);
       assert.strictEqual(rendered_component.includes("nested body text"), true, `Did not include [nested body text]: [${rendered_component}].`);
-      assert.strictEqual(rendered_component.includes("original title text"), true, `Did not include [nested body text]: [${rendered_component}].`);
+      assert.strictEqual(rendered_component.includes("nested2 body text"), true, `Did not include [nested2 body text]: [${rendered_component}].`);
+      assert.strictEqual(rendered_component.includes("original title text"), true, `Did not include [original title text]: [${rendered_component}].`);
     });
   });
 });

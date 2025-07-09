@@ -54,15 +54,7 @@ export default class RenderingRepo {
    * @param {Component} component
    */
   async renderComponent(component) {
-    // DONE: Check all placeholders values for any components
-    // DONE: If current placeholder is a component, check its placeholders for any components, recursively
-    // TODO: At the bottom level when no placeholders are components, render the component normally
-    // TODO: Insert the rendered component back into the parent component's placeholder, recursively
-    const component_tree = [];
-    this.#buildComponentTree(component, component_tree);
-    console.log("component_tree");
-    console.log(component_tree);
-    const rendered_component = await this.#renderComponentTree(component_tree);
+    const rendered_component = await this.#buildComponentTree(component);
     return rendered_component;
   }
 
@@ -74,38 +66,43 @@ export default class RenderingRepo {
 
   /**
    *
-   * @param {Component} component
-   * @param {Component[]} list_to_store_component_tree
+   * @param {Component} component The component to render
+   * @param {Component} [parent_component]
+   * @param {string} [parent_placeholder_key]
    */
-  #buildComponentTree(component, list_to_store_component_tree) {
-    for (const key in component.placeholders) {
-      if (Object.prototype.hasOwnProperty.call(component.placeholders, key)) {
-        const placeholder = component.placeholders[key];
-
-        const is_component = !!placeholder.placeholders;
+  async #buildComponentTree(
+    component,
+    parent_component,
+    parent_placeholder_key,
+  ) {
+    for (const placeholder_key in component.placeholders) {
+      if (Object.prototype.hasOwnProperty.call(component.placeholders, placeholder_key)) {
+        /**
+         * @type {Component}
+         */
+        const placeholder_value = component.placeholders[placeholder_key];
+        const is_component = !!placeholder_value.placeholders;
         if (is_component) {
-          // Add this component to the tree
-          list_to_store_component_tree.push(component);
-          // Search through the child component's placeholders
-          this.#buildComponentTree(placeholder, list_to_store_component_tree);
+          // Search through the child component
+          await this.#buildComponentTree(
+            placeholder_value,
+            component,
+            placeholder_key,
+          );
         }
       }
     }
 
-    // If no placeholders are components, and we've reached bottom of component tree
-    list_to_store_component_tree.push(component);
-  }
+    // If there are no components in the placeholders, and this is the bottom-level component
+    const component_html = await this.#getFileAsString(`${COMPONENTS_BASE_PATH}/${component.name}.html`);
+    const rendered_component = this.html_renderer_library.render(
+      component_html,
+      component.placeholders,
+    );
 
-  /**
-   *
-   * @param {Component[]} component_tree
-   */
-  async #renderComponentTree(component_tree) {
-    let rendered_component = "";
-
-    for (let i = component_tree.length - 1; i > 0; i--) {
-      const component = component_tree[i];
-      console.log(`${i}: ${component}`);
+    if (parent_component) {
+      parent_component.placeholders[parent_placeholder_key] = rendered_component;
+      return parent_component;
     }
 
     return rendered_component;
