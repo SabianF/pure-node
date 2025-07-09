@@ -40,15 +40,17 @@ describe(RenderingRepo.name, () => {
       const component = new Component({
         name: "layout",
         placeholders: {
-          title: "title text",
+          title: "original title text",
           body: nested_component,
         },
       });
 
       const rendered_component = await rendering_repo.renderComponent(component);
+      console.log(rendered_component);
 
       assert.strictEqual(rendered_component.includes("[object Object]"), false, `Did not render [object Object]: [${rendered_component}].`);
       assert.strictEqual(rendered_component.includes("nested body text"), true, `Did not include [nested body text]: [${rendered_component}].`);
+      assert.strictEqual(rendered_component.includes("original title text"), true, `Did not include [nested body text]: [${rendered_component}].`);
     });
   });
 });
