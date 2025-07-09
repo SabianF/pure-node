@@ -4,13 +4,13 @@
   "description": "A pure NodeJS website with no dependencies",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "test": "jest test --maxWorkers 50%",
-    "dev": "node index.js"
-  },
   "author": "Sabian Finogwar",
   "license": "MIT",
+  "scripts": {
+    "test": "node --test",
+    "dev": "node index.js"
+  },
   "dependencies": {
-    "mustache": "^4.2.0"
+    "mustache": "file:/src/data/sources/packages/mustache"
   }
 }
