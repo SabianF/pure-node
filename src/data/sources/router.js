@@ -87,6 +87,7 @@ export default class Router {
       if (!request.url) {
         response.write(`URL was not provided in Request: [${request.url}]`);
         response.end();
+        return;
       }
       const normalized_url = request.url;
 
