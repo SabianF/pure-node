@@ -28,8 +28,6 @@ export default class Router {
     this.middleware = [];
     this.handlers = [];
     this.endware = [];
-
-    this.endware.push(handleNotFound);
   }
 
   /**
@@ -54,6 +52,19 @@ export default class Router {
       url: url,
       handler_function: handler_function,
     }));
+  }
+
+  /**
+   *
+   * @param {handleError} endware_handler_function
+   */
+  useAfterAll(endware_handler_function) {
+    const already_exists = this.endware.includes(endware_handler_function);
+    if (already_exists) {
+      throw new Error(`Endware already exists: [${endware_handler_function}]`);
+    }
+
+    this.endware.push(endware_handler_function);
   }
 
   /**
@@ -106,6 +117,7 @@ export default class Router {
         was_handled = true;
         response.setHeader("Content-Type", "text/html; charset=utf-8");
         await handler.handler_function(request, response);
+        this.#executeEndware(request, response);
         response.end();
         break;
       }
@@ -114,13 +126,19 @@ export default class Router {
         return;
       }
 
-      for (let i = 0; i < this.endware.length; i++) {
-        const endware_item = this.endware[i];
-        endware_item(null, request, response);
-      }
+      this.#executeEndware(request, response);
+      handleNotFound(null, request, response);
+      response.end();
     });
 
     server.listen(port, listener_handler);
+  }
+
+  #executeEndware(request, response) {
+    for (let i = 0; i < this.endware.length; i++) {
+      const endware_item = this.endware[i];
+      endware_item(null, request, response);
+    }
   }
 
   #executeMiddleware(request, response) {
