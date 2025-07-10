@@ -79,24 +79,9 @@ export default class Router {
    */
   listen(port, listener_handler) {
     const server = http.createServer(async (request, response) => {
-      for (let i = 0; i < this.middleware.length; i++) {
-        const middleware_item = this.middleware[i];
-        middleware_item.handler_function(request, response);
-      }
-
-      if (!request.url) {
-        response.write(`URL was not provided in Request: [${request.url}]`);
-        response.end();
-        return;
-      }
-      const normalized_url = request.url;
-
-      if (!request.method) {
-        response.write(`Method was not provided in Request: [${request.url}]`);
-        response.end();
-        return;
-      }
-      const normalized_method = request.method.toUpperCase();
+      this.#executeMiddleware(request, response);
+      const normalized_url = this.#validateRequestUrl(request.url, response);
+      const normalized_method = this.#validateRequestMethod(request.method, response);;
 
       let was_handled = false;
       for (let i = 0; i < this.handlers.length; i++) {
@@ -127,6 +112,37 @@ export default class Router {
     });
 
     server.listen(port, listener_handler);
+  }
+
+  #executeMiddleware(request, response) {
+    for (let i = 0; i < this.middleware.length; i++) {
+      const middleware_item = this.middleware[i];
+      middleware_item.handler_function(request, response);
+    }
+  }
+
+  #validateRequestMethod(method, response) {
+    if (!method) {
+      response.write(`Request method was not provided: [${method}]`);
+      response.end();
+      return;
+    }
+    return method;
+  }
+
+  /**
+   *
+   * @param {string} url
+   * @param {https.ServerResponse<http.ClientRequest>} response
+   * @returns validated URL
+   */
+  #validateRequestUrl(url, response) {
+    if (!url) {
+      response.write(`URL was not provided in Request: [${url}]`);
+      response.end();
+      return;
+    }
+    return url;
   }
 }
 
