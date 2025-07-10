@@ -1,4 +1,4 @@
-import Router from "../sources/router.js";
+import Router from "../sources/router/index.js";
 
 export default class RoutingRepo {
   /**

@@ -3,7 +3,7 @@ import RenderingRepo from "./src/data/repositories/rendering_repo.js";
 import RoutingRepo from "./src/data/repositories/routing_repo.js";
 import FileSystemIo from "./src/data/sources/file_system_io.js";
 import HtmlRenderer from "./src/data/sources/html_renderer.js";
-import Router from "./src/data/sources/router.js";
+import Router from "./src/data/sources/router/index.js";
 import rootPage from "./src/presentation/pages/root.js";
 
 function runApp() {
