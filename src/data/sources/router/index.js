@@ -1,6 +1,8 @@
 import http from "http";
 import Handler from "./src/domain/entities/handler.js";
-import { handleError, handleNotFound, handleRequest } from "./src/domain/repositories/utilities.js";
+import { handleError, handleNotFound, handleRequest, validateRequestMethod, validateRequestUrl } from "./src/domain/repositories/utilities.js";
+import server_listener from "./src/domain/repositories/server_listener.js";
+import handleHttpRequests from "./src/domain/repositories/server_listener.js";
 
 export default class Router {
   /**
@@ -93,78 +95,12 @@ export default class Router {
    * @param {handleRequest} listener_handler
    */
   listen(port, listener_handler) {
-    const server = http.createServer(async (request, response) => {
-      this.#executeMiddleware(request, response);
-      const normalized_url = this.#validateRequestUrl(request.url, response);
-      const normalized_method = this.#validateRequestMethod(request.method, response);;
-
-      let was_handled = false;
-      for (let i = 0; i < this.handlers.length; i++) {
-        const handler = this.handlers[i];
-
-        if (handler.url !== normalized_url) {
-          continue;
-        }
-
-        if (handler.method !== normalized_method) {
-          continue;
-        }
-
-        was_handled = true;
-        response.setHeader("Content-Type", "text/html; charset=utf-8");
-        await handler.handler_function(request, response);
-        this.#executeEndware(request, response);
-        response.end();
-        break;
-      }
-
-      if (response.writableEnded) {
-        return;
-      }
-
-      this.#executeEndware(request, response);
-      handleNotFound(null, request, response);
-      response.end();
-    });
+    const server = http.createServer(handleHttpRequests(
+      this.handlers,
+      this.middleware,
+      this.endware,
+    ));
 
     server.listen(port, listener_handler);
-  }
-
-  #executeEndware(request, response) {
-    for (let i = 0; i < this.endware.length; i++) {
-      const endware_item = this.endware[i];
-      endware_item(null, request, response);
-    }
-  }
-
-  #executeMiddleware(request, response) {
-    for (let i = 0; i < this.middleware.length; i++) {
-      const middleware_item = this.middleware[i];
-      middleware_item.handler_function(request, response);
-    }
-  }
-
-  #validateRequestMethod(method, response) {
-    if (!method) {
-      response.write(`Request method was not provided: [${method}]`);
-      response.end();
-      return;
-    }
-    return method;
-  }
-
-  /**
-   *
-   * @param {string} url
-   * @param {https.ServerResponse<http.ClientRequest>} response
-   * @returns validated URL
-   */
-  #validateRequestUrl(url, response) {
-    if (!url) {
-      response.write(`URL was not provided in Request: [${url}]`);
-      response.end();
-      return;
-    }
-    return url;
   }
 }
