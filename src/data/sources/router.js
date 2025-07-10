@@ -24,7 +24,6 @@ export default class Router {
    */
   endware;
 
-
   constructor() {
     this.middleware = [];
     this.handlers = [];
@@ -109,6 +108,10 @@ export default class Router {
         await handler.handler_function(request, response);
         response.end();
         break;
+      }
+
+      if (response.writableEnded) {
+        return;
       }
 
       for (let i = 0; i < this.endware.length; i++) {
