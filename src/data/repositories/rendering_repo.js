@@ -56,7 +56,6 @@ export default class RenderingRepo {
       title: "Root Page",
       body: rendered_page,
     });
-    // TODO: Render nested components in pages (need to use pages directory for pages)
     const rendered_layout = await this.renderComponent(layout_component);
     return rendered_layout;
   }
