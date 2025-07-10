@@ -1,3 +1,4 @@
+import { logRequests } from "./src/data/repositories/middleware.js";
 import RenderingRepo from "./src/data/repositories/rendering_repo.js";
 import RoutingRepo from "./src/data/repositories/routing_repo.js";
 import FileSystemIo from "./src/data/sources/file_system_io.js";
@@ -21,7 +22,7 @@ function runApp() {
   const router = routing_repo.createRouter();
   const port = 3333;
 
-
+  router.use(logRequests);
 
   router.get("/", async (request, response) => {
     const page = await rendering_repo.renderPage(rootPage({
