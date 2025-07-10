@@ -19,6 +19,27 @@ export async function handleError(error, request, response) { }
 
 /**
  *
+ * @param {any[]} array
+ * @param {any} item
+ */
+export function addToArray(array, item) {
+  if (array === undefined || Array.isArray(array) === false) {
+    throw new Error(`No array provided to ${addToArray.name}`);
+  }
+
+  if (!item) {
+    throw new Error(`No valid item provided to ${addToArray.name}`);
+  }
+
+  if (array.includes(item)) {
+    throw new Error(`Item already exists in array`);
+  }
+
+  array.push(item);
+}
+
+/**
+ *
  * @param {Handler[]} middleware
  * @param {http.ClientRequest} request
  * @param {http.ServerResponse<http.ClientRequest>} response
