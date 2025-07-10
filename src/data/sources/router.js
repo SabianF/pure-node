@@ -1,4 +1,5 @@
 import http from "http";
+import HttpStatusCodes from "./packages/http_status_codes.js";
 
 const valid_methods = [
   "GET",
@@ -7,12 +8,31 @@ const valid_methods = [
 
 export default class Router {
   /**
+   * These run before any requests are handled
+   * @type {Handler[]}
+   */
+  middleware;
+
+  /**
+   * The handle all requests
    * @type {Handler[]}
    */
   handlers;
 
   constructor() {
+    this.middleware = [];
     this.handlers = [];
+  }
+
+  /**
+   *
+   * @param {handleRequest} handler_function
+   */
+  use(handler_function) {
+    this.#addMiddleware(new Handler({
+      is_middleware: true,
+      handler_function: handler_function,
+    }));
   }
 
   /**
@@ -28,12 +48,28 @@ export default class Router {
     }));
   }
 
-  #addHandler(handler, handler_function) {
+  /**
+   *
+   * @param {Handler} handler
+   */
+  #addHandler(handler) {
     if (this.handlers.includes(handler)) {
-      throw new Error(`Handler has already been added: [${handler_function}]`);
+      throw new Error(`Handler has already been added: [${handler.handler_function}]`);
     }
 
     this.handlers.push(handler);
+  }
+
+  /**
+   *
+   * @param {Handler} handler
+   */
+  #addMiddleware(handler) {
+    if (this.middleware.includes(handler)) {
+      throw new Error(`Middleware has already been added: [${handler.handler_function}]`);
+    }
+
+    this.middleware.push(handler);
   }
 
   /**
@@ -43,6 +79,11 @@ export default class Router {
    */
   listen(port, listener_handler) {
     const server = http.createServer(async (request, response) => {
+      for (let i = 0; i < this.middleware.length; i++) {
+        const middleware_item = this.middleware[i];
+        middleware_item.handler_function(request, response);
+      }
+
       if (!request.url) {
         response.write(`URL was not provided in Request: [${request.url}]`);
         response.end();
@@ -56,10 +97,11 @@ export default class Router {
       }
       const normalized_method = request.method.toUpperCase();
 
+      let was_handled = false;
       for (let i = 0; i < this.handlers.length; i++) {
         const handler = this.handlers[i];
 
-        if (handler.url === normalized_url) {
+        if (handler.url !== normalized_url) {
           continue;
         }
 
@@ -67,12 +109,20 @@ export default class Router {
           continue;
         }
 
+        was_handled = true;
         response.setHeader("Content-Type", "text/html; charset=utf-8");
-
         await handler.handler_function(request, response);
         response.end();
         break;
       }
+
+      if (was_handled) {
+        return;
+      }
+
+      response.statusCode = HttpStatusCodes.codes.NOT_FOUND;
+      response.write(HttpStatusCodes.getReason(HttpStatusCodes.codes.NOT_FOUND));
+      response.end();
     });
 
     server.listen(port, listener_handler);
