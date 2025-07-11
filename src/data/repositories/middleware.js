@@ -14,9 +14,11 @@ export function logRequests(request, response) {
   const millisecond = date.getMilliseconds().toString().padStart(3, "0");
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  console.log([
-    `${year}-${month}-${day} ${hour}:${minute}:${second}.${millisecond} (${timezone})`,
-    request.method,
-    request.url,
-  ].join(" "));
+  console.log(
+    [
+      `${year}-${month}-${day} ${hour}:${minute}:${second}.${millisecond} (${timezone})`,
+      request.method,
+      request.url,
+    ].join(" "),
+  );
 }

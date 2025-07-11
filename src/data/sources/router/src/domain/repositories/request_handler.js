@@ -1,6 +1,12 @@
 import http from "node:http";
 import Handler from "../entities/handler.js";
-import { executeEndware, handleError, handleNotFound, validateRequestMethod, validateRequestUrl } from "./utilities.js";
+import {
+  executeEndware,
+  handleError,
+  handleNotFound,
+  validateRequestMethod,
+  validateRequestUrl,
+} from "./utilities.js";
 
 /**
  *
@@ -49,7 +55,7 @@ export default function createRequestHandler(handlers, endware) {
     executeEndware(request, response);
     handleNotFound(null, request, response);
     response.end();
-  }
+  };
 
   return request_handler;
 }

@@ -15,10 +15,7 @@ export default class Component {
    * @param {string} props.name
    * @param {Component | object} props.placeholders
    */
-  constructor({
-    name,
-    placeholders,
-  }) {
+  constructor({ name, placeholders }) {
     if (!name || typeof name !== "string") {
       throw new Error("No name string provided to Component");
     }

@@ -2,7 +2,7 @@ import Component from "../entities/component.js";
 import Page from "../entities/page.js";
 
 export function getNameOfVariable(variable) {
-  return Object.keys({variable})[0];
+  return Object.keys({ variable })[0];
 }
 
 /**
@@ -13,11 +13,15 @@ export function getNameOfVariable(variable) {
  */
 export async function loopThroughNested(object, handler, excluded_types) {
   if (typeof object !== "object") {
-    throw new Error(`Invalid object provided to ${loopThroughNested.name}: [${object}]`);
+    throw new Error(
+      `Invalid object provided to ${loopThroughNested.name}: [${object}]`,
+    );
   }
 
   if (typeof handler !== "function") {
-    throw new Error(`Invalid handler function provided to ${loopThroughNested.name}: [${handler}]`);
+    throw new Error(
+      `Invalid handler function provided to ${loopThroughNested.name}: [${handler}]`,
+    );
   }
 
   for (const key in object) {
@@ -50,10 +54,10 @@ export async function loopThroughNested(object, handler, excluded_types) {
           const nested_element = current_element[i];
           await loopThroughNested(nested_element, handler);
         }
-      } else /* If not array */ {
+      } /* If not array */ else {
         await loopThroughNested(current_element, handler);
       }
-    } else /* If not object */ {
+    } /* If not object */ else {
       await handler(current_element, key);
     }
   }
@@ -64,4 +68,4 @@ export async function loopThroughNested(object, handler, excluded_types) {
  * @param {*} nested_item_value
  * @param {string} nested_item_key
  */
-async function loopThroughNestedHandler(nested_item_value, nested_item_key) { }
+async function loopThroughNestedHandler(nested_item_value, nested_item_key) {}

@@ -11,7 +11,7 @@ export default class RoutingRepo {
    * @param {object} props
    * @param {Router} props.router_library
    */
-  constructor({router_library}) {
+  constructor({ router_library }) {
     if (!router_library) {
       throw new Error("No router_library provided to RoutingRepo");
     }

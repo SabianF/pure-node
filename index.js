@@ -25,9 +25,11 @@ function runApp() {
   router.use(logRequests);
 
   router.get("/", async (request, response) => {
-    const page = await rendering_repo.renderPage(rootPage({
-      message: "Greetings, humans!",
-    }));
+    const page = await rendering_repo.renderPage(
+      rootPage({
+        message: "Greetings, humans!",
+      }),
+    );
     response.write(page);
   });
 

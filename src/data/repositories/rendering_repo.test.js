@@ -23,7 +23,9 @@ describe(RenderingRepo.name, () => {
         },
       });
 
-      const rendered_component = await rendering_repo.renderComponent(component);
+      const rendered_component = await rendering_repo.renderComponent(
+        component,
+      );
 
       assert.strictEqual(typeof rendered_component, "string");
     });
@@ -54,12 +56,30 @@ describe(RenderingRepo.name, () => {
         },
       });
 
-      const rendered_component = await rendering_repo.renderComponent(component);
+      const rendered_component = await rendering_repo.renderComponent(
+        component,
+      );
 
-      assert.strictEqual(rendered_component.includes("[object Object]"), false, `Did not render [object Object]: [${rendered_component}].`);
-      assert.strictEqual(rendered_component.includes("nested body text"), true, `Did not include [nested body text]: [${rendered_component}].`);
-      assert.strictEqual(rendered_component.includes("nested2 body text"), true, `Did not include [nested2 body text]: [${rendered_component}].`);
-      assert.strictEqual(rendered_component.includes("original title text"), true, `Did not include [original title text]: [${rendered_component}].`);
+      assert.strictEqual(
+        rendered_component.includes("[object Object]"),
+        false,
+        `Did not render [object Object]: [${rendered_component}].`,
+      );
+      assert.strictEqual(
+        rendered_component.includes("nested body text"),
+        true,
+        `Did not include [nested body text]: [${rendered_component}].`,
+      );
+      assert.strictEqual(
+        rendered_component.includes("nested2 body text"),
+        true,
+        `Did not include [nested2 body text]: [${rendered_component}].`,
+      );
+      assert.strictEqual(
+        rendered_component.includes("original title text"),
+        true,
+        `Did not include [original title text]: [${rendered_component}].`,
+      );
     });
   });
 });

@@ -25,17 +25,20 @@ export default class RenderingRepo {
    * @param {FileSystemIo} props.file_system_io_library
    * @param {HtmlRenderer} props.html_renderer_library
    */
-  constructor({
-    file_system_io_library,
-    html_renderer_library,
-  }) {
+  constructor({ file_system_io_library, html_renderer_library }) {
     if (!file_system_io_library) {
-      throw new Error(`No ${getNameOfVariable(file_system_io_library)} provided to ${RenderingRepo.name}.`)
+      throw new Error(
+        `No ${getNameOfVariable(file_system_io_library)} provided to ${RenderingRepo.name
+        }.`,
+      );
     }
     this.file_system_io_library = file_system_io_library;
 
     if (!html_renderer_library) {
-      throw new Error(`No ${getNameOfVariable(html_renderer_library)} provided to ${RenderingRepo.name}.`)
+      throw new Error(
+        `No ${getNameOfVariable(html_renderer_library)} provided to ${RenderingRepo.name
+        }.`,
+      );
     }
     this.html_renderer_library = html_renderer_library;
   }
@@ -45,13 +48,15 @@ export default class RenderingRepo {
    * @param {Page} page
    */
   async renderPage(page) {
-    const {
-      name,
-      placeholders,
-    } = page;
+    const { name, placeholders } = page;
 
-    const raw_page = await this.#getFileAsString(`${PAGES_BASE_PATH}/${name}.html`);
-    const rendered_page = await this.html_renderer_library.render(raw_page, placeholders);
+    const raw_page = await this.#getFileAsString(
+      `${PAGES_BASE_PATH}/${name}.html`,
+    );
+    const rendered_page = await this.html_renderer_library.render(
+      raw_page,
+      placeholders,
+    );
     const layout_component = layout({
       title: "Root Page",
       body: rendered_page,
@@ -87,7 +92,12 @@ export default class RenderingRepo {
     parent_placeholder_key,
   ) {
     for (const placeholder_key in component.placeholders) {
-      if (Object.prototype.hasOwnProperty.call(component.placeholders, placeholder_key)) {
+      if (
+        Object.prototype.hasOwnProperty.call(
+          component.placeholders,
+          placeholder_key,
+        )
+      ) {
         /**
          * @type {Component}
          */
@@ -105,14 +115,17 @@ export default class RenderingRepo {
     }
 
     // If there are no components in the placeholders, and this is the bottom-level component
-    const component_html = await this.#getFileAsString(`${COMPONENTS_BASE_PATH}/${component.name}.html`);
+    const component_html = await this.#getFileAsString(
+      `${COMPONENTS_BASE_PATH}/${component.name}.html`,
+    );
     const rendered_component = this.html_renderer_library.render(
       component_html,
       component.placeholders,
     );
 
     if (parent_component) {
-      parent_component.placeholders[parent_placeholder_key] = rendered_component;
+      parent_component.placeholders[parent_placeholder_key] =
+        rendered_component;
       return parent_component;
     }
 

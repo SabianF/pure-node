@@ -14,11 +14,7 @@ export default class Page {
    */
   placeholders;
 
-  constructor({
-    name,
-    title,
-    placeholders,
-  }) {
+  constructor({ name, title, placeholders }) {
     if (!name || typeof name !== "string") {
       throw new Error("No name string provided to Page.");
     }

@@ -6,17 +6,17 @@ import Component from "../entities/component.js";
 describe("utilities", () => {
   describe(loopThroughNested.name, () => {
     const object_with_nested_values = {
-      "name": "John",
-      "age": 30,
-      "address": {
-        "street": "123 Main St",
+      name: "John",
+      age: 30,
+      address: {
+        street: "123 Main St",
       },
-      "phoneNumbers": [
+      phoneNumbers: [
         {
-          "type": "home",
-          "number": "555-555-1234"
+          type: "home",
+          number: "555-555-1234",
         },
-      ]
+      ],
     };
 
     test("accesses nested values correctly", async () => {
@@ -88,9 +88,7 @@ describe("utilities", () => {
               break;
           }
         },
-        [
-          Component.name,
-        ],
+        [Component.name],
       );
     });
   });
