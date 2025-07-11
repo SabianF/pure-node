@@ -8,6 +8,7 @@ Clean Architecture (Uncle Bob)
 
 ## File structure
 
+```
 .  
 ├───public  
 │   └───(static files)  
@@ -35,6 +36,7 @@ Clean Architecture (Uncle Bob)
         │   └───(HTML, CSS, client-side JS)  
         └───pages  
             └───(HTML, CSS, client-side JS)  
+```
 
 # Features
 
