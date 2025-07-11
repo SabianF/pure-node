@@ -13,7 +13,7 @@ export default class RoutingRepo {
    */
   constructor({router_library}) {
     if (!router_library) {
-      throw new Error("No Router provided to RoutingRepo");
+      throw new Error("No router_library provided to RoutingRepo");
     }
 
     this.router_library = router_library;
