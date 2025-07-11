@@ -58,10 +58,12 @@ export default class Router {
    * @param {handleRequest} listener_handler
    */
   listen(port, listener_handler) {
-    const server = http.createServer(handleHttpRequests(
-      this.handlers,
-      this.endware,
-    ));
+    const server = http.createServer(
+      handleHttpRequests(
+        this.handlers,
+        this.endware,
+      ),
+    );
 
     server.listen(port, listener_handler);
   }
