@@ -1,3 +1,12 @@
+import Component from "./component.js";
+
+/**
+ * @typedef {object} PageProps
+ * @property {string} name
+ * @property {string} title
+ * @property {Component | object} placeholders
+ */
+
 export default class Page {
   /**
    * @type {string}
@@ -14,6 +23,10 @@ export default class Page {
    */
   placeholders;
 
+  /**
+   *
+   * @param {PageProps} props
+   */
   constructor({ name, title, placeholders }) {
     if (!name || typeof name !== "string") {
       throw new Error("No name string provided to Page.");

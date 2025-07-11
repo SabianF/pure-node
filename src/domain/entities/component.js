@@ -1,3 +1,9 @@
+/**
+ * @typedef {object} ComponentProps
+ * @property {string} name
+ * @property {Component | object} placeholders
+ */
+
 export default class Component {
   /**
    * @type {string}
@@ -11,9 +17,7 @@ export default class Component {
 
   /**
    *
-   * @param {object} props
-   * @param {string} props.name
-   * @param {Component | object} props.placeholders
+   * @param {ComponentProps} props
    */
   constructor({ name, placeholders }) {
     if (!name || typeof name !== "string") {
