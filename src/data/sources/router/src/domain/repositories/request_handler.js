@@ -7,13 +7,13 @@ import { executeEndware, handleError, handleNotFound, validateRequestMethod, val
  * @param {Handler[]} handlers
  * @param {handleError[]} endware
  */
-export default function handleHttpRequests(handlers, endware) {
+export default function createRequestHandler(handlers, endware) {
   /**
    *
    * @param {http.ClientRequest} request
    * @param {http.ServerResponse<http.ClientRequest>} response
    */
-  const server_listener = async (request, response) => {
+  const request_handler = async (request, response) => {
     const normalized_url = validateRequestUrl(request.url, response);
     const normalized_method = validateRequestMethod(request.method, response);
 
@@ -51,5 +51,5 @@ export default function handleHttpRequests(handlers, endware) {
     response.end();
   }
 
-  return server_listener;
+  return request_handler;
 }

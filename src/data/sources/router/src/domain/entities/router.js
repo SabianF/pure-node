@@ -1,7 +1,7 @@
 import http from "http";
 import Handler from "./handler.js";
 import { addToArray, handleError } from "../repositories/utilities.js";
-import handleHttpRequests from "../repositories/server_listener.js";
+import createRequestHandler from "../repositories/request_handler.js";
 
 export default class Router {
   /**
@@ -55,16 +55,15 @@ export default class Router {
   /**
    *
    * @param {number} port
-   * @param {handleRequest} listener_handler
+   * @param {handleRequest} listen_handler
    */
-  listen(port, listener_handler) {
-    const server = http.createServer(
-      handleHttpRequests(
-        this.handlers,
-        this.endware,
-      ),
+  listen(port, listen_handler) {
+    const request_handler = createRequestHandler(
+      this.handlers,
+      this.endware,
     );
+    const server = http.createServer(request_handler);
 
-    server.listen(port, listener_handler);
+    server.listen(port, listen_handler);
   }
 }
