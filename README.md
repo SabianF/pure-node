@@ -8,33 +8,33 @@ Clean Architecture (Uncle Bob)
 
 ## File structure
 
-public  
-|-(static files)  
-src  
-|-data  
-|---models  
-|-----(for translating external data sources into entities)  
-|---repositories  
-|-----(internal libraries for parsing & validating external data, and error handling)  
-|---sources  
-|-----(interfaces and wrappers for external dependencies/libraries)  
-|-----packages  
-|-------(locally-saved npm packages)  
-|-domain  
-|---entities  
-|-----(data models)  
-|---repositories  
-|-----(business logic for validated entities)  
-|---usecases  
-|-----(client-side functionality)  
-|-presentation  
-|---state  
-|-----(unused; using HATEOAS)  
-|---components  
-|-----(HTML, CSS, client-side JS)  
-|---pages  
-|-----(HTML)  
-|-----(HTML, CSS, client-side JS)
+.  
+├───public  
+│   └───(static files)  
+└───src  
+    ├───data  
+    │   ├───models  
+    │   │   └───(for translating external data sources into entities)  
+    │   ├───repositories  
+    │   │   └───(internal libraries for parsing & validating external data, and error handling)  
+    │   └───sources  
+    │       ├───packages  
+    │       │   ├───(localized npm packages)  
+    │       └───(interfaces and wrappers for external dependencies/libraries)  
+    ├───domain  
+    │   ├───entities  
+    │   │   └───(data models)  
+    │   ├───repositories  
+    │   │   └───(business logic for validated entities)  
+    │   └───usecases  
+    │       └───(client-side functionality)  
+    └───presentation  
+        ├───state  
+        │   └───(unused; using HATEOAS)  
+        ├───components  
+        │   └───(HTML, CSS, client-side JS)  
+        └───pages  
+            └───(HTML, CSS, client-side JS)  
 
 # Features
 
