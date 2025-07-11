@@ -23,7 +23,7 @@ export default function createRequestHandler(handlers, endware) {
     const normalized_url = validateRequestUrl(request.url, response);
     const normalized_method = validateRequestMethod(request.method, response);
 
-    let was_handled = false;
+    let route_was_handled = false;
     for (let i = 0; i < handlers.length; i++) {
       const handler = handlers[i];
 
@@ -40,7 +40,7 @@ export default function createRequestHandler(handlers, endware) {
         continue;
       }
 
-      was_handled = true;
+      route_was_handled = true;
       response.setHeader("Content-Type", "text/html; charset=utf-8");
       await handler.handler_function(request, response);
       executeEndware(endware, request, response);
