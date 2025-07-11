@@ -1,8 +1,9 @@
 /**
  *
  * @param {Request} request
+ * @param {Response} response
  */
-export function logRequests(request) {
+export function logRequests(request, response) {
   const date = new Date();
   const year = date.getFullYear().toString().padStart(4, "0");
   const month = date.getMonth().toString().padStart(2, "0");

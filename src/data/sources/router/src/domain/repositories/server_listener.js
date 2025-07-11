@@ -1,27 +1,30 @@
 import http from "node:http";
 import Handler from "../entities/handler.js";
-import { executeEndware, executeMiddleware, handleError, handleNotFound, validateRequestMethod, validateRequestUrl } from "./utilities.js";
+import { executeEndware, handleError, handleNotFound, validateRequestMethod, validateRequestUrl } from "./utilities.js";
 
 /**
  *
  * @param {Handler[]} handlers
- * @param {Handler[]} middleware
  * @param {handleError[]} endware
  */
-export default function handleHttpRequests(handlers, middleware, endware) {
+export default function handleHttpRequests(handlers, endware) {
   /**
    *
    * @param {http.ClientRequest} request
    * @param {http.ServerResponse<http.ClientRequest>} response
    */
   const server_listener = async (request, response) => {
-    executeMiddleware(middleware, request, response);
     const normalized_url = validateRequestUrl(request.url, response);
     const normalized_method = validateRequestMethod(request.method, response);
 
     let was_handled = false;
     for (let i = 0; i < handlers.length; i++) {
       const handler = handlers[i];
+
+      if (handler.is_middleware) {
+        handler.handler_function(request, response);
+        continue;
+      }
 
       if (handler.url !== normalized_url) {
         continue;

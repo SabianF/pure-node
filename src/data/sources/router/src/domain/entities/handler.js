@@ -43,6 +43,7 @@ export default class Handler {
       this.url = this.#validateUrl(url);
     }
 
+    this.is_middleware = is_middleware;
     this.handler_function = handler_function;
   }
 

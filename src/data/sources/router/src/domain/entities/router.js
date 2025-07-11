@@ -5,12 +5,6 @@ import handleHttpRequests from "../repositories/server_listener.js";
 
 export default class Router {
   /**
-   * These run before any requests are handled
-   * @type {Handler[]}
-   */
-  middleware;
-
-  /**
    * The handle all requests
    * @type {Handler[]}
    */
@@ -22,7 +16,6 @@ export default class Router {
   endware;
 
   constructor() {
-    this.middleware = [];
     this.handlers = [];
     this.endware = [];
   }
@@ -32,7 +25,7 @@ export default class Router {
    * @param {handleRequest} handler_function
    */
   use(handler_function) {
-    addToArray(this.middleware, new Handler({
+    addToArray(this.handlers, new Handler({
       is_middleware: true,
       handler_function: handler_function,
     }));
@@ -67,7 +60,6 @@ export default class Router {
   listen(port, listener_handler) {
     const server = http.createServer(handleHttpRequests(
       this.handlers,
-      this.middleware,
       this.endware,
     ));
 
