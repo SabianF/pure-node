@@ -51,11 +51,11 @@ src
 The server is started by
 1. Instantiating the routing repository `src\data\repositories\routing_repo.js`
 2. Instantiating a router `src\data\sources\router\src\domain\entities\router.js`
-3. Adding handlers to the router's routes and middleware `src\data\sources\router\src\domain\entities\handler.js`
+3. Adding handlers to the router for middleware and URLs `src\data\sources\router\src\domain\entities\handler.js`
 4. Calling the router's `listen` function with a port
 
 The server handles requests by
-1. Iterating through the handler array, executing any middleware, and executing the first matching route and returning
+1. Iterating through the router's array of handlers, executing any middleware, and executing the first matching route and returning
 2. If no routes match the request, handles the "not found" case by default
 
 ## Static file server
