@@ -1,6 +1,6 @@
 import http from "http";
 import Handler from "./handler.js";
-import { addToArray, handleError } from "../repositories/utilities.js";
+import { addToArray, handleError, handleRequest } from "../repositories/utilities.js";
 import createRequestHandler from "../repositories/request_handler.js";
 
 export default class Router {
@@ -21,7 +21,7 @@ export default class Router {
   }
 
   /**
-   *
+   * Adds middleware, by creating a handler containing the handler_function and adding it to the handler array
    * @param {handleRequest} handler_function
    */
   use(handler_function) {
@@ -35,8 +35,8 @@ export default class Router {
   }
 
   /**
-   *
-   * @param {string} method
+   * Adds a GET route which executes the provided handler_function
+   * @param {string} url
    * @param {handleRequest} handler_function
    */
   get(url, handler_function) {
