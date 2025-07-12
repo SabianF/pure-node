@@ -4,13 +4,13 @@ export function getNameOfVariable(variable) {
 
 /**
  *
- * @param {object} obj
+ * @param {object} obj Object containing the variable
  * @param {string} type Class name of type
  * @throws if object dosn't exist, isn't an object, or is not the provided type
  * @returns the validated object
  */
 export function validateType(obj, type) {
-  const obj_name = Object.keys({ obj })[0];
+  const obj_name = getStringFromVariable(obj);
 
   if (
     !type ||
@@ -21,13 +21,22 @@ export function validateType(obj, type) {
 
   if (
     !obj ||
-    typeof obj !== "object" ||
-    obj.constructor.name !== type
+    !obj[obj_name] ||
+    typeof obj[obj_name] !== "object" ||
+    obj[obj_name].constructor.name !== type
   ) {
-    throw new Error(`No/invalid ${obj_name} provided to ${type}: [${obj}]`);
+    throw new Error(`No/invalid ${obj_name} provided to ${type}: [${JSON.stringify(obj, " ", 2)}]`);
   }
 
-  return obj;
+  return obj[obj_name];
+}
+
+/**
+ *
+ * @param {object} obj Object containing the variable
+ */
+export function getStringFromVariable(obj) {
+  return Object.keys(obj)[0];
 }
 
 /**
