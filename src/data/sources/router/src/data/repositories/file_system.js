@@ -29,6 +29,10 @@ export default class FileSystemRepo {
     return this.fs_lib.checkPathExists(path);
   }
 
+  /**
+   *
+   * @param {string} path
+   */
   normalizePath(path) {
     return this.fs_lib.normalize(path);
   }
