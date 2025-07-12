@@ -12,7 +12,8 @@
     "dev": "node index.js"
   },
   "dependencies": {
-    "http-status-codes": "file:../../data/sources/packages/http-status-codes",
+    "dotenv": "file:/src/data/sources/packages/dotenv",
+    "http-status-codes": "file:/src/data/sources/packages/http-status-codes",
     "mustache": "file:/src/data/sources/packages/mustache"
   }
 }

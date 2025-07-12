@@ -1,8 +1,33 @@
-import Component from "../entities/component.js";
-import Page from "../entities/page.js";
-
 export function getNameOfVariable(variable) {
   return Object.keys({ variable })[0];
+}
+
+/**
+ *
+ * @param {object} obj
+ * @param {string} type Class name of type
+ * @throws if object dosn't exist, isn't an object, or is not the provided type
+ * @returns the validated object
+ */
+export function validateType(obj, type) {
+  const obj_name = Object.keys({ obj })[0];
+
+  if (
+    !type ||
+    typeof type !== "string"
+  ) {
+    throw new Error(`No/invalid type provided to ${validateType.name}: [${type}]`);
+  }
+
+  if (
+    !obj ||
+    typeof obj !== "object" ||
+    obj.constructor.name !== type
+  ) {
+    throw new Error(`No/invalid ${obj_name} provided to ${type}: [${obj}]`);
+  }
+
+  return obj;
 }
 
 /**
@@ -68,4 +93,4 @@ export async function loopThroughNested(object, handler, excluded_types) {
  * @param {*} nested_item_value
  * @param {string} nested_item_key
  */
-async function loopThroughNestedHandler(nested_item_value, nested_item_key) {}
+async function loopThroughNestedHandler(nested_item_value, nested_item_key) { }
