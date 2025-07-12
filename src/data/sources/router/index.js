@@ -1,3 +1,7 @@
 import Router from "./src/domain/entities/router.js";
 
-export default Router;
+export default class RouterLib {
+  create() {
+    return new Router();
+  }
+}

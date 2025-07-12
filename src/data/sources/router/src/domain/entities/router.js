@@ -8,16 +8,16 @@ export default class Router {
    * The handle all requests
    * @type {Handler[]}
    */
-  handlers;
+  #handlers;
 
   /**
    * @type {handleError[]}
    */
-  endware;
+  #endware;
 
   constructor() {
-    this.handlers = [];
-    this.endware = [];
+    this.#handlers = [];
+    this.#endware = [];
   }
 
   /**
@@ -26,7 +26,7 @@ export default class Router {
    */
   use(handler_function) {
     addToArray(
-      this.handlers,
+      this.#handlers,
       new Handler({
         is_middleware: true,
         handler_function: handler_function,
@@ -41,7 +41,7 @@ export default class Router {
    */
   get(url, handler_function) {
     addToArray(
-      this.handlers,
+      this.#handlers,
       new Handler({
         method: this.get.name.toUpperCase(),
         url: url,
@@ -55,7 +55,7 @@ export default class Router {
    * @param {handleError} endware_handler_function
    */
   useAfterAll(endware_handler_function) {
-    addToArray(this.endware, endware_handler_function);
+    addToArray(this.#endware, endware_handler_function);
   }
 
   /**
@@ -64,7 +64,7 @@ export default class Router {
    * @param {handleRequest} listen_handler
    */
   listen(port, listen_handler) {
-    const request_handler = createRequestHandler(this.handlers, this.endware);
+    const request_handler = createRequestHandler(this.#handlers, this.#endware);
     const server = http.createServer(request_handler);
 
     server.listen(port, listen_handler);

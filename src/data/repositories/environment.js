@@ -10,16 +10,16 @@ export default class EnvRepo {
   /**
    * @type {EnvLib}
    */
-  env_lib;
+  #env_lib;
 
   constructor({
     env_lib,
   }) {
-    this.env_lib = validateType(env_lib, EnvLib.name);
+    this.#env_lib = validateType({ env_lib }, EnvLib.name);
   }
 
   initEnv() {
-    this.env_lib.config();
+    this.#env_lib.config();
     validateEnv();
   }
 }

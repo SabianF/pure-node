@@ -25,7 +25,7 @@ export function initRepos() {
 function initEnvRepo() {
   const env_lib = new EnvLib();
   const env_repo = new EnvRepo({
-    env_lib
+    env_lib,
   });
 
   return env_repo;

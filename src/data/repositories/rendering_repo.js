@@ -12,12 +12,12 @@ export default class RenderingRepo {
   /**
    * @type {FileSystemIo}
    */
-  file_system_io_library;
+  #file_system_io_library;
 
   /**
    * @type {HtmlRenderer}
    */
-  html_renderer_library;
+  #html_renderer_library;
 
   /**
    *
@@ -32,7 +32,7 @@ export default class RenderingRepo {
         }.`,
       );
     }
-    this.file_system_io_library = file_system_io_library;
+    this.#file_system_io_library = file_system_io_library;
 
     if (!html_renderer_library) {
       throw new Error(
@@ -40,7 +40,7 @@ export default class RenderingRepo {
         }.`,
       );
     }
-    this.html_renderer_library = html_renderer_library;
+    this.#html_renderer_library = html_renderer_library;
   }
 
   /**
@@ -53,7 +53,7 @@ export default class RenderingRepo {
     const raw_page = await this.#getFileAsString(
       `${PAGES_BASE_PATH}/${name}.html`,
     );
-    const rendered_page = await this.html_renderer_library.render(
+    const rendered_page = await this.#html_renderer_library.render(
       raw_page,
       placeholders,
     );
@@ -75,7 +75,7 @@ export default class RenderingRepo {
   }
 
   async #getFileAsString(path) {
-    const file_buffer = await this.file_system_io_library.readFile(path);
+    const file_buffer = await this.#file_system_io_library.readFile(path);
     const file_string = file_buffer.toString();
     return file_string;
   }
@@ -118,7 +118,7 @@ export default class RenderingRepo {
     const component_html = await this.#getFileAsString(
       `${COMPONENTS_BASE_PATH}/${component.name}.html`,
     );
-    const rendered_component = this.html_renderer_library.render(
+    const rendered_component = this.#html_renderer_library.render(
       component_html,
       component.placeholders,
     );
