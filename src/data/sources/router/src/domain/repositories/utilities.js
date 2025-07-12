@@ -4,8 +4,8 @@ import Handler from "../entities/handler.js";
 
 /**
  *
- * @param {http.ClientRequest} request
- * @param {http.ServerResponse<http.ClientRequest>} response
+ * @param {Request} request
+ * @param {Response} response
  */
 export async function handleRequest(request, response) {}
 
