@@ -20,8 +20,7 @@ export default function handleStatic({
   const sanitized_path = path.replace(/^(\.\.[\/\\])+/, '');
 
   if (fs_repo.checkPathExists(sanitized_path) === false) {
-    console.log(`handleStatic: path doesn't exist: [${sanitized_path}]`);
-    return;
+    throw new Error(`Invalid/nonexistent path provided to ${handleStatic.name}: [${path}]`);
   }
 
   console.log(`handleStatic: path exists: [${sanitized_path}]`);
