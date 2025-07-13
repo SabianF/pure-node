@@ -43,7 +43,11 @@ export default class FileSystemRepo {
    * @param {string} path
    */
   normalizePath(path) {
-    return this.fs_lib.normalize(path);
+    const normalized_path_str = path
+      .replace(/((\\)|(\/\/))/, "/")
+      .replace(/((\/)(?!.))/, "");
+
+    return normalized_path_str;
   }
 
   /**
