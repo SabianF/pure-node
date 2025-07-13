@@ -46,17 +46,16 @@ export default function createRequestHandler(handlers, endware) {
       }
 
       await handler.handler_function(request, response);
-      executeEndware(endware, request, response);
-
       response.end();
       break;
     }
+
+    executeEndware(request, response);
 
     if (response.writableEnded) {
       return;
     }
 
-    executeEndware(request, response);
     handleNotFound(null, request, response);
     response.end();
   };
