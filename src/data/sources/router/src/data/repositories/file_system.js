@@ -25,6 +25,14 @@ export default class FileSystemRepo {
    *
    * @param {string} path
    */
+  sanitizePath(path) {
+    return path.replace(/^(\.\.[\/\\])+/, "");
+  }
+
+  /**
+   *
+   * @param {string} path
+   */
   checkPathExists(path) {
     return this.fs_lib.checkPathExists(path);
   }
@@ -35,6 +43,14 @@ export default class FileSystemRepo {
    */
   normalizePath(path) {
     return this.fs_lib.normalize(path);
+  }
+
+  /**
+   *
+   * @param {string} path
+   */
+  async readFile(path) {
+    return this.fs_lib.readFile(path);
   }
 }
 

@@ -1,14 +1,20 @@
 import { promises as fs } from "node:fs";
 import old_fs from "node:fs";
-import path from "node:path";
-
 export default class FileSystemLib {
   checkPathExists(path) {
     return old_fs.existsSync(path);
   }
 
-  normalize(pathStr) {
-    return path.normalize(pathStr);
+  /**
+   *
+   * @param {string} path_str
+   */
+  normalize(path_str) {
+    const normalized_path_str = path_str
+      .replace(/((\\)|(\/\/))/, "/")
+      .replace(/((\/)(?!.))/, "");
+
+    return normalized_path_str;
   }
 
   async readFile(path) {

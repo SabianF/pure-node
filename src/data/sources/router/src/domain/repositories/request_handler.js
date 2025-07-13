@@ -25,12 +25,15 @@ export default function createRequestHandler(handlers, endware) {
 
     response.setHeader("Content-Type", "text/html; charset=utf-8");
 
-    let route_was_handled = false;
     for (let i = 0; i < handlers.length; i++) {
       const handler = handlers[i];
 
+      if (response.writableEnded) {
+        break;
+      }
+
       if (handler.is_middleware) {
-        handler.handler_function(request, response);
+        await handler.handler_function(request, response);
         continue;
       }
 
@@ -43,8 +46,6 @@ export default function createRequestHandler(handlers, endware) {
       }
 
       await handler.handler_function(request, response);
-      route_was_handled = true;
-
       executeEndware(endware, request, response);
 
       response.end();

@@ -35,12 +35,12 @@ export default class RoutingRepo {
 
   /**
    *
-   * @param {string} path
+   * @param {string} base_path
    */
-  handleStatic(path) {
+  handleStatic(base_path) {
     return handleStatic({
       fs_repo: this.#fs_repo,
-      path: path,
+      base_path: base_path,
     });
   }
 }
