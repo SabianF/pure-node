@@ -13,11 +13,11 @@ export default class Router {
   /**
    * @type {handleError[]}
    */
-  #endware;
+  #error_handlers;
 
   constructor() {
     this.#handlers = [];
-    this.#endware = [];
+    this.#error_handlers = [];
   }
 
   /**
@@ -52,10 +52,10 @@ export default class Router {
 
   /**
    *
-   * @param {handleError} endware_handler_function
+   * @param {handleError} error_handler_function
    */
-  useAfterAll(endware_handler_function) {
-    addToArray(this.#endware, endware_handler_function);
+  handleErrors(error_handler_function) {
+    addToArray(this.#error_handlers, error_handler_function);
   }
 
   /**
@@ -64,7 +64,7 @@ export default class Router {
    * @param {handleRequest} listen_handler
    */
   listen(port, listen_handler) {
-    const request_handler = createRequestHandler(this.#handlers, this.#endware);
+    const request_handler = createRequestHandler(this.#handlers, this.#error_handlers);
     const server = http.createServer(request_handler);
 
     server.listen(port, listen_handler);
