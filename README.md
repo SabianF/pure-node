@@ -4,7 +4,11 @@ A zero-dependency (totally internal) NodeJS server build
 
 # Architecture
 
-Clean Architecture (Uncle Bob)
+- [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [Composable](https://www.storyblok.com/mp/composable-architecture)
+- [DI (Dependency injection)](https://www.jamesshore.com/v2/blog/2006/dependency-injection-demystified)
+- [SSR (Server-side rendering)](https://developer.mozilla.org/en-US/docs/Glossary/SSR)
+- [HATEOAS (Hypermedia-as-the-engine-of-application-state)](https://htmx.org/essays/hateoas/)
 
 ## File structure
 
@@ -31,7 +35,7 @@ Clean Architecture (Uncle Bob)
     │       └───(client-side functionality)
     └───presentation
         ├───state
-        │   └───(unused; using [SSR](https://developer.mozilla.org/en-US/docs/Glossary/SSR) & [HATEOAS](https://htmx.org/essays/hateoas/))
+        │   └───(unused; using SSR & HATEOAS)
         ├───components
         │   └───(HTML, CSS, client-side JS)
         └───pages
