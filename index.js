@@ -1,6 +1,6 @@
 import { logRequests } from "./src/data/repositories/middleware.js";
 import { initRepos } from "./src/data/repositories/repositories.js";
-import rootPage from "./src/presentation/pages/root.js";
+import loadHomePage from "./src/domain/usecases/load_home_page.js";
 import testPage from "./src/presentation/pages/test.js";
 
 function runApp() {
@@ -14,14 +14,9 @@ function runApp() {
   router.use(logRequests);
   router.use(repos.routing.handleStatic("public/"));
 
-  router.get("/", async (request, response) => {
-    const page = await repos.rendering.renderPage(
-      rootPage({
-        message: "Greetings, humans!",
-      }),
-    );
-    response.write(page);
-  });
+  router.get("/", loadHomePage({
+    rendering_repo: repos.rendering,
+  }));
 
   router.get("/test", async (request, response) => {
     const page = await repos.rendering.renderPage(

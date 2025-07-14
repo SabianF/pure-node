@@ -9,6 +9,14 @@ import handleStatic from "../sources/router/src/domain/usecases/handle_static.js
  * @property {FileSystemRepo} fs_repo
  */
 
+/**
+ * @typedef {import("../sources/router/index.js").HttpRequest} HttpRequest
+ */
+
+/**
+ * @typedef {import("../sources/router/index.js").HttpResponse} HttpResponse
+ */
+
 export default class RoutingRepo {
   /**
    * @type {RouterLib} router
