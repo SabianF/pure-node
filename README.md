@@ -31,7 +31,7 @@ Clean Architecture (Uncle Bob)
     │       └───(client-side functionality)
     └───presentation
         ├───state
-        │   └───(unused; using HATEOAS)
+        │   └───(unused; using [SSR](https://developer.mozilla.org/en-US/docs/Glossary/SSR) & [HATEOAS](https://htmx.org/essays/hateoas/))
         ├───components
         │   └───(HTML, CSS, client-side JS)
         └───pages
