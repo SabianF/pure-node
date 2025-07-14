@@ -12,8 +12,13 @@
   --margin-lg: 32px;
   --margin-xlg: 64px;
 
+  --border-radius-med: 16px;
+
   --background-color-primary: #222222;
   --foreground-color-primary: #eeeeee;
+
+  --button-color-primary: #add8e6;
+  --button-color-primary-hover: #a5cbd8;
 
   --link-color-unvisited: #eeee88;
   --link-color-visited: #eeeecc;
@@ -28,6 +33,104 @@ html {
 
   padding-left: var(--padding-med);
   padding-right: var(--padding-med);
+}
+
+section,
+article {
+  margin-top: var(--margin-med);
+  margin-bottom: var(--margin-med);
+
+  padding-top: var(--padding-med);
+  padding-bottom: var(--padding-med);
+
+  border: 2px solid grey;
+  border-radius: var(--border-radius-med);
+}
+
+section > *,
+article > * {
+  margin: var(--margin-sm);
+}
+
+table,
+table th,
+table td {
+  margin: var(--margin-sm);
+  border: 2px solid #eeeeee;
+  border-radius: var(--border-radius-med);
+}
+
+table th,
+table td {
+  margin: 0;
+  padding: var(--padding-sm);
+}
+
+code,
+kbd,
+samp {
+  background-color: black;
+  color: darkorange;
+}
+
+pre {
+  color: darkgray;
+}
+
+mark {
+  background-color: var(--link-color-unvisited);
+}
+
+table td {
+  border-color: grey;
+}
+
+input,
+textarea,
+button {
+  font-size: var(--font-size-xlg);
+  padding: var(--padding-med);
+  border-radius: var(--border-radius-med);
+}
+
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+button {
+  background-color: var(--button-color-primary);
+}
+
+input[type="submit"]:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover,
+button:hover {
+  scale: 102%;
+  background-color: var(--button-color-primary-hover);
+}
+
+input[type="file"] {
+  background-color: var(--foreground-color-primary);
+  color: var(--background-color-primary);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: 24px;
+  height: 24px;
+}
+
+input[type="range"] {
+  accent-color: red;
+}
+
+select {
+  padding: var(--padding-med);
+  font-size: var(--font-size-xlg);
+}
+
+optgroup option {
+  padding-top: var(--padding-sm);
+  padding-bottom: var(--padding-sm);
 }
 
 a {
