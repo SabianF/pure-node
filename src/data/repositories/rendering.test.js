@@ -1,5 +1,5 @@
 import test, { describe } from "node:test";
-import RenderingRepo from "./rendering_repo.js";
+import RenderingRepo from "./rendering.js";
 import FileSystemIo from "../sources/file_system_io.js";
 import HtmlRenderer from "../sources/html_renderer.js";
 import Component from "../../domain/entities/component.js";

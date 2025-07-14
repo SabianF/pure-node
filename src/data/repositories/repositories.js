@@ -5,7 +5,7 @@ import Router from "../sources/router/index.js";
 import FileSystemRepo from "../sources/router/src/data/repositories/file_system.js";
 import FileSystemLib from "../sources/router/src/data/sources/file_system_lib.js";
 import EnvRepo from "./environment.js";
-import RenderingRepo from "./rendering_repo.js";
+import RenderingRepo from "./rendering.js";
 import RoutingRepo from "./routing_repo.js";
 
 export function initRepos() {
