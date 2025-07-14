@@ -52,6 +52,18 @@ article > * {
   margin: var(--margin-sm);
 }
 
+h1,
+h2,
+h3,
+h4,
+h5 {
+  padding-bottom: var(--padding-med);
+}
+
+p {
+  padding-bottom: var(--padding-sm);
+}
+
 table,
 table th,
 table td {
