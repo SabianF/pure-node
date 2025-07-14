@@ -1,9 +1,39 @@
 :root {
+  --font-primary: "Roboto", Helvetica, sans-serif;
+  --font-size-xlg: x-large;
+
+  --padding-sm: 8px;
+  --padding-med: 16px;
+  --padding-lg: 32px;
+  --padding-xlg: 64px;
+
+  --margin-sm: 8px;
+  --margin-med: 16px;
+  --margin-lg: 32px;
+  --margin-xlg: 64px;
+
   --background-color-primary: #222222;
   --foreground-color-primary: #eeeeee;
+
+  --link-color-unvisited: #eeee88;
+  --link-color-visited: #eeeecc;
 }
 
 html {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-xlg);
+
   background-color: var(--background-color-primary);
   color: var(--foreground-color-primary);
+
+  padding-left: var(--padding-med);
+  padding-right: var(--padding-med);
+}
+
+a {
+  color: var(--link-color-unvisited);
+}
+
+a:visited {
+  color: var(--link-color-visited);
 }
