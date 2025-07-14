@@ -20,7 +20,7 @@ Clean Architecture (Uncle Bob)
     │   │   └───(internal libraries for parsing & validating external data, and error handling)
     │   └───sources
     │       ├───packages
-    │       │   ├───(localized npm packages)
+    │       │   └───(localized npm packages)
     │       └───(interfaces and wrappers for external dependencies/libraries)
     ├───domain
     │   ├───entities
