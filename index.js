@@ -1,6 +1,7 @@
 import { logRequests } from "./src/data/repositories/middleware.js";
 import { initRepos } from "./src/data/repositories/repositories.js";
 import rootPage from "./src/presentation/pages/root.js";
+import testPage from "./src/presentation/pages/test.js";
 
 function runApp() {
   const repos = initRepos();
@@ -18,6 +19,13 @@ function runApp() {
       rootPage({
         message: "Greetings, humans!",
       }),
+    );
+    response.write(page);
+  });
+
+  router.get("/test", async (request, response) => {
+    const page = await repos.rendering.renderPage(
+      testPage(),
     );
     response.write(page);
   });
