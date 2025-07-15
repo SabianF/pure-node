@@ -46,42 +46,67 @@ A zero-dependency (totally internal) NodeJS server build
 
 ## HTTP server + router
 
+> Doing this more "manually" was an interesting challenge, as I previously had only used ExpressJS for convenience, without fully-understanding what it was doing. However, after digging through the fundamentals, I realized how a server router works is simple: listening on a port for HTTP request events, and handling these events.
+
 - Rudimentary HTTP server that listens on the configured PORT
 - Handles
-  - Routes
   - Middleware
-  - Endware (executes at end of request/response cycle, before response is sent)
+  - Routes
 - Logs all requests
 - Serves HTML
 
-The server is started by
+The HTTP server is started by
 
 1. Instantiating the routing repository `src\data\repositories\routing_repo.js`
 2. Instantiating a router `src\data\sources\router\src\domain\entities\router.js`
-3. Adding handlers to the router for middleware and URLs `src\data\sources\router\src\domain\entities\handler.js`
-4. Calling the router's `listen` function with a port
+3. Adding handlers to the router for middleware (`use()`) and URLs (`get()`, `post()`, etc) `src\data\sources\router\src\domain\entities\handler.js`
+4. Calling the router's `listen()` function with a port
 
 The server handles requests by
 
-1. Iterating through the router's array of handlers, executing any middleware, and executing the first matching route and returning
+1. Iterating through the router's array of handlers, executing any middleware, and executing the first matching route before sending the response
 2. If no routes match the request, handles the "not found" case by default
 
-## Static file server
+### Static file serving
 
-The router serves static files when it is provided a `path` parameter by
+> This was fairly difficult for me, and took me about 2 hours of research and 2 hours of trial-and-error to figure out.
 
-1. Checking the path to expose if it exists, throwing an error if not
-2. Normalizing the path to remove any extraneous characters
-3. Sanitizing the client-requested path, to prevent unintended parent folder traversal
-4. Checking if the client-requested path leads to a file, skipping if not
-5. Checking if the file exists, returning 404 if not
-6. Setting the response's `Content-Type` header according to the accessed file's extension
-7. Reading the actual file data
-8. Sending the file data in the response
+The router serves static files when the `` is added as middleware with a `path` parameter. What this handler exposes static files within this path and its subfolders by
+
+1. Checking the provided base path if it exists, throwing an error if not
+2. Normalizing the base path to remove any extraneous characters
+3. Using the base path as a "top-level" directory, preventing the client from knowing or needing to provide it in the request
+4. Sanitizing the client-requested path, to prevent unintended parent folder traversal
+5. Checking if the client-requested path leads to a file, skipping if not
+6. Checking if the file exists, returning 404 if not
+7. Setting the response's `Content-Type` header according to the accessed file's extension
+8. Reading the actual file data
+9. Sending the file data in the response
 
 ## Component nesting
 
-TODO: Write a case study for rendering nested components (binary tree? navigating nested structures, recursion)
+> This was very difficult for me, initially, and took me about 2 days (2-4 hours each) to figure out an algorithm.
+
+Components are composed of 1-3 parts/files:
+1. HTML template
+2. CSS
+3. Client-side JS
+
+Components are managed like so:
+1. An HTML file is created (e.g. `.../components/hat.html` -> `<div class="hat">I'm wearing a {{type}}</div>`)
+2. A function is created to create a Component, identify the HTML template's placeholders with intellisense, and provide data for them (e.g. `.../components/hat.js` -> `hat(placeholders: HatPlaceholders): Component`)
+3. The `Component` instance is provided to `RenderingRepo.renderComponent()` which
+   1. Searches for the HTML file in `.../components` based on the `Component.name`
+   2. Reads the file data as an HTML template
+   4. Renders data into its placeholders, if any
+   5. Returns rendered HTML
+- This function also checks the `Component`'s placeholders for any nested `Component`s, and if it finds any, it
+   1. Recursively goes to the bottom of the tree of nested `Component`s
+   2. Renders the current (bottom) `Component`
+   3. Replaces the parent of the current component with the rendered `Component`
+   4. Recursively renders and replaces all nested `Component`s back up to the top of the tree
+   5. Returns the final rendered HTML
+   > This was seriously the most difficult part for me. This nested recursion was about 95% of the 2 days I spent figuring this out.
 
 # Resources
 
