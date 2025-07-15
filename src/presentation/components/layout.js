@@ -2,15 +2,15 @@ import Component from "../../domain/entities/component.js";
 
 /**
  *
- * @param {object} props
- * @param {string} props.title
- * @param {string | Component} props.body
- * @param {string | Component} props.custom_header
- * @param {string | Component} props.custom_footer
+ * @param {object} placeholders
+ * @param {string} placeholders.title
+ * @param {string | Component} placeholders.body
+ * @param {string | Component} placeholders.custom_header
+ * @param {string | Component} placeholders.custom_footer
  */
-export default function layout(props) {
+export default function layout(placeholders) {
   return new Component({
     name: "layout",
-    placeholders: props,
+    placeholders: placeholders,
   });
 }
