@@ -28,7 +28,8 @@ export default class RenderingRepo {
   constructor({ file_system_io_library, html_renderer_library }) {
     if (!file_system_io_library) {
       throw new Error(
-        `No ${getNameOfVariable(file_system_io_library)} provided to ${RenderingRepo.name
+        `No ${getNameOfVariable(file_system_io_library)} provided to ${
+          RenderingRepo.name
         }.`,
       );
     }
@@ -36,7 +37,8 @@ export default class RenderingRepo {
 
     if (!html_renderer_library) {
       throw new Error(
-        `No ${getNameOfVariable(html_renderer_library)} provided to ${RenderingRepo.name
+        `No ${getNameOfVariable(html_renderer_library)} provided to ${
+          RenderingRepo.name
         }.`,
       );
     }
