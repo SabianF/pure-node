@@ -68,7 +68,16 @@ The server handles requests by
 
 ## Static file server
 
-TODO: Document static file server
+The router serves static files when it is provided a `path` parameter by
+
+1. Checking the path to expose if it exists, throwing an error if not
+2. Normalizing the path to remove any extraneous characters
+3. Sanitizing the client-requested path, to prevent unintended parent folder traversal
+4. Checking if the client-requested path leads to a file, skipping if not
+5. Checking if the file exists, returning 404 if not
+6. Setting the response's `Content-Type` header according to the accessed file's extension
+7. Reading the actual file data
+8. Sending the file data in the response
 
 ## Component nesting
 
