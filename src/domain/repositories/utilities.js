@@ -4,9 +4,9 @@ export function getNameOfVariable(variable) {
 
 /**
  *
- * @param {object} obj Object containing the variable
- * @param {string} type Class name of type
- * @throws if object dosn't exist, isn't an object, or is not the provided type
+ * @param {object} obj Object containing the variable (e.g. `{ variable_name }`)
+ * @param {string} type Class name of type (e.g. `RoutingRepo.name | "RoutingRepo"`)
+ * @throws if object doesn't exist, isn't an object, or is not the provided type
  * @returns the validated object
  */
 export function validateType(obj, type) {
