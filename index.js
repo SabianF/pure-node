@@ -2,7 +2,6 @@ import { logRequests } from "./src/data/repositories/middleware.js";
 import { initRepos } from "./src/data/repositories/repositories.js";
 import loadHomePage from "./src/domain/usecases/load_home_page.js";
 import loadTestPage from "./src/domain/usecases/load_test_page.js";
-import testPage from "./src/presentation/pages/test.js";
 
 function runApp() {
   const repos = initRepos();
