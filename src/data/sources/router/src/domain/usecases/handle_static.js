@@ -1,14 +1,19 @@
 
 import FileSystemRepo from "../../data/repositories/file_system.js";
 import http_status_codes from "../../data/sources/http_status_codes.js";
-import { handleRequest } from "../repositories/utilities.js";
 
 /**
- * key=file_ext
- *
- * value=content_type
- *
- * @type {object}
+ * @typedef {import("../repositories/utilities.js").handleRequest} RequestHandlerFunction
+ */
+
+/**
+ * @typedef CreateStaticHandlerProps
+ * @property {FileSystemRepo} fs_repo
+ * @property {string} base_path
+ */
+
+/**
+ * "file_extension": "content_type_header"
  */
 const accepted_file_exts = {
   ".css": "text/css",
@@ -16,12 +21,6 @@ const accepted_file_exts = {
   ".js": "text/javascript",
   ".json": "application/json",
 };
-
-/**
- * @typedef CreateStaticHandlerProps
- * @property {FileSystemRepo} fs_repo
- * @property {string} base_path
- */
 
 /**
  *
@@ -39,7 +38,7 @@ export default function handleStatic({
 
   /**
    *
-   * @type {handleRequest}
+   * @type {RequestHandlerFunction}
    */
   const handler_function = async (request, response) => {
     const requested_path = request.url;
