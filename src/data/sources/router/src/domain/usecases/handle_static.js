@@ -66,10 +66,9 @@ export default function handleStatic({
     }
 
     const file_data = await fs_repo.readFile(sanitized_file_path);
-    const file_string = file_data.toString();
 
     response.statusCode = http_status_codes.codes.OK;
-    response.write(file_string);
+    response.write(file_data);
     response.end();
   };
 
