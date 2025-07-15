@@ -2,6 +2,8 @@
   --font-primary: "Roboto", Helvetica, sans-serif;
   --font-size-xlg: x-large;
 
+  --page-width: 1080px;
+
   --padding-sm: 8px;
   --padding-med: 16px;
   --padding-lg: 32px;
@@ -15,13 +17,20 @@
   --border-radius-med: 16px;
 
   --background-color-primary: #222222;
+  --background-color-secondary: #262633;
+
   --foreground-color-primary: #eeeeee;
+  --foreground-color-secondary: #eeeeff;
 
   --button-color-primary: #add8e6;
   --button-color-primary-hover: #a5cbd8;
 
-  --link-color-unvisited: #eeee88;
-  --link-color-visited: #eeeecc;
+  --link-color-unvisited: #ccccff;
+  --link-color-visited: #ddccff;
+  --link-color-hover: #eeeeff;
+
+  --nav-background-color: #333333;
+  --footer-background-color: #333333;
 }
 
 html {
@@ -30,18 +39,48 @@ html {
 
   background-color: var(--background-color-primary);
   color: var(--foreground-color-primary);
+}
 
+body {
   padding-left: var(--padding-med);
+  padding-right: var(--padding-med);
+}
+
+body > main {
+  margin: auto;
+  max-width: var(--page-width);
+}
+
+nav,
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-left: var(--padding-lg);
+  padding-right: var(--padding-lg);
+}
+
+nav {
+  margin-bottom: var(--margin-lg);
+  background-color: var(--nav-background-color);
+}
+
+footer {
+  margin-top: var(--margin-lg);
+  background-color: var(--footer-background-color);
+}
+
+nav li {
+  display: inline;
   padding-right: var(--padding-med);
 }
 
 section,
 article {
-  margin-top: var(--margin-med);
-  margin-bottom: var(--margin-med);
+  margin-top: var(--margin-lg);
+  margin-bottom: var(--margin-lg);
 
-  padding-top: var(--padding-med);
-  padding-bottom: var(--padding-med);
+  padding: var(--padding-med);
 
   border: 2px solid grey;
   border-radius: var(--border-radius-med);
@@ -50,6 +89,16 @@ article {
 section > *,
 article > * {
   margin: var(--margin-sm);
+}
+
+section {
+  max-width: var(--page-width);
+  overflow-x: auto;
+  background-color: var(--background-color-secondary);
+}
+
+fieldset {
+  width: 100%;
 }
 
 h1,
@@ -62,6 +111,10 @@ h5 {
 
 p {
   padding-bottom: var(--padding-sm);
+}
+
+img {
+  width: 100%;
 }
 
 table,
@@ -103,6 +156,11 @@ button {
   font-size: var(--font-size-xlg);
   padding: var(--padding-med);
   border-radius: var(--border-radius-med);
+  max-width: 100%;
+}
+
+textarea {
+  width: 80%;
 }
 
 input[type="submit"],
@@ -123,6 +181,7 @@ button:hover {
 input[type="file"] {
   background-color: var(--foreground-color-primary);
   color: var(--background-color-primary);
+  width: 80%;
 }
 
 input[type="checkbox"],
@@ -147,8 +206,13 @@ optgroup option {
 
 a {
   color: var(--link-color-unvisited);
+  text-decoration: none;
 }
 
 a:visited {
   color: var(--link-color-visited);
+}
+
+a:hover {
+  color: var(--link-color-hover);
 }
