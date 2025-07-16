@@ -59,10 +59,18 @@ function initRoutingRepo(fs_repo) {
 function initRenderingRepo() {
   const file_system_io_library = new FileSystemIo();
   const html_renderer_library = new HtmlRenderer();
+  /**
+   * @type {import("./rendering.js").RenderingRepoConfig}
+   */
+  const config = {
+    components_dir: "src/presentation/components",
+    pages_dir: "src/presentation/pages",
+  };
 
   const rendering = new RenderingRepo({
     file_system_io_library,
     html_renderer_library,
+    config,
   });
 
   return rendering;

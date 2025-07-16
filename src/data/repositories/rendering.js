@@ -5,8 +5,18 @@ import layout from "../../presentation/components/layout.js";
 import FileSystemIo from "../sources/file_system_io.js";
 import HtmlRenderer from "../sources/html_renderer.js";
 
-const COMPONENTS_BASE_PATH = "src/presentation/components";
-const PAGES_BASE_PATH = "src/presentation/pages";
+/**
+ * @typedef {object} RenderingRepoConfig
+ * @property {string} components_dir
+ * @property {string} pages_dir
+ */
+
+/**
+ * @typedef {object} RenderingRepoProps
+ * @property {FileSystemIo} file_system_io_library
+ * @property {HtmlRenderer} html_renderer_library
+ * @property {RenderingRepoConfig} config
+ */
 
 export default class RenderingRepo {
   /**
@@ -20,29 +30,22 @@ export default class RenderingRepo {
   #html_renderer_library;
 
   /**
-   *
-   * @param {object} props
-   * @param {FileSystemIo} props.file_system_io_library
-   * @param {HtmlRenderer} props.html_renderer_library
+   * @type {RenderingRepoConfig}
    */
-  constructor({ file_system_io_library, html_renderer_library }) {
-    if (!file_system_io_library) {
-      throw new Error(
-        `No ${getNameOfVariable(file_system_io_library)} provided to ${
-          RenderingRepo.name
-        }.`,
-      );
-    }
-    this.#file_system_io_library = file_system_io_library;
+  #config;
 
-    if (!html_renderer_library) {
-      throw new Error(
-        `No ${getNameOfVariable(html_renderer_library)} provided to ${
-          RenderingRepo.name
-        }.`,
-      );
-    }
-    this.#html_renderer_library = html_renderer_library;
+  /**
+   *
+   * @param {RenderingRepoProps} props
+   */
+  constructor({ file_system_io_library, html_renderer_library, config }) {
+    this.#file_system_io_library = validateFileSystemIoLib(
+      file_system_io_library,
+    );
+    this.#html_renderer_library = validateHtmlRendererLib(
+      html_renderer_library,
+    );
+    this.#config = validateConfig(config);
   }
 
   /**
@@ -53,9 +56,9 @@ export default class RenderingRepo {
     const { name, placeholders } = page;
 
     const raw_page = await this.#getFileAsString(
-      `${PAGES_BASE_PATH}/${name}.html`,
+      `${this.#config.pages_dir}/${name}.html`,
     );
-    const rendered_page = await this.#html_renderer_library.render(
+    const rendered_page = this.#html_renderer_library.render(
       raw_page,
       placeholders,
     );
@@ -118,7 +121,7 @@ export default class RenderingRepo {
 
     // If there are no components in the placeholders, and this is the bottom-level component
     const component_html = await this.#getFileAsString(
-      `${COMPONENTS_BASE_PATH}/${component.name}.html`,
+      `${this.#config.components_dir}/${component.name}.html`,
     );
     const rendered_component = this.#html_renderer_library.render(
       component_html,
@@ -133,4 +136,48 @@ export default class RenderingRepo {
 
     return rendered_component;
   }
+}
+function validateFileSystemIoLib(file_system_io_library) {
+  if (!file_system_io_library) {
+    throw new Error(
+      `No ${getNameOfVariable({ file_system_io_library })} provided to ${RenderingRepo.name
+      }.`,
+    );
+  }
+  return file_system_io_library;
+}
+
+function validateHtmlRendererLib(html_renderer_library) {
+  if (!html_renderer_library) {
+    throw new Error(
+      `No ${getNameOfVariable({ html_renderer_library })} provided to ${RenderingRepo.name
+      }.`,
+    );
+  }
+  return html_renderer_library;
+}
+
+function validateConfig(config) {
+  if (!config) {
+    throw new Error(
+      `No ${getNameOfVariable({ config })} provided to ${RenderingRepo.name}.`,
+    );
+  }
+
+  const { components_dir, pages_dir } = config;
+
+  if (!config.components_dir) {
+    throw new Error(
+      `No ${getNameOfVariable({ components_dir })} provided to ${RenderingRepo.name
+      }.`,
+    );
+  }
+  if (!config.pages_dir) {
+    throw new Error(
+      `No ${getNameOfVariable({ pages_dir })} provided to ${RenderingRepo.name
+      }.`,
+    );
+  }
+
+  return config;
 }

@@ -1,5 +1,10 @@
-export function getNameOfVariable(variable) {
-  return Object.keys({ variable })[0];
+/**
+ *
+ * @param {object} object_containing_variable e.g. `{ a_variable }`
+ * @returns {string} name of the variable
+ */
+export function getNameOfVariable(object_containing_variable) {
+  return Object.keys(object_containing_variable)[0];
 }
 
 /**
