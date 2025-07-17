@@ -51,8 +51,13 @@ body > main {
   max-width: var(--page-width);
 }
 
+body > footer {
+  margin-top: var(--margin-lg);
+  background-color: var(--footer-background-color);
+}
+
 nav,
-footer {
+body > footer {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -63,11 +68,6 @@ footer {
 nav {
   margin-bottom: var(--margin-lg);
   background-color: var(--nav-background-color);
-}
-
-footer {
-  margin-top: var(--margin-lg);
-  background-color: var(--footer-background-color);
 }
 
 nav li {
@@ -215,4 +215,9 @@ a:visited {
 
 a:hover {
   color: var(--link-color-hover);
+}
+
+::selection {
+  background-color: var(--foreground-color-primary);
+  color: var(--background-color-primary);
 }
