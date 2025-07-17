@@ -8,25 +8,6 @@ import Component from "./component.js";
 
 describe(Component.name, () => {
   describe("constructor", () => {
-    /**
-     * @type {ComponentProps[]}
-     */
-    const valid_nested_props = [
-      {
-        name: "layout",
-        placeholders: {
-          title: "TEST TITLE",
-          body: new Component({
-            name: "layout",
-            placeholders: {
-              title: "Lv2 TEST TITLE",
-              body: "<h1>Lv2 test body</h1>",
-            },
-          }),
-        },
-      },
-    ];
-
     test(`throws on missing/invalid props`, () => {
       const invalid_props = [
         undefined,
@@ -88,6 +69,13 @@ describe(Component.name, () => {
             title: "TEST TITLE",
           },
         },
+        {
+          name: "layout",
+          placeholders: {
+            title: "TEST TITLE",
+            body: "TEST BODY",
+          },
+        },
       ];
 
       for (const props of valid_props) {
@@ -97,12 +85,23 @@ describe(Component.name, () => {
         assert.strictEqual(component.name, props.name);
         assert.strictEqual(component.placeholders, props.placeholders);
 
-        if (props.placeholders) {
-          assert.strictEqual(
-            component.placeholders.title,
-            props.placeholders.title,
-          );
+        if (!props.placeholders) {
+          continue;
         }
+        assert.strictEqual(
+          component.placeholders.title,
+          props.placeholders.title,
+        );
+
+        if (!props.placeholders.body) {
+          continue;
+        }
+        props.placeholders.body = new Component(props);
+        const component_with_nested = new Component(props);
+        assert.strictEqual(
+          component_with_nested.placeholders.body,
+          props.placeholders.body,
+        );
       }
     });
   });
