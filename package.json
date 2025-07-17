@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "node --test",
+    "test:watch": "node --test --watch",
     "watch": "node --watch index.js",
     "dev": "node index.js"
   },
