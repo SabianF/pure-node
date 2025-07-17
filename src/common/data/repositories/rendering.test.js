@@ -11,6 +11,10 @@ describe(RenderingRepo.name, () => {
   const rendering_repo = new RenderingRepo({
     file_system_io_library,
     html_renderer_library,
+    config: {
+      components_dir: "src/common/presentation/components",
+      pages_dir: "src/common/presentation/pages",
+    }
   });
 
   describe(rendering_repo.renderComponent.name, () => {

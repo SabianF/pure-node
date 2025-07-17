@@ -1,8 +1,8 @@
-import { logRequests } from "./src/data/repositories/middleware.js";
-import { initRepos } from "./src/data/repositories/repositories.js";
-import loadBlankPage from "./src/domain/usecases/lload_blank_page.js";
-import loadHomePage from "./src/domain/usecases/load_home_page.js";
-import loadTestPage from "./src/domain/usecases/load_test_page.js";
+import { logRequests } from "./src/common/data/repositories/middleware.js";
+import { initRepos } from "./src/common/data/repositories/repositories.js";
+import loadBlankPage from "./src/common/domain/usecases/lload_blank_page.js";
+import loadHomePage from "./src/common/domain/usecases/load_home_page.js";
+import loadTestPage from "./src/common/domain/usecases/load_test_page.js";
 
 function runApp() {
   const repos = initRepos();

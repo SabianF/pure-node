@@ -63,8 +63,8 @@ function initRenderingRepo() {
    * @type {import("./rendering.js").RenderingRepoConfig}
    */
   const config = {
-    components_dir: "src/presentation/components",
-    pages_dir: "src/presentation/pages",
+    components_dir: "src/common/presentation/components",
+    pages_dir: "src/common/presentation/pages",
   };
 
   const rendering = new RenderingRepo({
