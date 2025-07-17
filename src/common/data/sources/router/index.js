@@ -1,3 +1,4 @@
+import RouterModel from "./src/data/models/router.js";
 import Router from "./src/domain/entities/router.js";
 
 /**
@@ -10,6 +11,7 @@ import Router from "./src/domain/entities/router.js";
 
 export default class RouterLib {
   create() {
-    return new Router();
+    const router = new Router();
+    return new RouterModel(router);
   }
 }
