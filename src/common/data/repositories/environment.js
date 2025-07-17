@@ -1,5 +1,5 @@
 import { validateType } from "../../domain/repositories/utilities.js";
-import EnvLib from "../sources/process_env.js";
+import EnvLib from "../sources/env_lib.js";
 
 /**
  * @typedef EnvRepoProps
