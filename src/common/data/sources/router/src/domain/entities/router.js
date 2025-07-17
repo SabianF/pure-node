@@ -3,6 +3,10 @@ import Handler from "./handler.js";
 import { addToArray, handleError, handleRequest } from "../repositories/utilities.js";
 import createRequestHandler from "../repositories/request_handler.js";
 
+/**
+ * @typedef {import("./types.js").HttpRequestHandler} HttpRequestHandler
+ */
+
 export default class Router {
   /**
    * The handle all requests
@@ -22,7 +26,7 @@ export default class Router {
 
   /**
    * Adds middleware, by creating a handler containing the handler_function and adding it to the handler array
-   * @param {handleRequest} handler_function
+   * @param {HttpRequestHandler} handler_function
    */
   use(handler_function) {
     addToArray(
@@ -37,7 +41,7 @@ export default class Router {
   /**
    * Adds a GET route which executes the provided handler_function
    * @param {string} url
-   * @param {handleRequest} handler_function
+   * @param {HttpRequestHandler} handler_function
    */
   get(url, handler_function) {
     addToArray(
@@ -61,7 +65,7 @@ export default class Router {
   /**
    *
    * @param {number} port
-   * @param {handleRequest} listen_handler
+   * @param {HttpRequestHandler} listen_handler
    */
   listen(port, listen_handler) {
     const request_handler = createRequestHandler(this.#handlers, this.#error_handlers);
