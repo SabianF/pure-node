@@ -4,6 +4,13 @@ import loadBlankPage from "./src/common/domain/usecases/lload_blank_page.js";
 import loadHomePage from "./src/common/domain/usecases/load_home_page.js";
 import loadTestPage from "./src/common/domain/usecases/load_test_page.js";
 
+//? HTMX: onGet(url, callback) is a global function that intercepts `hx-get`
+  //? to the `url` and executes the `callback`. All the functions are
+  //? - `onDelete()`
+  //? - `onGet()`
+  //? - `onPost()`
+  //? - `onPut()`
+
 function runApp() {
   const repos = initRepos();
 
