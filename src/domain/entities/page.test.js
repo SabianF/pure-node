@@ -1,42 +1,46 @@
 import { test, describe } from "node:test";
 import assert from "node:assert";
-import Component from "./component.js";
+import Page from "./page.js";
 
 /**
- * @typedef {import("./component.js").ComponentProps} ComponentProps
+ * @typedef {import("./page.js").PageProps} PageProps
  */
 
-describe(Component.name, () => {
+describe(Page.name, () => {
   describe("constructor", () => {
     /**
-     * @type {ComponentProps[]}
+     * @type {PageProps[]}
      */
     const valid_props = [
       {
         name: "layout",
+        title: "TEST TITLE",
       },
       {
         name: "layout",
+        title: "TEST TITLE",
         placeholders: {},
       },
       {
         name: "layout",
+        title: "TEST TITLE",
         placeholders: {
-          title: "TEST TITLE",
+          value: "TEST TITLE",
         },
       },
     ];
 
     /**
-     * @type {ComponentProps[]}
+     * @type {PageProps[]}
      */
     const valid_nested_props = [
       {
         name: "layout",
         placeholders: {
           title: "TEST TITLE",
-          body: new Component({
+          body: new Page({
             name: "layout",
+            title: "TEST TITLE",
             placeholders: {
               title: "Lv2 TEST TITLE",
               body: "<h1>Lv2 test body</h1>",
@@ -71,10 +75,22 @@ describe(Component.name, () => {
       { a: 1 },
     ];
 
+    const invalid_titles = [
+      undefined,
+      null,
+      false,
+      true,
+      "",
+      [],
+      [1],
+      {},
+      { a: 1 },
+    ];
+
     test(`throws on missing/invalid props`, () => {
       for (const props of invalid_props) {
         assert.throws(() => {
-          new Component(props);
+          new Page(props);
         });
       }
     });
@@ -82,10 +98,21 @@ describe(Component.name, () => {
     test(`throws on missing/invalid name`, () => {
       for (const invalid_name of invalid_names) {
         assert.throws(() => {
-          new Component({
+          new Page({
             name: invalid_name,
           });
         }, `did not throw on value of [${invalid_name}]`);
+      }
+    });
+
+    test(`throws on missing/invalid title`, () => {
+      for (const invalid_title of invalid_titles) {
+        const props = valid_props[0];
+        props.title = invalid_title;
+
+        assert.throws(() => {
+          new Page(props);
+        }, `did not throw on value of [${invalid_title}]`);
       }
     });
   });

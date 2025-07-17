@@ -1,7 +1,7 @@
 /**
  * @typedef {object} ComponentProps
  * @property {string} name
- * @property {Component | object} placeholders
+ * @property {Component | object} [placeholders]
  */
 
 /**
