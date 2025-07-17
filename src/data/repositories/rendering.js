@@ -140,7 +140,8 @@ export default class RenderingRepo {
 function validateFileSystemIoLib(file_system_io_library) {
   if (!file_system_io_library) {
     throw new Error(
-      `No ${getNameOfVariable({ file_system_io_library })} provided to ${RenderingRepo.name
+      `No ${getNameOfVariable({ file_system_io_library })} provided to ${
+        RenderingRepo.name
       }.`,
     );
   }
@@ -150,7 +151,8 @@ function validateFileSystemIoLib(file_system_io_library) {
 function validateHtmlRendererLib(html_renderer_library) {
   if (!html_renderer_library) {
     throw new Error(
-      `No ${getNameOfVariable({ html_renderer_library })} provided to ${RenderingRepo.name
+      `No ${getNameOfVariable({ html_renderer_library })} provided to ${
+        RenderingRepo.name
       }.`,
     );
   }
@@ -168,13 +170,15 @@ function validateConfig(config) {
 
   if (!config.components_dir) {
     throw new Error(
-      `No ${getNameOfVariable({ components_dir })} provided to ${RenderingRepo.name
+      `No ${getNameOfVariable({ components_dir })} provided to ${
+        RenderingRepo.name
       }.`,
     );
   }
   if (!config.pages_dir) {
     throw new Error(
-      `No ${getNameOfVariable({ pages_dir })} provided to ${RenderingRepo.name
+      `No ${getNameOfVariable({ pages_dir })} provided to ${
+        RenderingRepo.name
       }.`,
     );
   }
