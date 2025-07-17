@@ -1,0 +1,11 @@
+thead {
+  background-color: #444444;
+}
+
+tbody > tr {
+  border: 2px solid gray;
+}
+
+tfoot {
+  background-color: #333333;
+}

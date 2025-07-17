@@ -3,4 +3,13 @@
     <h1>Welcome to my humble abode</h1>
     <p>This page pretty much has nothing on it.</p>
   </section>
+  <section>
+    <h1>Test table</h1>
+    {{#table}}
+      {{&.}}
+    {{/table}}
+    {{^table}}
+      <p>There is no table here...</p>
+    {{/table}}
+  </section>
 </div>

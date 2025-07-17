@@ -76,7 +76,8 @@ export default class RenderingRepo {
    */
   async renderComponent(component) {
     const rendered_component = await this.#renderNestedComponents(component);
-    return rendered_component;
+    const rendered_css = await this.#renderCss(component);
+    return rendered_css + rendered_component;
   }
 
   async #getFileAsString(path) {
@@ -136,12 +137,29 @@ export default class RenderingRepo {
 
     return rendered_component;
   }
+
+  /**
+   *
+   * @param {Component} component
+   */
+  async #renderCss(component) {
+    const path = `${this.#config.components_dir}/${component.name}.css`;
+
+    if (this.#file_system_io_library.checkPathExists(path) === false) {
+      return "";
+    }
+
+    const css = await this.#getFileAsString(path);
+    const rendered_css = `<style id="${component.name}_css">${css}</style>`;
+
+    return rendered_css;
+  }
 }
+
 function validateFileSystemIoLib(file_system_io_library) {
   if (!file_system_io_library) {
     throw new Error(
-      `No ${getNameOfVariable({ file_system_io_library })} provided to ${
-        RenderingRepo.name
+      `No ${getNameOfVariable({ file_system_io_library })} provided to ${RenderingRepo.name
       }.`,
     );
   }
@@ -151,8 +169,7 @@ function validateFileSystemIoLib(file_system_io_library) {
 function validateHtmlRendererLib(html_renderer_library) {
   if (!html_renderer_library) {
     throw new Error(
-      `No ${getNameOfVariable({ html_renderer_library })} provided to ${
-        RenderingRepo.name
+      `No ${getNameOfVariable({ html_renderer_library })} provided to ${RenderingRepo.name
       }.`,
     );
   }
@@ -170,15 +187,13 @@ function validateConfig(config) {
 
   if (!config.components_dir) {
     throw new Error(
-      `No ${getNameOfVariable({ components_dir })} provided to ${
-        RenderingRepo.name
+      `No ${getNameOfVariable({ components_dir })} provided to ${RenderingRepo.name
       }.`,
     );
   }
   if (!config.pages_dir) {
     throw new Error(
-      `No ${getNameOfVariable({ pages_dir })} provided to ${
-        RenderingRepo.name
+      `No ${getNameOfVariable({ pages_dir })} provided to ${RenderingRepo.name
       }.`,
     );
   }

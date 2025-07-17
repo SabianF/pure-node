@@ -1,0 +1,33 @@
+<table
+  {{#id}}
+    id="{{.}}"
+  {{/id}}
+>
+  <thead>
+    <tr>
+      {{#headers}}
+        <th>{{.}}</th>
+      {{/headers}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#data_rows_and_columns}}
+      <tr>
+        {{#.}}
+          <td>
+            {{.}}
+          </td>
+        {{/.}}
+      </tr>
+    {{/data_rows_and_columns}}
+  </tbody>
+  <tfoot>
+    {{#footers.length}}
+      <tr>
+        {{#footers}}
+          <td>{{.}}</td>
+        {{/footers}}
+      </tr>
+    {{/footers.length}}
+  </tfoot>
+</table>

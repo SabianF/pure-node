@@ -1,9 +1,13 @@
 import Page from "../../domain/entities/page.js";
 
 /**
+ * @typedef {import("../../domain/entities/component.js").default} Component
+ */
+
+/**
  *
  * @param {object} placeholders
- * @param {string} placeholders.message
+ * @param {Component} placeholders.table
  */
 export default function rootPage(placeholders) {
   return new Page({
