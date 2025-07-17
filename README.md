@@ -71,7 +71,7 @@ The server handles requests by
 
 > This was fairly difficult for me, and took me about 2 hours of research and 2 hours of trial-and-error to figure out.
 
-The router serves static files when the `` is added as middleware with a `path` parameter. What this handler exposes static files within this path and its subfolders by
+The router serves static files when the `handleStatic()` handler is added as middleware with a `path` parameter. What this handler exposes static files within this path and its subfolders by
 
 1. Checking the provided base path if it exists, throwing an error if not
 2. Normalizing the base path to remove any extraneous characters
