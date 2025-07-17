@@ -88,5 +88,23 @@ describe(Component.name, () => {
         }, `did not throw on value of [${invalid_name}]`);
       }
     });
+
+    test(`returns ${Component.name} with appropriate props`, async () => {
+      const props = {
+        name: "layout",
+        placeholders: {
+          title: "TEST TITLE",
+        },
+      };
+      const component = new Component(props);
+
+      assert.strictEqual(component.constructor.name, Component.name);
+      assert.strictEqual(component.name, props.name);
+      assert.strictEqual(component.placeholders, props.placeholders);
+      assert.strictEqual(
+        component.placeholders.title,
+        props.placeholders.title,
+      );
+    });
   });
 });
