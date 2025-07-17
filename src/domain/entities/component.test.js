@@ -11,25 +11,6 @@ describe(Component.name, () => {
     /**
      * @type {ComponentProps[]}
      */
-    const valid_props = [
-      {
-        name: "layout",
-      },
-      {
-        name: "layout",
-        placeholders: {},
-      },
-      {
-        name: "layout",
-        placeholders: {
-          title: "TEST TITLE",
-        },
-      },
-    ];
-
-    /**
-     * @type {ComponentProps[]}
-     */
     const valid_nested_props = [
       {
         name: "layout",
@@ -46,32 +27,20 @@ describe(Component.name, () => {
       },
     ];
 
-    const invalid_props = [
-      undefined,
-      null,
-      false,
-      true,
-      "",
-      "a",
-      [],
-      [1],
-      {},
-      { a: 1 },
-    ];
-
-    const invalid_names = [
-      undefined,
-      null,
-      false,
-      true,
-      "",
-      [],
-      [1],
-      {},
-      { a: 1 },
-    ];
-
     test(`throws on missing/invalid props`, () => {
+      const invalid_props = [
+        undefined,
+        null,
+        false,
+        true,
+        "",
+        "a",
+        [],
+        [1],
+        {},
+        { a: 1 },
+      ];
+
       for (const props of invalid_props) {
         assert.throws(() => {
           new Component(props);
@@ -80,6 +49,18 @@ describe(Component.name, () => {
     });
 
     test(`throws on missing/invalid name`, () => {
+      const invalid_names = [
+        undefined,
+        null,
+        false,
+        true,
+        "",
+        [],
+        [1],
+        {},
+        { a: 1 },
+      ];
+
       for (const invalid_name of invalid_names) {
         assert.throws(() => {
           new Component({
@@ -90,21 +71,39 @@ describe(Component.name, () => {
     });
 
     test(`returns ${Component.name} with appropriate props`, async () => {
-      const props = {
-        name: "layout",
-        placeholders: {
-          title: "TEST TITLE",
+      /**
+       * @type {ComponentProps[]}
+       */
+      const valid_props = [
+        {
+          name: "layout",
         },
-      };
-      const component = new Component(props);
+        {
+          name: "layout",
+          placeholders: {},
+        },
+        {
+          name: "layout",
+          placeholders: {
+            title: "TEST TITLE",
+          },
+        },
+      ];
 
-      assert.strictEqual(component.constructor.name, Component.name);
-      assert.strictEqual(component.name, props.name);
-      assert.strictEqual(component.placeholders, props.placeholders);
-      assert.strictEqual(
-        component.placeholders.title,
-        props.placeholders.title,
-      );
+      for (const props of valid_props) {
+        const component = new Component(props);
+
+        assert.strictEqual(component.constructor.name, Component.name);
+        assert.strictEqual(component.name, props.name);
+        assert.strictEqual(component.placeholders, props.placeholders);
+
+        if (props.placeholders) {
+          assert.strictEqual(
+            component.placeholders.title,
+            props.placeholders.title,
+          );
+        }
+      }
     });
   });
 });
