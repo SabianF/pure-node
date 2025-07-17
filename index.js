@@ -1,5 +1,6 @@
 import { logRequests } from "./src/data/repositories/middleware.js";
 import { initRepos } from "./src/data/repositories/repositories.js";
+import loadBlankPage from "./src/domain/usecases/lload_blank_page.js";
 import loadHomePage from "./src/domain/usecases/load_home_page.js";
 import loadTestPage from "./src/domain/usecases/load_test_page.js";
 
@@ -19,6 +20,10 @@ function runApp() {
   }));
 
   router.get("/test", loadTestPage({
+    rendering_repo: repos.rendering,
+  }));
+
+  router.get("/blank", loadBlankPage({
     rendering_repo: repos.rendering,
   }));
 

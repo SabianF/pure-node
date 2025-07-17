@@ -53,6 +53,8 @@ export default class RenderingRepo {
    * @param {Page} page
    */
   async renderPage(page) {
+    // TODO(renderPage): Render nested components properly
+
     const { name, placeholders } = page;
 
     const raw_page = await this.#getFileAsString(
@@ -77,7 +79,8 @@ export default class RenderingRepo {
   async renderComponent(component) {
     const rendered_component = await this.#renderNestedComponents(component);
     const rendered_css = await this.#renderCss(component);
-    return rendered_css + rendered_component;
+    const rendered_js = await this.#renderJs(component);
+    return rendered_css + rendered_component + rendered_js;
   }
 
   async #getFileAsString(path) {
@@ -153,6 +156,23 @@ export default class RenderingRepo {
     const rendered_css = `<style id="${component.name}_css">${css}</style>`;
 
     return rendered_css;
+  }
+
+  /**
+   *
+   * @param {Component} component
+   */
+  async #renderJs(component) {
+    const path = `${this.#config.components_dir}/${component.name}_client.js`;
+
+    if (this.#file_system_io_library.checkPathExists(path) === false) {
+      return "";
+    }
+
+    const js = await this.#getFileAsString(path);
+    const rendered_js = `<script id="${component.name}_js">${js}</script>`;
+
+    return rendered_js;
   }
 }
 
