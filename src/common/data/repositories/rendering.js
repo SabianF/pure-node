@@ -2,7 +2,7 @@ import Component from "../../domain/entities/component.js";
 import Page from "../../domain/entities/page.js";
 import { getNameOfVariable } from "../../domain/repositories/utilities.js";
 import layout from "../../presentation/components/layout.js";
-import FileSystemIo from "../sources/file_system_io.js";
+import FileSystemLib from "../sources/file_system_lib.js";
 import HtmlRenderer from "../sources/html_renderer.js";
 
 /**
@@ -13,14 +13,14 @@ import HtmlRenderer from "../sources/html_renderer.js";
 
 /**
  * @typedef {object} RenderingRepoProps
- * @property {FileSystemIo} file_system_io_library
+ * @property {FileSystemLib} file_system_io_library
  * @property {HtmlRenderer} html_renderer_library
  * @property {RenderingRepoConfig} config
  */
 
 export default class RenderingRepo {
   /**
-   * @type {FileSystemIo}
+   * @type {FileSystemLib}
    */
   #file_system_io_library;
 

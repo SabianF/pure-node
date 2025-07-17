@@ -1,6 +1,6 @@
 import old_fs, { promises as fs } from "node:fs";
 
-export default class FileSystemIo {
+export default class FileSystemLib {
   /**
    *
    * @param {string} path

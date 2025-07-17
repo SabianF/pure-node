@@ -1,12 +1,12 @@
 import test, { describe } from "node:test";
 import RenderingRepo from "./rendering.js";
-import FileSystemIo from "../sources/file_system_io.js";
+import FileSystemLib from "../sources/file_system_lib.js";
 import HtmlRenderer from "../sources/html_renderer.js";
 import Component from "../../domain/entities/component.js";
 import assert from "node:assert";
 
 describe(RenderingRepo.name, () => {
-  const file_system_io_library = new FileSystemIo();
+  const file_system_io_library = new FileSystemLib();
   const html_renderer_library = new HtmlRenderer();
   const rendering_repo = new RenderingRepo({
     file_system_io_library,
