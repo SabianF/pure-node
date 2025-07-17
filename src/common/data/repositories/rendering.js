@@ -3,7 +3,7 @@ import Page from "../../domain/entities/page.js";
 import { getNameOfVariable } from "../../domain/repositories/utilities.js";
 import layout from "../../presentation/components/layout.js";
 import FileSystemLib from "../sources/file_system_lib.js";
-import HtmlRenderer from "../sources/html_renderer.js";
+import HtmlRenderingLib from "../sources/html_rendering_lib.js";
 
 /**
  * @typedef {object} RenderingRepoConfig
@@ -14,7 +14,7 @@ import HtmlRenderer from "../sources/html_renderer.js";
 /**
  * @typedef {object} RenderingRepoProps
  * @property {FileSystemLib} file_system_io_library
- * @property {HtmlRenderer} html_renderer_library
+ * @property {HtmlRenderingLib} html_renderer_library
  * @property {RenderingRepoConfig} config
  */
 
@@ -25,7 +25,7 @@ export default class RenderingRepo {
   #file_system_io_library;
 
   /**
-   * @type {HtmlRenderer}
+   * @type {HtmlRenderingLib}
    */
   #html_renderer_library;
 

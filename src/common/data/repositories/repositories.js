@@ -1,5 +1,5 @@
 import FileSystemLib from "../sources/file_system_lib.js";
-import HtmlRenderer from "../sources/html_renderer.js";
+import HtmlRenderingLib from "../sources/html_rendering_lib.js";
 import EnvLib from "../sources/process_env.js";
 import Router from "../sources/router/index.js";
 import FileSystemRepo from "../sources/router/src/data/repositories/file_system.js";
@@ -57,7 +57,7 @@ function initRoutingRepo(fs_repo) {
 
 function initRenderingRepo() {
   const file_system_io_library = new FileSystemLib();
-  const html_renderer_library = new HtmlRenderer();
+  const html_renderer_library = new HtmlRenderingLib();
   /**
    * @type {import("./rendering.js").RenderingRepoConfig}
    */

@@ -1,6 +1,6 @@
 import mustache from "./packages/mustache/mustache.mjs";
 
-export default class HtmlRenderer {
+export default class HtmlRenderingLib {
   /**
    *
    * @param {string} html_template
