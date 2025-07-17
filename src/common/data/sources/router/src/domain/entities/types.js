@@ -10,5 +10,13 @@
  * @callback HttpRequestHandler
  * @param {HttpRequest} request
  * @param {HttpResponse} response
- * @returns {*}
+ * @returns {Promise<any>}
+ */
+
+/**
+ * @callback ErrorHandlerFunction
+ * @param {Error} error
+ * @param {HttpRequest} request
+ * @param {HttpResponse} response
+ * @returns {Promise<any>}
  */

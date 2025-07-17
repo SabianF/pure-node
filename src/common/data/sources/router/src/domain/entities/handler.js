@@ -1,4 +1,6 @@
-import { handleRequest } from "../repositories/utilities.js";
+/**
+ * @typedef {import("./types.js").HttpRequestHandler} HttpRequestHandler
+ */
 
 const valid_methods = [
   "GET",
@@ -22,7 +24,7 @@ export default class Handler {
   is_middleware;
 
   /**
-   * @type {handleRequest}
+   * @type {HttpRequestHandler}
    */
   handler_function;
 
@@ -31,7 +33,7 @@ export default class Handler {
    * @param {object} props
    * @param {string} props.method
    * @param {string} props.url
-   * @param {handleRequest} props.handler_function
+   * @param {HttpRequestHandler} props.handler_function
    * @param {boolean} [props.is_middleware]
    */
   constructor({

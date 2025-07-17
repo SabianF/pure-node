@@ -1,16 +1,19 @@
 import http from "node:http";
 import Handler from "../entities/handler.js";
 import {
-  handleError,
   validateRequestMethod,
   validateRequestUrl,
 } from "./utilities.js";
 import http_status_codes from "../../data/sources/http_status_codes.js";
 
 /**
+ * @typedef {import("../entities/types.js").ErrorHandlerFunction} ErrorHandlerFunction
+ */
+
+/**
  *
  * @param {Handler[]} handlers
- * @param {handleError[]} error_handlers
+ * @param {ErrorHandlerFunction[]} error_handlers
  */
 export default function createRequestHandler(handlers, error_handlers) {
   /**
@@ -95,7 +98,7 @@ async function executeHandlers(
 
 /**
  *
- * @param {handleError[]} error_handlers
+ * @param {ErrorHandlerFunction[]} error_handlers
  * @param {Error} err
  * @param {http.ClientRequest} request
  * @param {http.ServerResponse<http.ClientRequest>} response

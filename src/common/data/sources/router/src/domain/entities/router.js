@@ -1,10 +1,14 @@
 import http from "http";
 import Handler from "./handler.js";
-import { addToArray, handleError, handleRequest } from "../repositories/utilities.js";
+import { addToArray } from "../repositories/utilities.js";
 import createRequestHandler from "../repositories/request_handler.js";
 
 /**
  * @typedef {import("./types.js").HttpRequestHandler} HttpRequestHandler
+ */
+
+/**
+ * @typedef {import("./types.js").ErrorHandlerFunction} ErrorHandlerFunction
  */
 
 export default class Router {
@@ -15,7 +19,7 @@ export default class Router {
   #handlers;
 
   /**
-   * @type {handleError[]}
+   * @type {ErrorHandlerFunction[]}
    */
   #error_handlers;
 
@@ -56,7 +60,7 @@ export default class Router {
 
   /**
    *
-   * @param {handleError} error_handler_function
+   * @param {ErrorHandlerFunction} error_handler_function
    */
   handleErrors(error_handler_function) {
     addToArray(this.#error_handlers, error_handler_function);

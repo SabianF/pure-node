@@ -3,21 +3,6 @@ import Handler from "../entities/handler.js";
 
 /**
  *
- * @param {http.ClientRequest} request
- * @param {http.ServerResponse<http.ClientRequest>} response
- */
-export async function handleRequest(request, response) { }
-
-/**
- *
- * @param {Error} error
- * @param {http.ClientRequest} request
- * @param {http.ServerResponse<http.ClientRequest>} response
- */
-export async function handleError(error, request, response) { }
-
-/**
- *
  * @param {any[]} array
  * @param {any} item
  */
