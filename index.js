@@ -1,13 +1,14 @@
-import { logRequests } from "./src/common/data/repositories/middleware.js";
 import DataRepos from "./src/common/data/repositories/repositories.js";
 import DomainRepos from "./src/common/domain/repositories/repositories.js";
 
-//? HTMX: onGet(url, callback) is a global function that intercepts `hx-get`
-//? to the `url` and executes the `callback`. All the functions are
-//? - `onDelete()`
-//? - `onGet()`
-//? - `onPost()`
-//? - `onPut()`
+// TODO(router): implement caching
+// https://blog.logrocket.com/intercepting-javascript-fetch-api-requests-responses/
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Conditional_requests
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
+
+// TODO: try out request interception: https://medium.com/@maulanamaleek/intercept-http-request-using-serviceworker-b6ef23f97d1f
+
+// TODO(file-mgmt): impl basic file upload, storage, display
 
 function runApp() {
   const data_repos = new DataRepos();
