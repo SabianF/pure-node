@@ -7,18 +7,13 @@ import EnvRepo from "./environment.js";
 import RenderingRepo from "./rendering.js";
 import RoutingRepo from "./routing_repo.js";
 
-export function initRepos() {
-  const env = initEnvRepo();
-  const fs = initFsRepo();
-  const routing = initRoutingRepo(fs);
-  const rendering = initRenderingRepo();
-
-  return {
-    env,
-    fs,
-    routing,
-    rendering,
-  };
+export default class DataRepos {
+  constructor() {
+    this.env = initEnvRepo();
+    this.fs = initFsRepo();
+    this.routing = initRoutingRepo(this.fs);
+    this.rendering = initRenderingRepo();
+  }
 }
 
 function initEnvRepo() {
