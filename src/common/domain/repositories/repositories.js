@@ -1,3 +1,4 @@
+import MiddlewareRepo from "./middleware.js";
 import RoutesRepo from "./routes.js";
 
 /**
@@ -24,7 +25,14 @@ export default class DomainRepos {
   }) {
     this.#data_repos = data_repos;
 
+    this.middleware = this.#initMiddlewareRepo(data_repos);
     this.routes = this.#initRoutesRepo(data_repos);
+  }
+
+  #initMiddlewareRepo(data_repos) {
+    return new MiddlewareRepo({
+      data_repos: data_repos,
+    });
   }
 
   #initRoutesRepo(data_repos) {

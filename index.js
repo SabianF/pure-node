@@ -18,12 +18,10 @@ function runApp() {
   });
 
   const router = data_repos.routing.createRouter();
-  const port = 3333;
+  const port = process.env.PORT;
 
-  router.use(logRequests);
-  router.use(data_repos.routing.handleStatic("public/"));
-
-  domain_repos.routes.addPublicRoutes(data_repos, router);
+  domain_repos.middleware.addMiddleware(router);
+  domain_repos.routes.addPublicRoutes(router);
 
   router.listen(port, () => {
     console.log(`Server started at http://localhost:${port}/`);
