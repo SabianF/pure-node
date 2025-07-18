@@ -1,4 +1,8 @@
 /**
+ * @typedef {import("../../data/sources/http_lib.js").default.Server} Server
+ */
+
+/**
  * @typedef {import("http").ClientRequest} HttpRequest
  */
 

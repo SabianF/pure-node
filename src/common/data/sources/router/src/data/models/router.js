@@ -1,10 +1,10 @@
+import addMiddleware from "../../domain/usecases/add_middleware.js";
+import addRequestHandler from "../../domain/usecases/add_request_handler.js";
+import startServer from "../../domain/usecases/start_server.js";
 
-import Router from "../../domain/entities/router.js";
-import Handler from "../../domain/entities/handler.js";
-import { addToArray } from "../../domain/repositories/utilities.js";
-import createRequestHandler from "../../domain/repositories/request_handler.js";
-import HttpLib from "../sources/http_lib.js";
-import HttpRepo from "../repositories/http_repo.js";
+/**
+ * @typedef {import("./router.js").default} Router
+ */
 
 /**
  * @typedef {import("./types.js").HttpRequestHandler} HttpRequestHandler
@@ -14,7 +14,22 @@ import HttpRepo from "../repositories/http_repo.js";
  * @typedef {import("./types.js").ErrorHandlerFunction} ErrorHandlerFunction
  */
 
+/**
+ * @typedef {import("../../domain/repositories/routing.js").default} RoutingRepo
+ */
+
+/**
+ * @typedef {object} RouterModelProps
+ * @property {RoutingRepo} routing_repo
+ * @property {Router} router
+ */
+
 export default class RouterModel {
+  /**
+   * @type {RoutingRepo}
+   */
+  #routing_repo;
+
   /**
    * @type {Router}
    */
@@ -22,9 +37,13 @@ export default class RouterModel {
 
   /**
    *
-   * @param {Router} router
+   * @param {RouterModelProps} props
    */
-  constructor(router) {
+  constructor({
+    routing_repo,
+    router,
+  }) {
+    this.#routing_repo = routing_repo;
     this.#router = router;
   }
 
@@ -33,13 +52,7 @@ export default class RouterModel {
    * @param {HttpRequestHandler} handler_function
    */
   use(handler_function) {
-    addToArray(
-      this.#router.getRequestHandlers(),
-      new Handler({
-        is_middleware: true,
-        handler_function: handler_function,
-      }),
-    );
+    addMiddleware(this.#router, handler_function);
   }
 
   /**
@@ -48,14 +61,12 @@ export default class RouterModel {
    * @param {HttpRequestHandler} handler_function
    */
   get(url, handler_function) {
-    addToArray(
-      this.#router.getRequestHandlers(),
-      new Handler({
-        method: this.get.name.toUpperCase(),
-        url: url,
-        handler_function: handler_function,
-      }),
-    );
+    addRequestHandler({
+      router: this.#router,
+      request_type: this.get.name.toUpperCase(),
+      url: url,
+      handler_function: handler_function,
+    })
   }
 
   /**
@@ -63,22 +74,23 @@ export default class RouterModel {
    * @param {ErrorHandlerFunction} error_handler_function
    */
   handleErrors(error_handler_function) {
-    addToArray(this.#router.getErrorHandlers(), error_handler_function);
+    addErrorHandler({
+      router: this.#router,
+      error_handler_function: error_handler_function,
+    });
   }
 
   /**
    *
+   * @param {import("../../domain/entities/types.js").Server} server
    * @param {number} port
    * @param {HttpRequestHandler} listen_handler
    */
   listen(port, listen_handler) {
-    const request_handler = createRequestHandler(
-      this.#router.getRequestHandlers(),
-      this.#router.getErrorHandlers(),
-    );
-    const server = new HttpRepo({
-      http_lib: HttpLib,
-    }).createServer(request_handler);
-    return server.listen(port, listen_handler);
+    startServer({
+      server: this.#routing_repo.createServer(this.#router, "test"),
+      port: port,
+      listen_handler: listen_handler,
+    })
   }
 }

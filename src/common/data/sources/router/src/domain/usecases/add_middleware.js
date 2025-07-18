@@ -1,8 +1,19 @@
+import Handler from "../entities/handler.js";
+import { addToArray } from "../repositories/utilities.js";
+
 /**
  *
- * @param {import("../../data/models/router.js").default} router_model
+ * @param {import("../entities/router.js").default} router
  * @param {import("./handle_static.js").RequestHandlerFunction} handler_function
  */
-export default function addMiddleware(router_model, handler_function) {
-  return router_model.use(handler_function);
+export default function addMiddleware(router, handler_function) {
+  const handler = new Handler({
+    is_middleware: true,
+    handler_function: handler_function,
+  });
+
+  return addToArray(
+    router.request_handlers,
+    handler,
+  );
 }

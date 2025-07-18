@@ -7,23 +7,23 @@ export default class Router {
    * The handle all requests
    * @type {Handler[]}
    */
-  #request_handlers;
+  request_handlers;
 
   /**
    * @type {ErrorHandlerFunction[]}
    */
-  #error_handlers;
+  error_handlers;
 
   constructor() {
-    this.#request_handlers = [];
-    this.#error_handlers = [];
+    this.request_handlers = [];
+    this.error_handlers = [];
   }
 
   getRequestHandlers() {
-    return this.#request_handlers;
+    return this.request_handlers;
   };
 
   getErrorHandlers() {
-    return this.#error_handlers;
+    return this.error_handlers;
   }
 }
