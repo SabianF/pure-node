@@ -7,6 +7,10 @@
  */
 
 /**
+ * @typedef {import("../repositories/routing.js").default} RoutingRepo
+ */
+
+/**
  * @typedef {import("../../data/sources/http_lib.js").default.Server} Server
  */
 
