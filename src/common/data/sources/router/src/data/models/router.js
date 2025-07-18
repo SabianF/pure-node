@@ -1,8 +1,10 @@
-import http from "http";
+
 import Router from "../../domain/entities/router.js";
 import Handler from "../../domain/entities/handler.js";
 import { addToArray } from "../../domain/repositories/utilities.js";
 import createRequestHandler from "../../domain/repositories/request_handler.js";
+import HttpLib from "../sources/http_lib.js";
+import HttpRepo from "../repositories/http_repo.js";
 
 /**
  * @typedef {import("./types.js").HttpRequestHandler} HttpRequestHandler
@@ -70,9 +72,13 @@ export default class RouterModel {
    * @param {HttpRequestHandler} listen_handler
    */
   listen(port, listen_handler) {
-    const request_handler = createRequestHandler(this.#router.getRequestHandlers(), this.#router.getErrorHandlers());
-    const server = http.createServer(request_handler);
-
-    server.listen(port, listen_handler);
+    const request_handler = createRequestHandler(
+      this.#router.getRequestHandlers(),
+      this.#router.getErrorHandlers(),
+    );
+    const server = new HttpRepo({
+      http_lib: HttpLib,
+    }).createServer(request_handler);
+    return server.listen(port, listen_handler);
   }
 }
