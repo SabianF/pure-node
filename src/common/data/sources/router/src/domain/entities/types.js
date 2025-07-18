@@ -1,4 +1,12 @@
 /**
+ * @typedef {import("../../data/repositories/repositories.js").default} DataRepos
+ */
+
+/**
+ * @typedef {import("../../domain/repositories/repositories.js").default} DomainRepos
+ */
+
+/**
  * @typedef {import("../../data/sources/http_lib.js").default.Server} Server
  */
 
