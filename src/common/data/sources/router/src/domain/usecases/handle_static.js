@@ -11,7 +11,7 @@ const accepted_file_exts = {
 };
 
 /**
- * @typedef {import("../repositories/utilities.js").handleRequest} RequestHandlerFunction
+ * @typedef {import("../entities/types.js").HttpRequestHandler} HttpRequestHandler
  */
 
 /**
@@ -36,7 +36,7 @@ export default function handleStatic({
 
   /**
    *
-   * @type {RequestHandlerFunction}
+   * @type {HttpRequestHandler}
    */
   const handler_function = async (request, response) => {
     const requested_path = request.url;
@@ -49,7 +49,10 @@ export default function handleStatic({
       }
 
       const content_type = accepted_file_exts[file_ext];
-      response.setHeader("Content-Type", content_type);
+      response
+        .setHeader("Content-Type", content_type)
+        .setHeader("Cache-Control", "max-age=604800, immutable");
+
       is_file = true;
     }
 

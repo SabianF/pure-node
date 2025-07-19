@@ -4,7 +4,7 @@ import { addToArray } from "../repositories/utilities.js";
 /**
  *
  * @param {import("../entities/router.js").default} router
- * @param {import("./handle_static.js").RequestHandlerFunction} handler_function
+ * @param {import("./handle_static.js").HttpRequestHandler} handler_function
  */
 export default function addMiddleware(router, handler_function) {
   const handler = new Handler({
