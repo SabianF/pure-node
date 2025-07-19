@@ -15,6 +15,10 @@ const accepted_file_exts = {
  */
 
 /**
+ * @typedef {import("../entities/types.js").FileSystemRepo} FileSystemRepo
+ */
+
+/**
  * @typedef CreateStaticHandlerProps
  * @property {FileSystemRepo} fs_repo
  * @property {string} base_path
@@ -49,10 +53,7 @@ export default function handleStatic({
       }
 
       const content_type = accepted_file_exts[file_ext];
-      response
-        .setHeader("Content-Type", content_type)
-        .setHeader("Cache-Control", "max-age=604800, immutable");
-
+      response.setHeader("Content-Type", content_type);
       is_file = true;
     }
 
@@ -65,12 +66,43 @@ export default function handleStatic({
       return;
     }
 
-    const file_data = await fs_repo.readFile(sanitized_file_path);
+    const was_modified = await handleCaching(fs_repo, sanitized_file_path, request, response);
+    if (!was_modified) {
+      response.statusCode = http_status_codes.codes.NOT_MODIFIED;
+      response.end();
+      return;
+    }
 
+    console.log(`Server sent back data for [${request.url}]`);
+    const file_data = await fs_repo.readFile(sanitized_file_path);
     response.statusCode = http_status_codes.codes.OK;
     response.write(file_data);
     response.end();
   };
 
   return handler_function;
+}
+
+/**
+ *
+ * @param {FileSystemRepo} fs_repo
+ * @param {string} sanitized_file_path
+ * @param {import("../entities/types.js").HttpRequest} request
+ * @param {import("../entities/types.js").HttpResponse} response
+ */
+async function handleCaching(fs_repo, sanitized_file_path, request, response) {
+  const client_file_last_modified = request.headers["if-modified-since"];
+
+  const file_stats = await fs_repo.readFileStats(sanitized_file_path);
+  const file_last_modified = file_stats.mtime.toUTCString();
+
+  response.setHeader("Cache-Control", "public, max-age=3, must-revalidate");
+  response.setHeader("Last-Modified", file_last_modified);
+
+  const was_modified = (
+    !client_file_last_modified ||
+    client_file_last_modified !== file_last_modified
+  );
+
+  return was_modified;
 }

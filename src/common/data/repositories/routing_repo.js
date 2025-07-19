@@ -1,7 +1,10 @@
 import { validateType } from "../../domain/repositories/utilities.js";
 import RouterLib from "../sources/router/index.js";
-import FileSystemRepo from "../sources/router/src/data/repositories/file_system.js";
-import handleStatic from "../sources/router/src/domain/usecases/handle_static.js";
+import FileSystemRepo from "./file_system.js";
+
+/**
+ * @typedef {import("../../domain/entities/types.js").Router} Router
+ */
 
 /**
  * @typedef RoutingRepoProps
@@ -43,13 +46,11 @@ export default class RoutingRepo {
 
   /**
    *
+   * @param {Router} router
    * @param {string} base_path
    */
-  handleStatic(base_path) {
-    return handleStatic({
-      fs_repo: this.#fs_repo,
-      base_path: base_path,
-    });
+  handleStatic(router, base_path) {
+    return router.handleStatic(base_path);
   }
 }
 

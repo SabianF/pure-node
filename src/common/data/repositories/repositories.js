@@ -2,10 +2,10 @@ import FileSystemLib from "../sources/file_system_lib.js";
 import HtmlRenderingLib from "../sources/html_rendering_lib.js";
 import EnvLib from "../sources/env_lib.js";
 import Router from "../sources/router/index.js";
-import FileSystemRepo from "../sources/router/src/data/repositories/file_system.js";
 import EnvRepo from "./environment.js";
 import RenderingRepo from "./rendering.js";
 import RoutingRepo from "./routing_repo.js";
+import FileSystemRepo from "./file_system.js";
 
 export default class DataRepos {
   constructor() {

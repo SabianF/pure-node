@@ -69,6 +69,10 @@ export default class RouterModel {
     })
   }
 
+  handleStatic(base_path) {
+    return this.#routing_repo.handleStatic(base_path);
+  }
+
   /**
    *
    * @param {ErrorHandlerFunction} error_handler_function

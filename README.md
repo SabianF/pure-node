@@ -86,6 +86,7 @@ The router serves static files when the `handleStatic()` handler is added as mid
 ### Caching
 // TODO(caching): Document caching
 
+
 ## Component nesting
 
 > This was very difficult for me, initially, and took me about 2 days (2-4 hours each) to figure out an algorithm.
@@ -115,3 +116,5 @@ Components are managed like so:
 
 - https://medium.com/khojchakra/a-simple-nodejs-server-without-express-js-6773122d365f
 - https://adrianmejia.com/building-a-node-js-static-file-server-files-over-http-using-es6/
+- https://blog.frankel.ch/web-caching/client/
+- https://dev.to/didof/the-art-of-efficient-web-browsing-public-resources-27hl

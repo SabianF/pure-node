@@ -21,3 +21,15 @@
 /**
  * @typedef {import("../../domain/repositories/repositories.js").default} DomainRepos
  */
+
+/**
+ * @typedef {import("../../data/repositories/file_system.js").default} FileSystemRepo
+ */
+
+/**
+ * @typedef {import("../../data/sources/file_system_lib.js").default} FileSystemLib
+ */
+
+/**
+ * @typedef {import("../../data/sources/router/index.js").Router} Router
+ */

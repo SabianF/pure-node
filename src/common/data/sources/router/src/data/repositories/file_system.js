@@ -1,10 +1,10 @@
+import { validateType } from "../../../../../../domain/repositories/utilities.js";
+import FileSystemLib from "../sources/file_system_lib.js";
+
 /**
  * @typedef {object} FileSystemRepoProps
  * @property {FileSystemLib} fs_lib FileSystem library
  */
-
-import { validateType } from "../../../../../../domain/repositories/utilities.js";
-import FileSystemLib from "../sources/file_system_lib.js";
 
 export default class FileSystemRepo {
   /**
@@ -48,6 +48,14 @@ export default class FileSystemRepo {
       .replace(/((\/)(?!.))/, "");
 
     return normalized_path_str;
+  }
+
+  /**
+   *
+   * @param {string} path
+   */
+  async readFileStats(path) {
+    return this.fs_lib.readFileStats(path);
   }
 
   /**
