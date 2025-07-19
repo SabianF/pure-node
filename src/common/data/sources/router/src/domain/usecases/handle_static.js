@@ -96,7 +96,7 @@ async function handleCaching(fs_repo, sanitized_file_path, request, response) {
   const file_stats = await fs_repo.readFileStats(sanitized_file_path);
   const file_last_modified = file_stats.mtime.toUTCString();
 
-  response.setHeader("Cache-Control", "public, max-age=3, must-revalidate");
+  response.setHeader("Cache-Control", "public, max-age=5, must-revalidate");
   response.setHeader("Last-Modified", file_last_modified);
 
   const was_modified = (
