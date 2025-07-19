@@ -83,6 +83,9 @@ The router serves static files when the `handleStatic()` handler is added as mid
 8. Reading the actual file data
 9. Sending the file data in the response
 
+### Caching
+// TODO(caching): Document caching
+
 ## Component nesting
 
 > This was very difficult for me, initially, and took me about 2 days (2-4 hours each) to figure out an algorithm.
