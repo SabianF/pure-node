@@ -1,5 +1,3 @@
-import FileSystemRepo from "../../data/repositories/file_system.js";
-import HttpRepo from "../../data/repositories/http_repo.js";
 import http_status_codes from "../../data/sources/http_status_codes.js";
 import addMiddleware from "../usecases/add_middleware.js";
 import addRequestHandler from "../usecases/add_request_handler.js";
@@ -29,6 +27,14 @@ import { validateRequestMethod, validateRequestUrl } from "./utilities.js";
 
 /**
  * @typedef {import("../entities/types.js").RouterModel} RouterModel
+ */
+
+/**
+ * @typedef {import("../entities/types.js").FileSystemRepo} FileSystemRepo
+ */
+
+/**
+ * @typedef {import("../entities/types.js").HttpRepo} HttpRepo
  */
 
 export default class RoutingRepo {

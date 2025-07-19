@@ -15,6 +15,10 @@
  */
 
 /**
+ * @typedef {import("../../data/repositories/http_repo.js").default} HttpRepo
+ */
+
+/**
  * @typedef {import("../../data/repositories/file_system.js").default} FileSystemRepo
  */
 
