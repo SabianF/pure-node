@@ -3,7 +3,7 @@ import addRequestHandler from "../../domain/usecases/add_request_handler.js";
 import startServer from "../../domain/usecases/start_server.js";
 
 /**
- * @typedef {import("./router.js").default} Router
+ * @typedef {import("../../domain/entities/router.js").default} Router
  */
 
 /**
@@ -88,9 +88,17 @@ export default class RouterModel {
    */
   listen(port, listen_handler) {
     startServer({
-      server: this.#routing_repo.createServer(this.#router, "test"),
+      server: this.#routing_repo.createServer(this.#router),
       port: port,
       listen_handler: listen_handler,
     })
+  }
+
+  getRequestHandlers() {
+    return this.#router.getRequestHandlers();
+  }
+
+  getErrorHandlers() {
+    return this.#router.getErrorHandlers();
   }
 }

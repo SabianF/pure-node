@@ -1,5 +1,5 @@
 /**
- * @typedef {import("./handler.js").default} Handler
+ * @typedef {import("./types.js").Handler} Handler
  */
 
 export default class Router {

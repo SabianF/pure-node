@@ -1,15 +1,9 @@
-import createRequestHandler from "../repositories/request_handler.js";
-
 /**
  *
- * @param {import("../../data/repositories/http_repo.js").default} http_repo
- * @param {import("../../data/models/router.js").default} router
+ * @param {import("../entities/types.js").RoutingRepo} routing_repo
+ * @param {import("../entities/types.js").RouterModel} router
  */
-export default function createServer(http_repo, router) {
-  const request_handler = createRequestHandler(
-    router.getRequestHandlers(),
-    router.getErrorHandlers(),
-  );
-  const server = http_repo.createServer(request_handler);
+export default function createServer(routing_repo, router) {
+  const server = routing_repo.createServer(router);
   return server;
 }
