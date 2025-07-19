@@ -84,8 +84,10 @@ The router serves static files when the `handleStatic()` handler is added as mid
 9. Sending the file data in the response
 
 ### Caching
-// TODO(caching): Document caching
 
+> After reading up on MDN, I understood how standard browser caching works using [Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control) values, and how to refresh the cache if the server data has changed using [Last-Modified](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Last-Modified) and [If-Modified-Since](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/If-Modified-Since) headers in [Conditional Requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Conditional_requests). 
+
+The router sets the `Cache-Control` header for static resources to 5 seconds with a `Last-Modified` header. This allows enough time for many multiple client requests to pull the same resources directly from the client cache, and also ensures the client checks with the server for any updates to said resources.
 
 ## Component nesting
 
