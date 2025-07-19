@@ -1,16 +1,4 @@
-
-import FileSystemRepo from "../../data/repositories/file_system.js";
 import http_status_codes from "../../data/sources/http_status_codes.js";
-
-/**
- * @typedef {import("../repositories/utilities.js").handleRequest} RequestHandlerFunction
- */
-
-/**
- * @typedef CreateStaticHandlerProps
- * @property {FileSystemRepo} fs_repo
- * @property {string} base_path
- */
 
 /**
  * "file_extension": "content_type_header"
@@ -21,6 +9,16 @@ const accepted_file_exts = {
   ".js": "text/javascript",
   ".json": "application/json",
 };
+
+/**
+ * @typedef {import("../repositories/utilities.js").handleRequest} RequestHandlerFunction
+ */
+
+/**
+ * @typedef CreateStaticHandlerProps
+ * @property {FileSystemRepo} fs_repo
+ * @property {string} base_path
+ */
 
 /**
  *
