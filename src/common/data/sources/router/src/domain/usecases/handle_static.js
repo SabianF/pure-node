@@ -73,7 +73,6 @@ export default function handleStatic({
       return;
     }
 
-    console.log(`Server sent back data for [${request.url}]`);
     const file_data = await fs_repo.readFile(sanitized_file_path);
     response.statusCode = http_status_codes.codes.OK;
     response.write(file_data);
