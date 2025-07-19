@@ -27,7 +27,7 @@ export default class RoutesRepo {
 
   /**
    *
-   * @param {Router} router
+   * @param {import("../entities/types.js").Router} router
    */
   addPublicRoutes(router) {
     router.get("/", loadHomePage({
