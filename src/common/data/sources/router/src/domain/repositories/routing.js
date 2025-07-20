@@ -90,9 +90,7 @@ export default class RoutingRepo {
      * @type {HttpRequestHandler}
      */
     const request_handler = async (request, response) => {
-      response
-        .setHeader("Content-Type", "text/html; charset=utf-8")
-        .setHeader("Cache-Control", "private, max-age=5, must-revalidate");
+      this.#addDefaultHeaders(response);
 
       /**
        * @type {Error}
@@ -115,6 +113,25 @@ export default class RoutingRepo {
     };
 
     return request_handler;
+  }
+
+  /**
+   *
+   * @param {HttpResponse} response
+   */
+  #addDefaultHeaders(response) {
+    const headers = new Map([
+      ["Content-Type", "text/html; charset=utf-8"],
+      ["Cache-Control", "private, max-age=5, must-revalidate"],
+    ]);
+
+    for (const header of headers) {
+      const key = header[0];
+      const value = header[1];
+      if (response.hasHeader(key) === false) {
+        response.setHeader(key, value);
+      }
+    }
   }
 
   /**
