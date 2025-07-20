@@ -90,20 +90,16 @@ export default class RoutingRepo {
      * @type {HttpRequestHandler}
      */
     const request_handler = async (request, response) => {
-      response.setHeader("Content-Type", "text/html; charset=utf-8");
-
-      const normalized_url = validateRequestUrl(request.url, response);
-      const normalized_method = validateRequestMethod(request.method, response);
+      response
+        .setHeader("Content-Type", "text/html; charset=utf-8")
+        .setHeader("Cache-Control", "private, max-age=5, must-revalidate");
 
       /**
        * @type {Error}
        */
       let err;
-
       await this.executeHandlers(
         handlers,
-        normalized_url,
-        normalized_method,
         request,
         response,
         err,
@@ -124,20 +120,19 @@ export default class RoutingRepo {
   /**
    *
    * @param {Handler[]} handlers
-   * @param {string} normalized_url
-   * @param {string} normalized_method
    * @param {HttpRequest} request
    * @param {HttpResponse} response
    * @param {Error} error
    */
   async executeHandlers(
     handlers,
-    normalized_url,
-    normalized_method,
     request,
     response,
     error,
   ) {
+    const normalized_url = validateRequestUrl(request.url, response);
+    const normalized_method = validateRequestMethod(request.method, response);
+
     for (const handler of handlers) {
       if (response.writableEnded) {
         break;
