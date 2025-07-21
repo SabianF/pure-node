@@ -68,7 +68,7 @@ export default class RenderingRepo {
       title: "Root Page",
       body: rendered_page,
     });
-    const rendered_layout = await this.renderComponent(layout_component);
+    const rendered_layout = await this.#renderNestedComponents(layout_component);
     return rendered_layout;
   }
 
@@ -94,6 +94,7 @@ export default class RenderingRepo {
    * @param {Component} component The component to render
    * @param {Component} [parent_component]
    * @param {string} [parent_placeholder_key]
+   * @returns {Promise<string>}
    */
   async #renderNestedComponents(
     component,
