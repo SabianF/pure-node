@@ -1,9 +1,15 @@
 /**
- * @typedef {import("../../data/sources/http_lib.js").HttpRequestHandler} HttpRequestHandler
+ * @callback HttpRequestHandler
+ * @param {HttpRequest} request
+ * @param {ResponseModel} response
  */
 
 /**
  * @typedef {import("../../data/sources/http_lib.js").HttpRequest} HttpRequest
+ */
+
+/**
+ * @typedef {import("../../data/models/response.js").default} ResponseModel
  */
 
 /**

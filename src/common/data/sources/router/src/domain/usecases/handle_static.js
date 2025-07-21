@@ -11,6 +11,14 @@ const accepted_file_exts = {
 };
 
 /**
+ * @typedef {import("../entities/types.js").HttpRequest} HttpRequest
+ */
+
+/**
+ * @typedef {import("../entities/types.js").ResponseModel} ResponseModel
+ */
+
+/**
  * @typedef {import("../entities/types.js").HttpRequestHandler} HttpRequestHandler
  */
 
@@ -39,7 +47,6 @@ export default function handleStatic({
   const normalized_base_path = fs_repo.normalizePath(base_path);
 
   /**
-   *
    * @type {HttpRequestHandler}
    */
   const handler_function = async (request, response) => {
@@ -62,21 +69,19 @@ export default function handleStatic({
     }
 
     if (fs_repo.checkPathExists(sanitized_file_path) === false) {
-      response.statusCode = http_status_codes.codes.NOT_FOUND;
+      response.setStatus(http_status_codes.codes.NOT_FOUND);
       return;
     }
 
     const was_modified = await handleCaching(fs_repo, sanitized_file_path, request, response);
     if (!was_modified) {
-      response.statusCode = http_status_codes.codes.NOT_MODIFIED;
-      response.end();
+      response.setStatus(http_status_codes.codes.NOT_MODIFIED);
       return;
     }
 
     const file_data = await fs_repo.readFile(sanitized_file_path);
     response.statusCode = http_status_codes.codes.OK;
-    response.write(file_data);
-    response.end();
+    response.writeHtml(file_data);
   };
 
   return handler_function;
@@ -86,17 +91,17 @@ export default function handleStatic({
  *
  * @param {FileSystemRepo} fs_repo
  * @param {string} sanitized_file_path
- * @param {import("../entities/types.js").HttpRequest} request
- * @param {import("../entities/types.js").HttpResponse} response
+ * @param {HttpRequest} request
+ * @param {ResponseModel} response_model
  */
-async function handleCaching(fs_repo, sanitized_file_path, request, response) {
+async function handleCaching(fs_repo, sanitized_file_path, request, response_model) {
   const client_file_last_modified = request.headers["if-modified-since"];
 
   const file_stats = await fs_repo.readFileStats(sanitized_file_path);
   const file_last_modified = file_stats.mtime.toUTCString();
 
-  response.setHeader("Cache-Control", "public, max-age=5, must-revalidate");
-  response.setHeader("Last-Modified", file_last_modified);
+  response_model.setHeader("Cache-Control", "public, max-age=5, must-revalidate");
+  response_model.setHeader("Last-Modified", file_last_modified);
 
   const was_modified = (
     !client_file_last_modified ||

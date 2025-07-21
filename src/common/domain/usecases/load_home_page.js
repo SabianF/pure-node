@@ -8,8 +8,8 @@ import rootPage from "../../presentation/pages/root.js";
 export default function loadHomePage({ rendering_repo }) {
   /**
    *
-   * @param {import("../../data/repositories/routing_repo.js").HttpRequest} request
-   * @param {import("../../data/repositories/routing_repo.js").HttpResponse} response
+   * @param {import("../entities/types.js").HttpRequest} request
+   * @param {import("../entities/types.js").HttpResponse} response
    */
   const handler = async (request, response) => {
     const rendered_table = await rendering_repo.renderComponent(
@@ -32,7 +32,7 @@ export default function loadHomePage({ rendering_repo }) {
       }),
     );
 
-    response.write(page);
+    response.writeHtml(page);
   };
 
   return handler;

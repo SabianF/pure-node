@@ -30,7 +30,7 @@ export function validateType(obj, type) {
     typeof obj[obj_name] !== "object" ||
     obj[obj_name].constructor.name !== type
   ) {
-    throw new Error(`No/invalid ${obj_name} provided to ${type}: [${JSON.stringify(obj, " ", 2)}]`);
+    throw new Error(`No/invalid ${obj_name} provided to ${type}: [${obj}]`);
   }
 
   return obj[obj_name];

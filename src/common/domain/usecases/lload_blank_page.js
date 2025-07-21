@@ -7,13 +7,11 @@ import blankPage from "../../presentation/pages/blank.js";
  */
 export default function loadBlankPage({ rendering_repo }) {
   /**
-   *
-   * @param {import("../../data/repositories/routing_repo.js").HttpRequest} request
-   * @param {import("../../data/repositories/routing_repo.js").HttpResponse} response
+   * @type {import("../entities/types.js").HttpRequestHandler}
    */
   const handler = async (request, response) => {
     const page = await rendering_repo.renderPage(blankPage());
-    response.write(page);
+    response.writeHtml(page);
   };
 
   return handler;

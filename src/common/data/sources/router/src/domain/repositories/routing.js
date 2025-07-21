@@ -1,3 +1,4 @@
+import ResponseModel from "../../data/models/response.js";
 import http_status_codes from "../../data/sources/http_status_codes.js";
 import addMiddleware from "../usecases/add_middleware.js";
 import addRequestHandler from "../usecases/add_request_handler.js";
@@ -90,26 +91,30 @@ export default class RoutingRepo {
      * @type {HttpRequestHandler}
      */
     const request_handler = async (request, response) => {
-      this.#addDefaultHeaders(response);
+
+      // TODO: Fix performance of static_handler middleware not breaking the loop if resource was found
+
+      const response_model = new ResponseModel(response);
+
+      /**
+       * @type {boolean}
+       */
+      let was_handled = false;
 
       /**
        * @type {Error}
        */
       let err;
-      await this.executeHandlers(
-        handlers,
-        request,
-        response,
-        err,
-      );
 
-      if (response.writableEnded) {
-        return;
+      await this.executeHandlers(handlers, request, response_model, was_handled, err);
+
+      if (err) {
+        await this.executeErrorHandlers(error_handlers, err, request, response_model, was_handled);
       }
 
-      this.executeErrorHandlers(error_handlers, err, request, response);
+      this.#addDefaultHeaders(response);
 
-      response.end();
+      response_model.send();
     };
 
     return request_handler;
@@ -117,9 +122,9 @@ export default class RoutingRepo {
 
   /**
    *
-   * @param {HttpResponse} response
+   * @param {ResponseModel} response_model
    */
-  #addDefaultHeaders(response) {
+  #addDefaultHeaders(response_model) {
     const headers = new Map([
       ["Content-Type", "text/html; charset=utf-8"],
       ["Cache-Control", "private, max-age=5, must-revalidate"],
@@ -128,8 +133,8 @@ export default class RoutingRepo {
     for (const header of headers) {
       const key = header[0];
       const value = header[1];
-      if (response.hasHeader(key) === false) {
-        response.setHeader(key, value);
+      if (response_model.hasHeader(key) === false) {
+        response_model.setHeader(key, value);
       }
     }
   }
@@ -138,25 +143,27 @@ export default class RoutingRepo {
    *
    * @param {Handler[]} handlers
    * @param {HttpRequest} request
-   * @param {HttpResponse} response
-   * @param {Error} error
+   * @param {ResponseModel} response_model
+   * @param {boolean} was_handled
+   * @param {number} error
    */
   async executeHandlers(
     handlers,
     request,
-    response,
+    response_model,
+    was_handled,
     error,
   ) {
-    const normalized_url = validateRequestUrl(request.url, response);
-    const normalized_method = validateRequestMethod(request.method, response);
+    const normalized_url = validateRequestUrl(request.url, response_model);
+    const normalized_method = validateRequestMethod(request.method, response_model);
 
     for (const handler of handlers) {
-      if (response.writableEnded) {
+      if (was_handled) {
         break;
       }
 
       if (handler.is_middleware) {
-        await handler.handler_function(request, response);
+        await handler.handler_function(request, response_model);
         continue;
       }
 
@@ -168,48 +175,45 @@ export default class RoutingRepo {
         continue;
       }
 
-      await handler.handler_function(request, response);
-      response.end();
+      await handler.handler_function(request, response_model);
+      was_handled = true;
       return;
     }
 
-    error = new Error("Not found");
+    error = http_status_codes.codes.NOT_FOUND;
   }
 
   /**
    *
    * @param {ErrorHandlerFunction[]} error_handlers
-   * @param {Error} err
+   * @param {number} error
    * @param {HttpRequest} request
-   * @param {HttpResponse} response
+   * @param {ResponseModel} response_model
+   * @param {boolean} was_handled
    */
-  executeErrorHandlers(error_handlers, err, request, response) {
-    for (let i = 0; i < error_handlers.length; i++) {
-      if (err) {
-        break;
-      }
-
-      const error_handler = error_handlers[i];
-      error_handler(err, request, response);
+  async executeErrorHandlers(error_handlers, error, request, response_model, was_handled) {
+    for (const handleError of error_handlers) {
+      await handleError(error, request, response_model);
     }
 
-    if (response.writableEnded) {
-      return;
+    if (
+      error === http_status_codes.codes.NOT_FOUND &&
+      !was_handled
+    ) {
+      return this.handleNotFound(request, response_model);
     }
-
-    this.handleNotFound(request, response);
   }
 
   /**
    *
    * @param {Error} error
-   * @param {http.ClientRequest} request
-   * @param {http.ServerResponse<http.ClientRequest>} response
+   * @param {HttpRequest} request
+   * @param {ResponseModel} response
    */
-  async handleNotFound(request, response) {
+  handleNotFound(request, response) {
     const message = http_status_codes.reasons.NOT_FOUND;
-    response.statusCode = http_status_codes.codes.NOT_FOUND;
-    response.write(`
+    response.setStatus(http_status_codes.codes.NOT_FOUND);
+    response.writeHtml(`
       <!DOCTYPE html>
       <html lang="en">
         <head>

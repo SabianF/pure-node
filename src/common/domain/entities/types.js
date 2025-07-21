@@ -31,5 +31,17 @@
  */
 
 /**
+ * @typedef {import("../../data/sources/router/src/domain/entities/types.js").HttpRequestHandler} HttpRequestHandler
+ */
+
+/**
+ * @typedef {import("../../data/sources/router/src/domain/entities/types.js").ResponseModel} HttpResponse
+ */
+
+/**
+ * @typedef {import("../../data/sources/router/src/domain/entities/types.js").HttpRequest} HttpRequest
+ */
+
+/**
  * @typedef {import("../../data/sources/router/index.js").Router} Router
  */
