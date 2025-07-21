@@ -42,6 +42,14 @@ A zero-dependency (totally internal) NodeJS server build
             └───(HTML, CSS, client-side JS)
 ```
 
+## Initialization
+
+The app is first initialized by
+1. Injecting `Data sources` (titled as `[name]Lib`) into `Data repositories` (titled as `[name]Repo`)
+2. Injecting `Data repositories` into `Domain repositories` (titled as `[name]Repo` and whose names are unique from `Data repositories`)
+3. Injecting `Domain repositories` into `Usecases` which are interfaces for the client to trigger
+4. TODO
+
 # Features
 
 ## HTTP server + router
