@@ -83,13 +83,16 @@ The router serves static files when the `handleStatic()` handler is added as mid
 8. Reading the actual file data
 9. Sending the file data in the response
 
+// TODO: Document challenges with handling static file serving as middleware, error handling, returning 404, etc. Also document solutions (response wrapper, wsa_handled, etc)
+
 ### Caching
 
-> After reading up on MDN, I understood how standard browser caching works using [Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control) values, and how to refresh the cache if the server data has changed using [Last-Modified](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Last-Modified) and [If-Modified-Since](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/If-Modified-Since) headers in [Conditional Requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Conditional_requests). 
+> After reading up on MDN, I understood how standard browser caching works using [Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control) values, and how to refresh the cache if the server data has changed using [Last-Modified](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Last-Modified) and [If-Modified-Since](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/If-Modified-Since) headers in [Conditional Requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Conditional_requests).
 
 For **static resources**, the router sets the `Cache-Control` header to stay fresh for 5 seconds with a `Last-Modified` header for files, which allows enough time for multiple near-simultaneous client requests to pull the same resources directly from the client cache, and also ensures the client checks with the server for any updates to these resources.
-* If the requested resource has **not** been updated, the server sends a 304 and the client reuses its cached version
-* If the requested resource **has** been updated, then the server returns the resource with a 200, and the client overwrites its cache with the new resource
+
+- If the requested resource has **not** been updated, the server sends a 304 and the client reuses its cached version
+- If the requested resource **has** been updated, then the server returns the resource with a 200, and the client overwrites its cache with the new resource
 
 // TODO: Webpage caching using hashes
 
@@ -98,25 +101,28 @@ For **static resources**, the router sets the `Cache-Control` header to stay fre
 > This was very difficult for me, initially, and took me about 2 days (2-4 hours each) to figure out an algorithm.
 
 Components are composed of 1-3 parts/files:
+
 1. HTML template
 2. CSS
 3. Client-side JS
 
 Components are managed like so:
+
 1. An HTML file is created (e.g. `.../components/hat.html` -> `<div class="hat">I'm wearing a {{type}}</div>`)
 2. A function is created to create a Component, identify the HTML template's placeholders with intellisense, and provide data for them (e.g. `.../components/hat.js` -> `hat(placeholders: HatPlaceholders): Component`)
 3. The `Component` instance is provided to `RenderingRepo.renderComponent()` which
    1. Searches for the HTML file in `.../components` based on the `Component.name`
    2. Reads the file data as an HTML template
-   4. Renders data into its placeholders, if any
-   5. Returns rendered HTML
+   3. Renders data into its placeholders, if any
+   4. Returns rendered HTML
+
 - This function also checks the `Component`'s placeholders for any nested `Component`s, and if it finds any, it
-   1. Recursively goes to the bottom of the tree of nested `Component`s
-   2. Renders the current (bottom) `Component`
-   3. Replaces the parent of the current component with the rendered `Component`
-   4. Recursively renders and replaces all nested `Component`s back up to the top of the tree
-   5. Returns the final rendered HTML
-   > This was seriously the most difficult part for me. This nested recursion was about 95% of the 2 days I spent figuring this out.
+  1.  Recursively goes to the bottom of the tree of nested `Component`s
+  2.  Renders the current (bottom) `Component`
+  3.  Replaces the parent of the current component with the rendered `Component`
+  4.  Recursively renders and replaces all nested `Component`s back up to the top of the tree
+  5.  Returns the final rendered HTML
+      > This was seriously the most difficult part for me. This nested recursion was about 95% of the 2 days I spent figuring this out.
 
 # Resources
 

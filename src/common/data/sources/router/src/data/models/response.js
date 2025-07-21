@@ -1,9 +1,8 @@
+import http_status_codes from "../sources/http_status_codes.js";
+
 /**
  * @typedef {import("../../domain/entities/types.js").HttpResponse} HttpResponse
  */
-
-import { validateType } from "../../../../../../domain/repositories/utilities.js";
-import http_status_codes from "../sources/http_status_codes.js";
 
 export default class ResponseModel {
   /**
