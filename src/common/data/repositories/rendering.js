@@ -58,7 +58,7 @@ export default class RenderingRepo {
   async renderPage(page) {
     // TODO(renderPage): Render nested components properly
     const layout_component = layout({
-      title: "Root Page",
+      title: page.title,
       body: page,
     });
     const rendered_layout = await this.#renderNestedComponents(layout_component);
@@ -103,7 +103,7 @@ export default class RenderingRepo {
          * @type {Component}
          */
         const placeholder_value = component.placeholders[placeholder_key];
-        const is_component = !!placeholder_value.placeholders;
+        const is_component = checkIsComponent(placeholder_value);
         if (is_component) {
           // Search through the child component
           await this.#renderNestedComponents(
@@ -256,4 +256,19 @@ function validateConfig(config) {
   }
 
   return config;
+}
+
+/**
+ *
+ * @param {Component | Page} component
+ */
+function checkIsComponent(component) {
+  return (
+    !!component &&
+    typeof component === "object" &&
+    (
+      component.constructor.name === Component.name ||
+      component.constructor.name === Page.name
+    )
+  );
 }
