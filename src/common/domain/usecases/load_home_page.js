@@ -2,16 +2,16 @@ import table from "../../presentation/components/table.js";
 import rootPage from "../../presentation/pages/root.js";
 
 /**
+ * @typedef {import("../entities/types.js").HttpRequestHandler} HttpRequestHandler
+ */
+
+/**
  * @param {object} props
  * @param {import("../../data/repositories/rendering.js").default} props.rendering_repo
+ * @returns {HttpRequestHandler}
  */
 export default function loadHomePage({ rendering_repo }) {
-  /**
-   *
-   * @param {import("../entities/types.js").HttpRequest} request
-   * @param {import("../entities/types.js").HttpResponse} response
-   */
-  const handler = async (request, response) => {
+  return async (request, response) => {
     const rendered_table = await rendering_repo.renderComponent(
       table({
         id: "table_id_one",
@@ -33,7 +33,5 @@ export default function loadHomePage({ rendering_repo }) {
     );
 
     response.writeHtml(page);
-  };
-
-  return handler;
+  }
 }
