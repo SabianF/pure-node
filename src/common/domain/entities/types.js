@@ -3,6 +3,13 @@
  */
 
 /**
+ * @typedef ComponentString
+ * @property {string} html
+ * @property {string} css
+ * @property {string} js
+ */
+
+/**
  * @typedef {import("./page.js").default} Page
  */
 

@@ -103,6 +103,7 @@ export default class RoutingRepo {
         await this.#executeHandlers(handlers, request, response_model);
 
       } catch (error) {
+        console.error(error);
         await this.#executeErrorHandlers(error_handlers, error, request, response_model, was_handled);
 
       } finally {

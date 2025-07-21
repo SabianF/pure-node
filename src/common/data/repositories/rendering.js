@@ -6,9 +6,12 @@ import FileSystemLib from "../sources/file_system_lib.js";
 import HtmlRenderingLib from "../sources/html_rendering_lib.js";
 
 /**
+ * @typedef {import("../../domain/entities/types.js").ComponentString} ComponentString
+ */
+
+/**
  * @typedef {object} RenderingRepoConfig
- * @property {string} components_dir
- * @property {string} pages_dir
+ * @property {string[]} components_dirs
  */
 
 /**
@@ -54,19 +57,9 @@ export default class RenderingRepo {
    */
   async renderPage(page) {
     // TODO(renderPage): Render nested components properly
-
-    const { name, placeholders } = page;
-
-    const raw_page = await this.#getFileAsString(
-      `${this.#config.pages_dir}/${name}.html`,
-    );
-    const rendered_page = this.#html_renderer_library.render(
-      raw_page,
-      placeholders,
-    );
     const layout_component = layout({
       title: "Root Page",
-      body: rendered_page,
+      body: page,
     });
     const rendered_layout = await this.#renderNestedComponents(layout_component);
     return rendered_layout;
@@ -78,9 +71,7 @@ export default class RenderingRepo {
    */
   async renderComponent(component) {
     const rendered_component = await this.#renderNestedComponents(component);
-    const rendered_css = await this.#renderCss(component);
-    const rendered_js = await this.#renderJs(component);
-    return rendered_css + rendered_component + rendered_js;
+    return rendered_component;
   }
 
   async #getFileAsString(path) {
@@ -125,29 +116,45 @@ export default class RenderingRepo {
     }
 
     // If there are no components in the placeholders, and this is the bottom-level component
-    const component_html = await this.#getFileAsString(
-      `${this.#config.components_dir}/${component.name}.html`,
-    );
-    const rendered_component = this.#html_renderer_library.render(
-      component_html,
+    const component_parts = await this.#getComponentAsStringIfExists(component);
+    const rendered_component_html = this.#html_renderer_library.render(
+      component_parts.html,
       component.placeholders,
+    );
+    const rendered_component_css = this.#html_renderer_library.render(
+      component_parts.css,
+      component.placeholders,
+    );
+    const rendered_component_js = this.#html_renderer_library.render(
+      component_parts.js,
+      component.placeholders,
+    );
+    const rendered_component_full = (
+      rendered_component_css +
+      rendered_component_html +
+      rendered_component_js
     );
 
     if (parent_component) {
       parent_component.placeholders[parent_placeholder_key] =
-        rendered_component;
+        rendered_component_full;
       return parent_component;
     }
 
-    return rendered_component;
+    return rendered_component_full;
   }
 
   /**
    *
    * @param {Component} component
    */
-  async #renderCss(component) {
-    const path = `${this.#config.components_dir}/${component.name}.css`;
+  async #renderCss(component, css_path) {
+    let path;
+    if (css_path) {
+      path = css_path;
+    } else {
+      path = `${this.#config.components_dirs}/${component.name}.css`;
+    }
 
     if (this.#file_system_io_library.checkPathExists(path) === false) {
       return "";
@@ -163,8 +170,13 @@ export default class RenderingRepo {
    *
    * @param {Component} component
    */
-  async #renderJs(component) {
-    const path = `${this.#config.components_dir}/${component.name}_client.js`;
+  async #renderJs(component, js_path) {
+    let path;
+    if (js_path) {
+      path = js_path;
+    } else {
+      path = `${this.#config.components_dirs}/${component.name}_client.js`;
+    }
 
     if (this.#file_system_io_library.checkPathExists(path) === false) {
       return "";
@@ -174,6 +186,32 @@ export default class RenderingRepo {
     const rendered_js = `<script id="${component.name}_js">${js}</script>`;
 
     return rendered_js;
+  }
+
+  /**
+   * @param {Component | Page} component
+   * @throws if not found
+   */
+  async #getComponentAsStringIfExists(component) {
+    for (const dir of this.#config.components_dirs) {
+      const html_path = `${dir}/${component.name}.html`;
+      const css_path = `${dir}/${component.name}.css`;
+      const js_path = `${dir}/${component.name}_client.js`;
+
+      if (this.#file_system_io_library.checkPathExists(html_path)) {
+        /**
+         * @type {ComponentString}
+         */
+        const result = {};
+        result.html = await this.#getFileAsString(html_path);
+        result.css = await this.#renderCss(component, css_path);
+        result.js = await this.#renderJs(component, js_path);
+        return result;
+      }
+    }
+
+    throw new Error(`Component/Page [${component.name}] not found.`);
+
   }
 }
 
@@ -197,6 +235,10 @@ function validateHtmlRendererLib(html_renderer_library) {
   return html_renderer_library;
 }
 
+/**
+ *
+ * @param {RenderingRepoConfig} config
+ */
 function validateConfig(config) {
   if (!config) {
     throw new Error(
@@ -204,17 +246,11 @@ function validateConfig(config) {
     );
   }
 
-  const { components_dir, pages_dir } = config;
+  const { components_dirs } = config;
 
-  if (!config.components_dir) {
+  if (!components_dirs) {
     throw new Error(
-      `No ${getNameOfVariable({ components_dir })} provided to ${RenderingRepo.name
-      }.`,
-    );
-  }
-  if (!config.pages_dir) {
-    throw new Error(
-      `No ${getNameOfVariable({ pages_dir })} provided to ${RenderingRepo.name
+      `No ${getNameOfVariable({ components_dirs })} provided to ${RenderingRepo.name
       }.`,
     );
   }
