@@ -4,7 +4,7 @@ import EnvLib from "../sources/env_lib.js";
 import Router from "../sources/router/index.js";
 import EnvRepo from "./environment.js";
 import RenderingRepo from "./rendering.js";
-import RoutingRepo from "./routing_repo.js";
+import RoutingRepo from "./routing.js";
 import FileSystemRepo from "./file_system.js";
 
 export default class DataRepos {
