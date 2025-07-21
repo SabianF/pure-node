@@ -22,6 +22,11 @@ export default class ResponseModel {
   headers;
 
   /**
+   * @type {boolean}
+   */
+  was_handled;
+
+  /**
    *
    * @param {HttpResponse} response
    */
@@ -32,6 +37,7 @@ export default class ResponseModel {
 
   setStatus(code) {
     this.#response.statusCode = this.#validateStatusCode(code);
+    this.#setHandled();
     return code;
   }
 
@@ -117,5 +123,9 @@ export default class ResponseModel {
     }
 
     return html;
+  }
+
+  #setHandled() {
+    this.was_handled = true;
   }
 }

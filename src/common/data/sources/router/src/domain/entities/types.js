@@ -54,7 +54,7 @@
 
 /**
  * @callback ErrorHandlerFunction
- * @param {Error} error
+ * @param {import("./request_error.js").default} error
  * @param {HttpRequest} request
  * @param {HttpResponse} response
  * @returns {Promise<any>}

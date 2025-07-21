@@ -1,5 +1,6 @@
 import ResponseModel from "../../data/models/response.js";
 import http_status_codes from "../../data/sources/http_status_codes.js";
+import RequestError from "../entities/request_error.js";
 import addMiddleware from "../usecases/add_middleware.js";
 import addRequestHandler from "../usecases/add_request_handler.js";
 import handleStatic from "../usecases/handle_static.js";
@@ -91,9 +92,6 @@ export default class RoutingRepo {
      * @type {HttpRequestHandler}
      */
     const request_handler = async (request, response) => {
-
-      // TODO: Fix performance of static_handler middleware not breaking the loop if resource was found
-
       const response_model = new ResponseModel(response);
 
       /**
@@ -101,20 +99,16 @@ export default class RoutingRepo {
        */
       let was_handled = false;
 
-      /**
-       * @type {Error}
-       */
-      let err;
+      try {
+        await this.#executeHandlers(handlers, request, response_model);
 
-      await this.executeHandlers(handlers, request, response_model, was_handled, err);
+      } catch (error) {
+        await this.#executeErrorHandlers(error_handlers, error, request, response_model, was_handled);
 
-      if (err) {
-        await this.executeErrorHandlers(error_handlers, err, request, response_model, was_handled);
+      } finally {
+        this.#addDefaultHeaders(response);
+        response_model.send();
       }
-
-      this.#addDefaultHeaders(response);
-
-      response_model.send();
     };
 
     return request_handler;
@@ -144,22 +138,18 @@ export default class RoutingRepo {
    * @param {Handler[]} handlers
    * @param {HttpRequest} request
    * @param {ResponseModel} response_model
-   * @param {boolean} was_handled
-   * @param {number} error
    */
-  async executeHandlers(
+  async #executeHandlers(
     handlers,
     request,
     response_model,
-    was_handled,
-    error,
   ) {
     const normalized_url = validateRequestUrl(request.url, response_model);
     const normalized_method = validateRequestMethod(request.method, response_model);
 
     for (const handler of handlers) {
-      if (was_handled) {
-        break;
+      if (response_model.was_handled) {
+        return;
       }
 
       if (handler.is_middleware) {
@@ -176,43 +166,53 @@ export default class RoutingRepo {
       }
 
       await handler.handler_function(request, response_model);
-      was_handled = true;
+      response_model.was_handled = true;
       return;
     }
 
-    error = http_status_codes.codes.NOT_FOUND;
+    if (response_model.was_handled === true) {
+      return;
+    }
+
+    throw new RequestError({
+      status_code: http_status_codes.codes.NOT_FOUND,
+      message: http_status_codes.reasons.NOT_FOUND,
+    });
+
   }
 
   /**
    *
    * @param {ErrorHandlerFunction[]} error_handlers
-   * @param {number} error
+   * @param {RequestError} error
    * @param {HttpRequest} request
    * @param {ResponseModel} response_model
-   * @param {boolean} was_handled
    */
-  async executeErrorHandlers(error_handlers, error, request, response_model, was_handled) {
+  async #executeErrorHandlers(error_handlers, error, request, response_model) {
     for (const handleError of error_handlers) {
       await handleError(error, request, response_model);
     }
 
     if (
-      error === http_status_codes.codes.NOT_FOUND &&
-      !was_handled
+      error.status_code === http_status_codes.codes.NOT_FOUND &&
+      !response_model.was_handled
     ) {
-      return this.handleNotFound(request, response_model);
+      return this.#handleNotFound(error, request, response_model);
     }
   }
 
   /**
-   *
-   * @param {Error} error
-   * @param {HttpRequest} request
-   * @param {ResponseModel} response
+   * @type {ErrorHandlerFunction}
    */
-  handleNotFound(request, response) {
-    const message = http_status_codes.reasons.NOT_FOUND;
-    response.setStatus(http_status_codes.codes.NOT_FOUND);
+  #handleNotFound(error, request, response) {
+    if (!error.status_code) {
+      error.status_code = http_status_codes.codes.NOT_FOUND;
+    }
+    if (!error.message) {
+      error.message = http_status_codes.reasons.NOT_FOUND;
+    }
+
+    response.setStatus(error.status_code);
     response.writeHtml(`
       <!DOCTYPE html>
       <html lang="en">
@@ -220,10 +220,10 @@ export default class RoutingRepo {
           <meta charset="UTF-8">
           <meta name="viewport"  content="width=device-width, initial-scale=1.0">
           <meta http-equiv="X-UA-Compatible"  content="ie=edge">
-          <title>${message}</title>
+          <title>Error</title>
         </head>
         <body>
-          <h1>${message}: ${request.url}</h1>
+          <h1>${error.message}: ${request.url}</h1>
         </body>
       </html>
     `);
