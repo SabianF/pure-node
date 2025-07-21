@@ -11,7 +11,7 @@
  */
 
 /**
- * @typedef {import("../repositories/routes.js").default} RoutesRepo
+ * @typedef {import("../repositories/server.js").ServerRepo} RoutesRepo
  */
 
 /**

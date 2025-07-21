@@ -7,11 +7,11 @@ import loadTestPage from "../usecases/load_test_page.js";
  */
 
 /**
- * @typedef RoutesRepoProps
+ * @typedef ServerRepoProps
  * @property {DataRepos} data_repos
  */
 
-export default class RoutesRepo {
+export default class ServerRepo {
   /**
    * @type {DataRepos}
    */
@@ -19,7 +19,7 @@ export default class RoutesRepo {
 
   /**
    *
-   * @param {RoutesRepoProps} props
+   * @param {ServerRepoProps} props
    */
   constructor({ data_repos }) {
     this.#data_repos = data_repos;

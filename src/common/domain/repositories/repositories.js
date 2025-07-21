@@ -1,5 +1,5 @@
 import MiddlewareRepo from "./middleware.js";
-import RoutesRepo from "./routes.js";
+import ServerRepo from "./server.js";
 
 /**
  * @typedef {import("../entities/types.js").DataRepos} DataRepos
@@ -36,7 +36,7 @@ export default class DomainRepos {
   }
 
   #initRoutesRepo(data_repos) {
-    return new RoutesRepo({
+    return new ServerRepo({
       data_repos: data_repos,
     });
   }
