@@ -1,4 +1,4 @@
-import loadBlankPage from "../usecases/lload_blank_page.js";
+import loadBlankPage from "../usecases/load_blank_page.js";
 import loadHomePage from "../usecases/load_home_page.js";
 import loadTestPage from "../usecases/load_test_page.js";
 
