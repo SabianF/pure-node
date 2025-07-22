@@ -104,11 +104,6 @@ export default class RoutingRepo {
     const request_handler = async (request, response) => {
       const response_model = new ResponseModel(response);
 
-      /**
-       * @type {boolean}
-       */
-      let was_handled = false;
-
       try {
         await this.#executeHandlers(handlers, request, response_model);
 
