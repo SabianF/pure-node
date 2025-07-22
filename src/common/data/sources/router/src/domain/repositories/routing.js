@@ -16,6 +16,10 @@ import { validateRequestMethod, validateRequestUrl } from "./utilities.js";
  */
 
 /**
+ * @typedef {import("../entities/types.js").HttpRequestHandlerRaw} HttpRequestHandlerRaw
+ */
+
+/**
  * @typedef {import("../entities/types.js").HttpRequestHandler} HttpRequestHandler
  */
 
@@ -96,12 +100,10 @@ export default class RoutingRepo {
    *
    * @param {Handler[]} handlers
    * @param {ErrorHandlerFunction[]} error_handlers
+   * @returns {HttpRequestHandlerRaw}
    */
   #createRequestHandler(handlers, error_handlers) {
-    /**
-     * @type {HttpRequestHandler}
-     */
-    const request_handler = async (request, response) => {
+    return async (request, response) => {
       const response_model = new ResponseModel(response);
 
       try {
@@ -114,9 +116,7 @@ export default class RoutingRepo {
         this.#addDefaultHeaders(response);
         response_model.send();
       }
-    };
-
-    return request_handler;
+    }
   }
 
   /**

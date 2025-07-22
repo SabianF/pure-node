@@ -5,6 +5,12 @@
  */
 
 /**
+ * @callback HttpRequestHandlerRaw
+ * @param {HttpRequest} request
+ * @param {HttpResponse} response
+ */
+
+/**
  * @typedef {import("../../data/sources/http_lib.js").HttpRequest} HttpRequest
  */
 
