@@ -24,12 +24,12 @@ export default class DomainRepos {
   }) {
     this.#data_repos = data_repos;
 
-    this.routes = this.#initRoutesRepo(data_repos);
+    this.server = this.#initServerRepo(data_repos.rendering);
   }
 
-  #initRoutesRepo(data_repos) {
+  #initServerRepo(rendering_repo) {
     return new ServerRepo({
-      data_repos: data_repos,
+      rendering_repo: rendering_repo,
     });
   }
 }

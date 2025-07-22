@@ -30,6 +30,10 @@
  */
 
 /**
+ * @typedef {import("../../data/repositories/rendering.js").default} RenderingRepo
+ */
+
+/**
  * @typedef {import("../../data/repositories/file_system.js").default} FileSystemRepo
  */
 
