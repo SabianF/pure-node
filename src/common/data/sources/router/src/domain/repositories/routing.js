@@ -1,4 +1,3 @@
-import ResponseModel from "../../data/models/response.js";
 import http_status_codes from "../../data/sources/http_status_codes.js";
 import RequestError from "../entities/request_error.js";
 import addMiddleware from "../usecases/add_middleware.js";
@@ -12,7 +11,7 @@ import { validateRequestMethod, validateRequestUrl } from "./utilities.js";
  */
 
 /**
- * @typedef {import("../entities/types.js").HttpResponse} HttpResponse
+ * @typedef {import("../entities/types.js").ResponseModel} ResponseModel
  */
 
 /**
@@ -39,6 +38,12 @@ import { validateRequestMethod, validateRequestUrl } from "./utilities.js";
  * @typedef {import("../entities/types.js").HttpRepo} HttpRepo
  */
 
+/**
+ * @typedef {object} RoutingRepoProps
+ * @property {FileSystemRepo} fs_repo
+ * @property {HttpRepo} http_repo
+ */
+
 export default class RoutingRepo {
   /**
    * @type {FileSystemRepo}
@@ -50,6 +55,10 @@ export default class RoutingRepo {
    */
   #http_repo;
 
+  /**
+   *
+   * @param {RoutingRepoProps} param0
+   */
   constructor({
     fs_repo,
     http_repo,

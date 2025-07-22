@@ -3,10 +3,14 @@
  */
 
 /**
+ * @typedef {import("../entities/types.js").ErrorHandlerFunction} ErrorHandlerFunction
+ */
+
+/**
  * @callback AddErrorHandlerFunction
  * @param {object} props
  * @param {Router} props.router
- * @param {import("../entities/types.js").ErrorHandlerFunction} props.error_handler_function
+ * @param {ErrorHandlerFunction} props.error_handler_function
  */
 
 /**

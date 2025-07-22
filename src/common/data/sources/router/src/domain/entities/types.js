@@ -53,8 +53,12 @@
  */
 
 /**
+ * @typedef {import("./request_error.js").default} RequestError
+ */
+
+/**
  * @callback ErrorHandlerFunction
- * @param {import("./request_error.js").default} error
+ * @param {RequestError} error
  * @param {HttpRequest} request
  * @param {HttpResponse} response
  * @returns {Promise<any>}
