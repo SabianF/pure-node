@@ -1,3 +1,4 @@
+import ResponseModel from "../../data/models/response.js";
 import http_status_codes from "../../data/sources/http_status_codes.js";
 import RequestError from "../entities/request_error.js";
 import addMiddleware from "../usecases/add_middleware.js";
@@ -83,7 +84,7 @@ export default class RoutingRepo {
    * @param {RouterModel} router
    */
   createServer(router) {
-    const request_handler = this.createRequestHandler(
+    const request_handler = this.#createRequestHandler(
       router.getRequestHandlers(),
       router.getErrorHandlers(),
     );
@@ -96,7 +97,7 @@ export default class RoutingRepo {
    * @param {Handler[]} handlers
    * @param {ErrorHandlerFunction[]} error_handlers
    */
-  createRequestHandler(handlers, error_handlers) {
+  #createRequestHandler(handlers, error_handlers) {
     /**
      * @type {HttpRequestHandler}
      */
@@ -112,8 +113,7 @@ export default class RoutingRepo {
         await this.#executeHandlers(handlers, request, response_model);
 
       } catch (error) {
-        console.error(error);
-        await this.#executeErrorHandlers(error_handlers, error, request, response_model, was_handled);
+        await this.#executeErrorHandlers(error_handlers, error, request, response_model);
 
       } finally {
         this.#addDefaultHeaders(response);

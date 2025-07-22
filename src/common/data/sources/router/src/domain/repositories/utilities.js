@@ -27,7 +27,7 @@ export function addToArray(array, item) {
     throw new Error(`Item already exists in array`);
   }
 
-  array.push(item);
+  return array.push(item);
 }
 
 /**

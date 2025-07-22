@@ -1,3 +1,4 @@
+import addErrorHandler from "../../domain/usecases/add_error_handler.js";
 import addMiddleware from "../../domain/usecases/add_middleware.js";
 import addRequestHandler from "../../domain/usecases/add_request_handler.js";
 import startServer from "../../domain/usecases/start_server.js";
@@ -11,7 +12,7 @@ import startServer from "../../domain/usecases/start_server.js";
  */
 
 /**
- * @typedef {import("./types.js").ErrorHandlerFunction} ErrorHandlerFunction
+ * @typedef {import("../../domain/entities/types.js").ErrorHandlerFunction} ErrorHandlerFunction
  */
 
 /**
@@ -77,8 +78,8 @@ export default class RouterModel {
    *
    * @param {ErrorHandlerFunction} error_handler_function
    */
-  handleErrors(error_handler_function) {
-    addErrorHandler({
+  handleError(error_handler_function) {
+    return addErrorHandler({
       router: this.#router,
       error_handler_function: error_handler_function,
     });

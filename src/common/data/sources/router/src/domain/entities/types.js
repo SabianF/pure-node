@@ -60,6 +60,6 @@
  * @callback ErrorHandlerFunction
  * @param {RequestError} error
  * @param {HttpRequest} request
- * @param {HttpResponse} response
+ * @param {ResponseModel} response
  * @returns {Promise<any>}
  */
