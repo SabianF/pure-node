@@ -45,10 +45,11 @@ A zero-dependency (totally internal) NodeJS server build
 ## Initialization
 
 The app is first initialized by
-1. Injecting `Data sources` (titled as `[name]Lib`) into `Data repositories` (titled as `[name]Repo`)
-2. Injecting `Data repositories` into `Domain repositories` (titled as `[name]Repo` and whose names are unique from `Data repositories`)
-3. Injecting `Domain repositories` into `Usecases` which are interfaces for the client to trigger
-4. TODO
+1. Injecting dependencies (`./src/common/data/repositories/repositories.js`)
+   1. Instantiating `Data sources` (titled as `[name]Lib`)
+   2. Injecting `Data sources` into `Data repositories` (titled as `[name]Repo`)
+   3. Injecting `Data sources` into `Domain repositories` (titled as `[name]Repo` and whose names are unique from `Data repositories`)
+2. TODO
 
 # Features
 
@@ -65,10 +66,9 @@ The app is first initialized by
 
 The HTTP server is started by
 
-1. Instantiating the routing repository `src\data\repositories\routing_repo.js`
-2. Instantiating a router `src\data\sources\router\src\domain\entities\router.js`
-3. Adding handlers to the router for middleware (`use()`) and URLs (`get()`, `post()`, etc) `src\data\sources\router\src\domain\entities\handler.js`
-4. Calling the router's `listen()` function with a port
+1. Instantiating a router `src\data\sources\router\src\domain\entities\router.js`
+2. Adding handlers to the router for middleware (`use()`) and URLs (`get()`, `post()`, etc) `src\data\sources\router\src\domain\entities\handler.js`
+3. Calling the router's `listen()` function with a port
 
 The server handles requests by
 

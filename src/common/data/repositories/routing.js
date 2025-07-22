@@ -35,15 +35,6 @@ export default class RoutingRepo {
   createRouter() {
     return this.#router_lib.create();
   }
-
-  /**
-   *
-   * @param {Router} router
-   * @param {string} base_path
-   */
-  handleStatic(router, base_path) {
-    return router.handleStatic(base_path);
-  }
 }
 
 function validateRouterLib(router_lib) {

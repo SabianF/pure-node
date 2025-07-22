@@ -1,5 +1,11 @@
+import { logRequests } from "./src/common/data/repositories/middleware.js";
 import DataRepos from "./src/common/data/repositories/repositories.js";
 import DomainRepos from "./src/common/domain/repositories/repositories.js";
+
+/**
+ * @typedef {import("./src/common/data/repositories/routing.js").default} RoutingRepo
+ * @typedef {import("./src/common/domain/entities/types.js").Router} Router
+ */
 
 // TODO(caching): implement caching
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Conditional_requests
@@ -23,11 +29,28 @@ function runApp() {
   const router = data_repos.routing.createRouter();
   const port = process.env.PORT;
 
-  domain_repos.middleware.addMiddleware(router);
+  addMiddleware(data_repos.routing, router);
   domain_repos.routes.addPublicRoutes(router);
 
   router.listen(port, () => {
     console.log(`Server started at http://localhost:${port}/`);
+  });
+}
+
+/**
+ *
+ * @param {RoutingRepo} routing_repo
+ * @param {Router} router
+ */
+export function addMiddleware(routing_repo, router) {
+  router.use(logRequests);
+  router.use(router.handleStatic("public/"));
+
+  router.handleError((error, request, response) => {
+    if (error.status_code === http_status_codes.codes.NOT_FOUND) {
+      response.setStatus(http_status_codes.codes.NOT_FOUND);
+      response.writeHtml("<h1>Not found, bro</h1>");
+    }
   });
 }
 
