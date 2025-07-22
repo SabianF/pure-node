@@ -12,7 +12,7 @@ describe(RenderingRepo.name, () => {
     file_system_io_library,
     html_renderer_library,
     config: {
-      components_dir: "src/common/presentation/components",
+      components_dirs: "src/common/presentation/components",
       pages_dir: "src/common/presentation/pages",
     }
   });

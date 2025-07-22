@@ -25,6 +25,6 @@ export default class MiddlewareRepo {
 
   addMiddleware(router) {
     router.use(logRequests);
-    router.use(this.#data_repos.routing.handleStatic("public/"));
+    router.use(this.#data_repos.routing.handleStatic(router, "public/"));
   }
 }

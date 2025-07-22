@@ -10,6 +10,8 @@ import DomainRepos from "./src/common/domain/repositories/repositories.js";
 
 // TODO(file-mgmt): impl basic file upload, storage, display
 
+// TODO: Refactor pure-node router request handler into modular subfunctions
+
 function runApp() {
   const data_repos = new DataRepos();
   data_repos.env.initEnv();

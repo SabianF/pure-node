@@ -7,7 +7,7 @@ import startServer from "../../domain/usecases/start_server.js";
  */
 
 /**
- * @typedef {import("./types.js").HttpRequestHandler} HttpRequestHandler
+ * @typedef {import("../../domain/entities/types.js").HttpRequestHandler} HttpRequestHandler
  */
 
 /**
@@ -66,7 +66,11 @@ export default class RouterModel {
       request_type: this.get.name.toUpperCase(),
       url: url,
       handler_function: handler_function,
-    })
+    });
+  }
+
+  handleStatic(base_path) {
+    return this.#routing_repo.handleStatic(base_path);
   }
 
   /**

@@ -1,9 +1,15 @@
 /**
- * @typedef {import("../../data/sources/http_lib.js").HttpRequestHandler} HttpRequestHandler
+ * @callback HttpRequestHandler
+ * @param {HttpRequest} request
+ * @param {ResponseModel} response
  */
 
 /**
  * @typedef {import("../../data/sources/http_lib.js").HttpRequest} HttpRequest
+ */
+
+/**
+ * @typedef {import("../../data/models/response.js").default} ResponseModel
  */
 
 /**
@@ -12,6 +18,14 @@
 
 /**
  * @typedef {import("../../data/sources/http_lib.js").default.Server} Server
+ */
+
+/**
+ * @typedef {import("../../data/repositories/http_repo.js").default} HttpRepo
+ */
+
+/**
+ * @typedef {import("../../data/repositories/file_system.js").default} FileSystemRepo
  */
 
 /**
@@ -40,7 +54,7 @@
 
 /**
  * @callback ErrorHandlerFunction
- * @param {Error} error
+ * @param {import("./request_error.js").default} error
  * @param {HttpRequest} request
  * @param {HttpResponse} response
  * @returns {Promise<any>}

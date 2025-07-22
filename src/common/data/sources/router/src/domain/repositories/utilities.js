@@ -1,5 +1,13 @@
-import http from "node:http";
 import Handler from "../entities/handler.js";
+import http_status_codes from "../../data/sources/http_status_codes.js";
+
+/**
+ * @typedef {import("../entities/types.js").ResponseModel} ResponseModel
+ */
+
+/**
+ * @typedef {import("../entities/types.js").HttpRequest} HttpRequest
+ */
 
 /**
  *
@@ -25,26 +33,26 @@ export function addToArray(array, item) {
 /**
  *
  * @param {Handler[]} middleware
- * @param {http.ClientRequest} request
- * @param {http.ServerResponse<http.ClientRequest>} response
+ * @param {HttpRequest} request
+ * @param {ResponseModel} response_model
  */
-export function executeMiddleware(middleware, request, response) {
+export function executeMiddleware(middleware, request, response_model) {
   for (let i = 0; i < middleware.length; i++) {
     const middleware_item = middleware[i];
-    middleware_item.handler_function(request, response);
+    middleware_item.handler_function(request, response_model);
   }
 }
 
 /**
  *
  * @param {string} url
- * @param {https.ServerResponse<http.ClientRequest>} response
+ * @param {ResponseModel} response_model
  * @returns validated URL
  */
-export function validateRequestUrl(url, response) {
+export function validateRequestUrl(url, response_model) {
   if (!url) {
-    response.write(`URL was not provided in Request: [${url}]`);
-    response.end();
+    response_model.setStatus(http_status_codes.codes.BAD_REQUEST);
+    response_model.writeHtml(`URL was not provided in Request: [${url}]`);
     return;
   }
   return url;
@@ -53,12 +61,12 @@ export function validateRequestUrl(url, response) {
 /**
  *
  * @param {string} method
- * @param {http.ServerResponse<http.ClientRequest>} response
+ * @param {ResponseModel} response_model
  */
-export function validateRequestMethod(method, response) {
+export function validateRequestMethod(method, response_model) {
   if (!method) {
-    response.write(`Request method was not provided: [${method}]`);
-    response.end();
+    response_model.setStatus(http_status_codes.codes.BAD_REQUEST);
+    response_model.writeHtml(`Request method was not provided: [${method}]`);
     return;
   }
   return method;

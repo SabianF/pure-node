@@ -3,6 +3,13 @@
  */
 
 /**
+ * @typedef ComponentString
+ * @property {string} html
+ * @property {string} css
+ * @property {string} js
+ */
+
+/**
  * @typedef {import("./page.js").default} Page
  */
 
@@ -11,7 +18,7 @@
  */
 
 /**
- * @typedef {import("../repositories/routes.js").default} RoutesRepo
+ * @typedef {import("../repositories/server.js").ServerRepo} RoutesRepo
  */
 
 /**
@@ -20,4 +27,28 @@
 
 /**
  * @typedef {import("../../domain/repositories/repositories.js").default} DomainRepos
+ */
+
+/**
+ * @typedef {import("../../data/repositories/file_system.js").default} FileSystemRepo
+ */
+
+/**
+ * @typedef {import("../../data/sources/file_system_lib.js").default} FileSystemLib
+ */
+
+/**
+ * @typedef {import("../../data/sources/router/src/domain/entities/types.js").HttpRequestHandler} HttpRequestHandler
+ */
+
+/**
+ * @typedef {import("../../data/sources/router/src/domain/entities/types.js").ResponseModel} HttpResponse
+ */
+
+/**
+ * @typedef {import("../../data/sources/router/src/domain/entities/types.js").HttpRequest} HttpRequest
+ */
+
+/**
+ * @typedef {import("../../data/sources/router/index.js").Router} Router
  */

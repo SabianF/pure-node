@@ -1,10 +1,8 @@
-import FileSystemRepo from "../../data/repositories/file_system.js";
-import HttpRepo from "../../data/repositories/http_repo.js";
+import ResponseModel from "../../data/models/response.js";
 import http_status_codes from "../../data/sources/http_status_codes.js";
-import Router from "../entities/router.js";
+import RequestError from "../entities/request_error.js";
 import addMiddleware from "../usecases/add_middleware.js";
 import addRequestHandler from "../usecases/add_request_handler.js";
-import createServer from "../usecases/create_server.js";
 import handleStatic from "../usecases/handle_static.js";
 import startServer from "../usecases/start_server.js";
 import { validateRequestMethod, validateRequestUrl } from "./utilities.js";
@@ -31,6 +29,14 @@ import { validateRequestMethod, validateRequestUrl } from "./utilities.js";
 
 /**
  * @typedef {import("../entities/types.js").RouterModel} RouterModel
+ */
+
+/**
+ * @typedef {import("../entities/types.js").FileSystemRepo} FileSystemRepo
+ */
+
+/**
+ * @typedef {import("../entities/types.js").HttpRepo} HttpRepo
  */
 
 export default class RoutingRepo {
@@ -86,32 +92,24 @@ export default class RoutingRepo {
      * @type {HttpRequestHandler}
      */
     const request_handler = async (request, response) => {
-      response.setHeader("Content-Type", "text/html; charset=utf-8");
-
-      const normalized_url = validateRequestUrl(request.url, response);
-      const normalized_method = validateRequestMethod(request.method, response);
+      const response_model = new ResponseModel(response);
 
       /**
-       * @type {Error}
+       * @type {boolean}
        */
-      let err;
+      let was_handled = false;
 
-      await this.executeHandlers(
-        handlers,
-        normalized_url,
-        normalized_method,
-        request,
-        response,
-        err,
-      );
+      try {
+        await this.#executeHandlers(handlers, request, response_model);
 
-      if (response.writableEnded) {
-        return;
+      } catch (error) {
+        console.error(error);
+        await this.#executeErrorHandlers(error_handlers, error, request, response_model, was_handled);
+
+      } finally {
+        this.#addDefaultHeaders(response);
+        response_model.send();
       }
-
-      this.executeErrorHandlers(error_handlers, err, request, response);
-
-      response.end();
     };
 
     return request_handler;
@@ -119,28 +117,44 @@ export default class RoutingRepo {
 
   /**
    *
-   * @param {Handler[]} handlers
-   * @param {string} normalized_url
-   * @param {string} normalized_method
-   * @param {HttpRequest} request
-   * @param {HttpResponse} response
-   * @param {Error} error
+   * @param {ResponseModel} response_model
    */
-  async executeHandlers(
+  #addDefaultHeaders(response_model) {
+    const headers = new Map([
+      ["Content-Type", "text/html; charset=utf-8"],
+      ["Cache-Control", "private, max-age=5, must-revalidate"],
+    ]);
+
+    for (const header of headers) {
+      const key = header[0];
+      const value = header[1];
+      if (response_model.hasHeader(key) === false) {
+        response_model.setHeader(key, value);
+      }
+    }
+  }
+
+  /**
+   *
+   * @param {Handler[]} handlers
+   * @param {HttpRequest} request
+   * @param {ResponseModel} response_model
+   */
+  async #executeHandlers(
     handlers,
-    normalized_url,
-    normalized_method,
     request,
-    response,
-    error,
+    response_model,
   ) {
+    const normalized_url = validateRequestUrl(request.url, response_model);
+    const normalized_method = validateRequestMethod(request.method, response_model);
+
     for (const handler of handlers) {
-      if (response.writableEnded) {
-        break;
+      if (response_model.was_handled) {
+        return;
       }
 
       if (handler.is_middleware) {
-        await handler.handler_function(request, response);
+        await handler.handler_function(request, response_model);
         continue;
       }
 
@@ -152,58 +166,65 @@ export default class RoutingRepo {
         continue;
       }
 
-      await handler.handler_function(request, response);
-      response.end();
+      await handler.handler_function(request, response_model);
+      response_model.was_handled = true;
       return;
     }
 
-    error = new Error("Not found");
+    if (response_model.was_handled === true) {
+      return;
+    }
+
+    throw new RequestError({
+      status_code: http_status_codes.codes.NOT_FOUND,
+      message: http_status_codes.reasons.NOT_FOUND,
+    });
+
   }
 
   /**
    *
    * @param {ErrorHandlerFunction[]} error_handlers
-   * @param {Error} err
+   * @param {RequestError} error
    * @param {HttpRequest} request
-   * @param {HttpResponse} response
+   * @param {ResponseModel} response_model
    */
-  executeErrorHandlers(error_handlers, err, request, response) {
-    for (let i = 0; i < error_handlers.length; i++) {
-      if (err) {
-        break;
-      }
-
-      const error_handler = error_handlers[i];
-      error_handler(err, request, response);
+  async #executeErrorHandlers(error_handlers, error, request, response_model) {
+    for (const handleError of error_handlers) {
+      await handleError(error, request, response_model);
     }
 
-    if (response.writableEnded) {
-      return;
+    if (
+      error.status_code === http_status_codes.codes.NOT_FOUND &&
+      !response_model.was_handled
+    ) {
+      return this.#handleNotFound(error, request, response_model);
     }
-
-    this.handleNotFound(request, response);
   }
 
   /**
-   *
-   * @param {Error} error
-   * @param {http.ClientRequest} request
-   * @param {http.ServerResponse<http.ClientRequest>} response
+   * @type {ErrorHandlerFunction}
    */
-  async handleNotFound(request, response) {
-    const message = http_status_codes.reasons.NOT_FOUND;
-    response.statusCode = http_status_codes.codes.NOT_FOUND;
-    response.write(`
+  #handleNotFound(error, request, response) {
+    if (!error.status_code) {
+      error.status_code = http_status_codes.codes.NOT_FOUND;
+    }
+    if (!error.message) {
+      error.message = http_status_codes.reasons.NOT_FOUND;
+    }
+
+    response.setStatus(error.status_code);
+    response.writeHtml(`
       <!DOCTYPE html>
       <html lang="en">
         <head>
           <meta charset="UTF-8">
           <meta name="viewport"  content="width=device-width, initial-scale=1.0">
           <meta http-equiv="X-UA-Compatible"  content="ie=edge">
-          <title>${message}</title>
+          <title>Error</title>
         </head>
         <body>
-          <h1>${message}: ${request.url}</h1>
+          <h1>${error.message}: ${request.url}</h1>
         </body>
       </html>
     `);

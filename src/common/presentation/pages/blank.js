@@ -1,7 +1,8 @@
-import Component from "../../domain/entities/component.js";
+import Page from "../../domain/entities/page.js";
 
 export default function blankPage() {
-  return new Component({
+  return new Page({
+    title: "Blank Page",
     name: "blank",
   });
 }
