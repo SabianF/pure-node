@@ -1,6 +1,10 @@
 # Overview
 
-A zero-dependency (totally internal) NodeJS server build
+A zero-dependency (totally internal) NodeJS server build.
+
+I created this primarily because of my concerns around NPM's "dependency hell" and the security risk of the enormous surface area for supply-chain attacks that comes with it, from [typosquatting](https://snyk.io/blog/typosquatting-attacks/) to [malicious packages](https://www.akamai.com/blog/security-research/critical-linux-backdoor-xz-utils-discovered-what-to-know) to [MIM (man-in-the-middle) attacks](https://www.fortinet.com/resources/cyberglossary/man-in-the-middle-attack).
+
+And secondarily because I want to more-deeply understand the inner workings of everything down to the base level, and use this understanding to predict bugs earlier, make more creative optimizations, and more-easily visualize how to implement ideas into feasible features.
 
 # Architecture
 
