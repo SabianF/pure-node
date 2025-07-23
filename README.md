@@ -44,12 +44,10 @@ A zero-dependency (totally internal) NodeJS server build
 
 ## Initialization
 
-The app is first initialized by
-1. Injecting dependencies (`./src/common/data/repositories/repositories.js`)
-   1. Instantiating `Data sources` (titled as `[name]Lib`)
-   2. Injecting `Data sources` into `Data repositories` (titled as `[name]Repo`)
-   3. Injecting `Data sources` into `Domain repositories` (titled as `[name]Repo` and whose names are unique from `Data repositories`)
-2. TODO
+The server is first initialized by injecting dependencies (`./src/common/data/repositories/repositories.js`)
+ 1. Instantiating `Data sources` (titled as `[name]Lib`)
+ 2. Injecting `Data sources` into `Data repositories` (titled as `[name]Repo`)
+ 3. Injecting `Data repositories` into `Domain repositories` (titled as `[name]Repo` and whose names are unique from `Data repositories`)
 
 # Features
 
