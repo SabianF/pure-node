@@ -1,5 +1,4 @@
-import DataRepos from "./src/common/data/repositories/repositories.js";
-import DomainRepos from "./src/common/domain/repositories/repositories.js";
+import initRepos from "./src/common/data/repositories/repositories.js";
 
 /**
  * @typedef {import("./src/common/data/repositories/routing.js").default} RoutingRepo
@@ -18,12 +17,12 @@ import DomainRepos from "./src/common/domain/repositories/repositories.js";
 // TODO: Refactor pure-node router request handler into modular subfunctions
 
 function runApp() {
-  const data_repos = new DataRepos();
-  data_repos.env.initEnv();
+  const {
+    data_repos,
+    domain_repos,
+  } = new initRepos();
 
-  const domain_repos = new DomainRepos({
-    data_repos: data_repos,
-  });
+  data_repos.env.initEnv();
 
   const router = data_repos.routing.createRouter();
   const port = process.env.PORT;

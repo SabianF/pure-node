@@ -6,8 +6,22 @@ import EnvRepo from "./environment.js";
 import RenderingRepo from "./rendering.js";
 import RoutingRepo from "./routing.js";
 import FileSystemRepo from "./file_system.js";
+import ServerRepo from "../../domain/repositories/server.js";
 
-export default class DataRepos {
+export default function initRepos() {
+  const data_repos = new DataRepos();
+
+  const domain_repos = new DomainRepos({
+    data_repos: data_repos,
+  })
+
+  return {
+    data_repos: data_repos,
+    domain_repos: domain_repos,
+  };
+}
+
+class DataRepos {
   constructor() {
     this.env = initEnvRepo();
     this.fs = initFsRepo();
@@ -70,4 +84,28 @@ function initRenderingRepo() {
   });
 
   return rendering;
+}
+
+/**
+ * @typedef DomainReposProps
+ * @property {DataRepos} data_repos
+ */
+
+class DomainRepos {
+  /**
+   * @type {ServerRepo}
+   */
+  server;
+
+  /**
+   *
+   * @param {DomainReposProps} props
+   */
+  constructor({
+    data_repos,
+  }) {
+    this.server = new ServerRepo({
+      rendering_repo: data_repos.rendering,
+    });
+  }
 }
