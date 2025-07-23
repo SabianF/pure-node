@@ -45,9 +45,10 @@ A zero-dependency (totally internal) NodeJS server build
 ## Initialization
 
 The server is first initialized by injecting dependencies (`./src/common/data/repositories/repositories.js`)
- 1. Instantiating `Data sources` (titled as `[name]Lib`)
- 2. Injecting `Data sources` into `Data repositories` (titled as `[name]Repo`)
- 3. Injecting `Data repositories` into `Domain repositories` (titled as `[name]Repo` and whose names are unique from `Data repositories`)
+
+1.  Instantiating `Data sources` (titled as `[name]Lib`)
+2.  Injecting `Data sources` into `Data repositories` (titled as `[name]Repo`)
+3.  Injecting `Data repositories` into `Domain repositories` (titled as `[name]Repo` and whose names are unique from `Data repositories`)
 
 # Features
 
@@ -89,7 +90,13 @@ The router serves static files when the `handleStatic()` handler is added as mid
 8. Reading the actual file data
 9. Sending the file data in the response
 
-// TODO: Document challenges with handling static file serving as middleware, error handling, returning 404, etc. Also document solutions (response wrapper, wsa_handled, etc)
+> **Challenge: Static file requests returning 404**
+>
+> Initially, I encountered a challenge with serving static files via a middleware handler, because the server would not stop execution when static files were served, and would continue looking for a route handler, which it would not find, because the URL being accessed was not a route but a static file, so the server would return a 404 for all static files
+>
+> **Solution: Adding state `was_handled`**
+>
+> I was able to resolve this by creating a wrapper interface for the `response` object that includes a variable `was_handled` to track the state of the router, where static file handlers set this variable when assigning a status code, and the main request listener checks for this state, and if it's true at any point, ends the listener function.
 
 ### Caching
 
@@ -104,7 +111,7 @@ For **static resources**, the router sets the `Cache-Control` header to stay fre
 
 ## Component nesting
 
-> This was very difficult for me, initially, and took me about 2 days (2-4 hours each) to figure out an algorithm.
+> This was very difficult for me, initially, and took me about 2 days (2-4 hours each) to figure out an algorithm. It ended up being a depth-first approach.
 
 Components are composed of 1-3 parts/files:
 
@@ -117,7 +124,7 @@ Components are managed like so:
 1. An HTML file is created (e.g. `.../components/hat.html` -> `<div class="hat">I'm wearing a {{type}}</div>`)
 2. A function is created to create a Component, identify the HTML template's placeholders with intellisense, and provide data for them (e.g. `.../components/hat.js` -> `hat(placeholders: HatPlaceholders): Component`)
 3. The `Component` instance is provided to `RenderingRepo.renderComponent()` which
-   1. Searches for the HTML file in `.../components` based on the `Component.name`
+   1. Searches for the HTML file based on `Component.name` in the directories specified in `RenderingRepoConfig.components_dirs`
    2. Reads the file data as an HTML template
    3. Renders data into its placeholders, if any
    4. Returns rendered HTML
@@ -128,7 +135,7 @@ Components are managed like so:
   3.  Replaces the parent of the current component with the rendered `Component`
   4.  Recursively renders and replaces all nested `Component`s back up to the top of the tree
   5.  Returns the final rendered HTML
-      > This was seriously the most difficult part for me. This nested recursion was about 95% of the 2 days I spent figuring this out.
+    > This was seriously the most difficult part for me. This nested recursion was about 95% of the 2 days I spent figuring this out.
 
 # Resources
 
