@@ -1,3 +1,5 @@
+import crypto from "node:crypto";
+
 /**
  *
  * @param {object} object_containing_variable e.g. `{ a_variable }`
@@ -42,4 +44,24 @@ export function validateType(obj, type) {
  */
 export function getStringFromVariable(obj) {
   return Object.keys(obj)[0];
+}
+
+export function createHash(obj) {
+  if (!obj) {
+    return "";
+  }
+
+  /**
+   * @type {string}
+   */
+  let obj_string;
+  if (typeof obj === "string") {
+    obj_string = obj;
+  } else {
+    obj_string = JSON.stringify(obj);
+  }
+
+  const hash = crypto.createHash("md5").update(obj_string).digest("hex");
+
+  return hash;
 }

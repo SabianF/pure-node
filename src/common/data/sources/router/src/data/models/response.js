@@ -40,6 +40,14 @@ export default class ResponseModel {
     return code;
   }
 
+  hasHeader(name) {
+    return this.#response.hasHeader(name);
+  }
+
+  getHeader(name) {
+    return this.#response.getHeader(name);
+  }
+
   setHeader(name, value) {
     this.#response.setHeader(name, value);
     return this;

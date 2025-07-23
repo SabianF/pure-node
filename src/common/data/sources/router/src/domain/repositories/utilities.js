@@ -71,3 +71,7 @@ export function validateRequestMethod(method, response_model) {
   }
   return method;
 }
+
+export function getHttpStatusCodes() {
+  return http_status_codes;
+}

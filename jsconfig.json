@@ -3,4 +3,9 @@
     "module": "nodenext",
     "moduleResolution": "nodenext"
   },
+  "typeAcquisition": {
+    "include": [
+      "crypto"
+    ]
+  }
 }

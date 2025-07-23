@@ -1,3 +1,4 @@
+import { createHash } from "../../../../../../domain/repositories/utilities.js";
 import ResponseModel from "../../data/models/response.js";
 import http_status_codes from "../../data/sources/http_status_codes.js";
 import RequestError from "../entities/request_error.js";
@@ -5,7 +6,7 @@ import addMiddleware from "../usecases/add_middleware.js";
 import addRequestHandler from "../usecases/add_request_handler.js";
 import handleStatic from "../usecases/handle_static.js";
 import startServer from "../usecases/start_server.js";
-import { validateRequestMethod, validateRequestUrl } from "./utilities.js";
+import { getHttpStatusCodes, validateRequestMethod, validateRequestUrl } from "./utilities.js";
 
 /**
  * @typedef {import("../entities/types.js").HttpRequest} HttpRequest
@@ -113,9 +114,27 @@ export default class RoutingRepo {
         await this.#executeErrorHandlers(error_handlers, error, request, response_model);
 
       } finally {
-        this.#addDefaultHeaders(response);
+        this.#addDefaultHeaders(response_model);
+        this.#handleNotModified(request, response_model);
         response_model.send();
       }
+    }
+  }
+
+  /**
+   *
+   * @param {HttpRequest} request
+   * @param {ResponseModel} response_model
+   */
+  #handleNotModified(request, response_model) {
+    const request_etag = request.headers["if-none-match"];
+    const response_etag = response_model.getHeader("ETag");
+
+    if (request_etag === response_etag) {
+      response_model.body = undefined;
+      response_model.setStatus(
+        getHttpStatusCodes().codes.NOT_MODIFIED,
+      );
     }
   }
 
@@ -128,6 +147,11 @@ export default class RoutingRepo {
       ["Content-Type", "text/html; charset=utf-8"],
       ["Cache-Control", "private, max-age=5, must-revalidate"],
     ]);
+
+    const response_data_hash = createHash(response_model.body);
+    if (response_data_hash) {
+      headers.set("ETag", response_data_hash);
+    }
 
     for (const header of headers) {
       const key = header[0];
