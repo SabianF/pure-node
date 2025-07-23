@@ -8,12 +8,26 @@ import RoutingRepo from "./routing.js";
 import FileSystemRepo from "./file_system.js";
 import ServerRepo from "../../domain/repositories/server.js";
 
+/**
+ * @typedef Repositories
+ * @property {DataRepos} data_repos
+ * @property {DomainRepos} domain_repos
+ */
+
+/**
+ * @callback InitReposFunction
+ * @returns {Repositories}
+ */
+
+/**
+ * @type {InitReposFunction}
+ */
 export default function initRepos() {
   const data_repos = new DataRepos();
 
   const domain_repos = new DomainRepos({
     data_repos: data_repos,
-  })
+  });
 
   return {
     data_repos: data_repos,

@@ -20,7 +20,7 @@ function runApp() {
   const {
     data_repos,
     domain_repos,
-  } = new initRepos();
+  } = initRepos();
 
   data_repos.env.initEnv();
 
