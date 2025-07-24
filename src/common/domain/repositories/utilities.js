@@ -65,3 +65,23 @@ export function createHash(obj) {
 
   return hash;
 }
+
+/**
+ * Defaults to 1000ms
+ * @param {number} [ms=1000] Milliseconds
+ * @returns {Promise<void>}
+ */
+export async function pause(ms) {
+  if (!ms) {
+    ms = 1000;
+  }
+  if (typeof ms !== "number") {
+    throw new Error(`Invalid ms provided to ${pause.name}: [${ms}].`);
+  }
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
+}
