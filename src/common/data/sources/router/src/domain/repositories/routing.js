@@ -128,8 +128,11 @@ export default class RoutingRepo {
   #handleNotModified(request, response_model) {
     const request_etag = request.headers["if-none-match"];
     const response_etag = response_model.getHeader("ETag");
-
-    if (request_etag === response_etag) {
+    const etags_match = (request_etag === response_etag);
+    // TODO(caching): Fix HTMX not updating DOM on revalidated response after using `cache-while-revalidate`
+      // https://github.com/bigskysoftware/htmx/discussions/1706#discussioncomment-6807043
+      // https://github.com/bigskysoftware/htmx/issues/1443
+    if (etags_match) {
       response_model.body = undefined;
       response_model.setStatus(
         getHttpStatusCodes().codes.NOT_MODIFIED,
@@ -144,7 +147,7 @@ export default class RoutingRepo {
   #addDefaultHeaders(response_model) {
     const headers = new Map([
       ["Content-Type", "text/html; charset=utf-8"],
-      ["Cache-Control", "private, max-age=5, must-revalidate"],
+      ["Cache-Control", "private, max-age=5, stale-while-revalidate=86400"],
     ]);
 
     const response_data_hash = createHash(response_model.body);
