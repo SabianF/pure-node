@@ -51,7 +51,7 @@ export function executeMiddleware(middleware, request, response_model) {
  */
 export function validateRequestUrl(url, response_model) {
   if (!url) {
-    response_model.setStatus(http_status_codes.codes.BAD_REQUEST);
+    response_model.setStatus(getHttpStatusCodes().codes.BAD_REQUEST);
     response_model.writeHtml(`URL was not provided in Request: [${url}]`);
     return;
   }
@@ -65,7 +65,7 @@ export function validateRequestUrl(url, response_model) {
  */
 export function validateRequestMethod(method, response_model) {
   if (!method) {
-    response_model.setStatus(http_status_codes.codes.BAD_REQUEST);
+    response_model.setStatus(getHttpStatusCodes().codes.BAD_REQUEST);
     response_model.writeHtml(`Request method was not provided: [${method}]`);
     return;
   }

@@ -1,4 +1,4 @@
-import http_status_codes from "../sources/http_status_codes.js";
+import { getHttpStatusCodes } from "../../domain/repositories/utilities.js";
 
 /**
  * @typedef {import("../../domain/entities/types.js").HttpResponse} HttpResponse
@@ -105,7 +105,7 @@ export default class ResponseModel {
     if (
       !code ||
       typeof code !== "number" ||
-      Object.values(http_status_codes.codes).includes(code) === false
+      Object.values(getHttpStatusCodes().codes).includes(code) === false
     ) {
       throw new Error(`"Invalid status code provided to ${ResponseModel.name}.${this.setStatus.name}: [${code}].`);
     }

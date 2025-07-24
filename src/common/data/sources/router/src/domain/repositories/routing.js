@@ -1,6 +1,5 @@
 import { createHash } from "../../../../../../domain/repositories/utilities.js";
 import ResponseModel from "../../data/models/response.js";
-import http_status_codes from "../../data/sources/http_status_codes.js";
 import RequestError from "../entities/request_error.js";
 import addMiddleware from "../usecases/add_middleware.js";
 import addRequestHandler from "../usecases/add_request_handler.js";
@@ -204,8 +203,8 @@ export default class RoutingRepo {
     }
 
     throw new RequestError({
-      status_code: http_status_codes.codes.NOT_FOUND,
-      message: http_status_codes.reasons.NOT_FOUND,
+      status_code: getHttpStatusCodes().codes.NOT_FOUND,
+      message: getHttpStatusCodes().reasons.NOT_FOUND,
     });
 
   }
@@ -223,7 +222,7 @@ export default class RoutingRepo {
     }
 
     if (
-      error.status_code === http_status_codes.codes.NOT_FOUND &&
+      error.status_code === getHttpStatusCodes().codes.NOT_FOUND &&
       !response_model.was_handled
     ) {
       return this.#handleNotFound(error, request, response_model);
@@ -235,10 +234,10 @@ export default class RoutingRepo {
    */
   #handleNotFound(error, request, response) {
     if (!error.status_code) {
-      error.status_code = http_status_codes.codes.NOT_FOUND;
+      error.status_code = getHttpStatusCodes().codes.NOT_FOUND;
     }
     if (!error.message) {
-      error.message = http_status_codes.reasons.NOT_FOUND;
+      error.message = getHttpStatusCodes().reasons.NOT_FOUND;
     }
 
     response.setStatus(error.status_code);

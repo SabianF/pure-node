@@ -1,4 +1,5 @@
 import { logRequests } from "../../data/repositories/middleware.js";
+import { getHttpStatusCodes } from "../../data/sources/router/src/domain/repositories/utilities.js";
 import loadPage from "../usecases/load_page.js";
 
 /**
@@ -61,8 +62,8 @@ export default class ServerRepo {
     router.use(router.handleStatic("public/"));
 
     router.handleError((error, request, response) => {
-      if (error.status_code === http_status_codes.codes.NOT_FOUND) {
-        response.setStatus(http_status_codes.codes.NOT_FOUND);
+      if (error.status_code === getHttpStatusCodes().codes.NOT_FOUND) {
+        response.setStatus(getHttpStatusCodes().codes.NOT_FOUND);
         response.writeHtml("<h1>Not found, bro</h1>");
       }
     });

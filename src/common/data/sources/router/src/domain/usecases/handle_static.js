@@ -1,4 +1,4 @@
-import http_status_codes from "../../data/sources/http_status_codes.js";
+import { getHttpStatusCodes } from "../repositories/utilities.js";
 
 /**
  * "file_extension": "content_type_header"
@@ -69,18 +69,18 @@ export default function handleStatic({
     }
 
     if (fs_repo.checkPathExists(sanitized_file_path) === false) {
-      response.setStatus(http_status_codes.codes.NOT_FOUND);
+      response.setStatus(getHttpStatusCodes().codes.NOT_FOUND);
       return;
     }
 
     const was_modified = await handleCaching(fs_repo, sanitized_file_path, request, response);
     if (!was_modified) {
-      response.setStatus(http_status_codes.codes.NOT_MODIFIED);
+      response.setStatus(getHttpStatusCodes().codes.NOT_MODIFIED);
       return;
     }
 
     const file_data = await fs_repo.readFile(sanitized_file_path);
-    response.setStatus(http_status_codes.codes.OK);
+    response.setStatus(getHttpStatusCodes().codes.OK);
     response.writeHtml(file_data);
   };
 
