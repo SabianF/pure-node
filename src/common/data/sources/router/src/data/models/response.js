@@ -70,6 +70,15 @@ export default class ResponseModel {
   }
 
   /**
+   *
+   * @param {any} raw_data
+   */
+  writeRaw(raw_data) {
+    this.body = this.#validateRawData(raw_data);
+    return this;
+  }
+
+  /**
    * Sets the status code and writes to the response
    */
   send() {
@@ -130,6 +139,14 @@ export default class ResponseModel {
     }
 
     return html;
+  }
+
+  #validateRawData(raw_data) {
+    if (!raw_data) {
+      throw new Error(`No data provided to ${ResponseModel.name}.${this.writeRaw.name}.`);
+    }
+
+    return raw_data;
   }
 
   #setHandled() {

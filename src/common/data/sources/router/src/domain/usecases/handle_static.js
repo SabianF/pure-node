@@ -81,7 +81,7 @@ export default function handleStatic({
 
     const file_data = await fs_repo.readFile(sanitized_file_path);
     response.setStatus(getHttpStatusCodes().codes.OK);
-    response.writeHtml(file_data);
+    response.writeRaw(file_data);
   };
 
   return handler_function;
