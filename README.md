@@ -147,3 +147,7 @@ Components are managed like so:
 - https://adrianmejia.com/building-a-node-js-static-file-server-files-over-http-using-es6/
 - https://blog.frankel.ch/web-caching/client/
 - https://dev.to/didof/the-art-of-efficient-web-browsing-public-resources-27hl
+
+# Relevant content
+
+- [Casey Muratori on optimizing software performance - Why Performance Actually Matters - The Standup](https://youtu.be/RlTVMi4JzZA?t=1715)
