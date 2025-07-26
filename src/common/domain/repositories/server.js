@@ -1,6 +1,8 @@
 import { logRequests } from "../../data/repositories/middleware.js";
 import { getHttpStatusCodes } from "../../data/sources/router/src/domain/repositories/utilities.js";
-import loadPage from "../usecases/load_page.js";
+import blankPage from "../../presentation/pages/blank.js";
+import rootPage from "../../presentation/pages/root.js";
+import testPage from "../../presentation/pages/test.js";
 
 /**
  * @typedef {import("../entities/types.js").HttpRequestHandler} HttpRequestHandler
@@ -34,7 +36,7 @@ export default class ServerRepo {
    */
   addPublicRoutes(router) {
     router.get("/", async (request, response) => {
-      const home_page = loadPage("ROOT");
+      const home_page = rootPage();
       const rendered_home_page = await this.#rendering_repo.renderPage(home_page);
       if (rendered_home_page.has_error) {
         const error = rendered_home_page.error.message;
@@ -47,7 +49,7 @@ export default class ServerRepo {
     });
 
     router.get("/test", async (request, response) => {
-      const test_page = loadPage("TEST");
+      const test_page = testPage();
       const rendered_test_page = await this.#rendering_repo.renderPage(test_page);
       if (rendered_test_page.has_error) {
         const error = rendered_test_page.error.message;
@@ -60,7 +62,7 @@ export default class ServerRepo {
     });
 
     router.get("/blank", async (request, response) => {
-      const blank_page = loadPage("BLANK");
+      const blank_page = blankPage();
       const rendered_blank_page = await this.#rendering_repo.renderPage(blank_page);
       if (rendered_blank_page.has_error) {
         const error = rendered_blank_page.error.message;

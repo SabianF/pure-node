@@ -9,5 +9,5 @@ export default function testPage(placeholders) {
     name: "test",
     title: "Test Page",
     placeholders: placeholders,
-  })
+  });
 }
