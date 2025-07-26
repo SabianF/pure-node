@@ -92,12 +92,6 @@ export default class RenderingRepo {
     }
   }
 
-  async #getFileAsString(path) {
-    const file_buffer = await this.#file_system_io_library.readFile(path);
-    const file_string = file_buffer.toString();
-    return file_string;
-  }
-
   /**
    *
    * @param {Component} component The component to render
@@ -178,7 +172,7 @@ export default class RenderingRepo {
       return "";
     }
 
-    const css = await this.#getFileAsString(path);
+    const css = await this.#file_system_io_library.readFileAsString(path);
     const rendered_css = `<style id="${component.name}_css">${css}</style>`;
 
     return rendered_css;
@@ -200,7 +194,7 @@ export default class RenderingRepo {
       return "";
     }
 
-    const js = await this.#getFileAsString(path);
+    const js = await this.#file_system_io_library.readFileAsString(path);
     const rendered_js = `<script id="${component.name}_js">${js}</script>`;
 
     return rendered_js;
@@ -221,7 +215,7 @@ export default class RenderingRepo {
          * @type {ComponentString}
          */
         const result = {};
-        result.html = await this.#getFileAsString(html_path);
+        result.html = await this.#file_system_io_library.readFileAsString(html_path);
         result.css = await this.#renderCss(component, css_path);
         result.js = await this.#renderJs(component, js_path);
         return result;
