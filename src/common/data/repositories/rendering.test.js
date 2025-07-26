@@ -33,7 +33,7 @@ describe(RenderingRepo.name, () => {
         component,
       );
 
-      assert.strictEqual(typeof rendered_component, "string");
+      assert.strictEqual(typeof rendered_component.data, "string");
     });
 
     test("renders nested components", async () => {
@@ -67,22 +67,22 @@ describe(RenderingRepo.name, () => {
       );
 
       assert.strictEqual(
-        rendered_component.includes("[object Object]"),
+        rendered_component.data.includes("[object Object]"),
         false,
         `Did not render [object Object]: [${rendered_component}].`,
       );
       assert.strictEqual(
-        rendered_component.includes("nested body text"),
+        rendered_component.data.includes("nested body text"),
         true,
         `Did not include [nested body text]: [${rendered_component}].`,
       );
       assert.strictEqual(
-        rendered_component.includes("nested2 body text"),
+        rendered_component.data.includes("nested2 body text"),
         true,
         `Did not include [nested2 body text]: [${rendered_component}].`,
       );
       assert.strictEqual(
-        rendered_component.includes("original title text"),
+        rendered_component.data.includes("original title text"),
         true,
         `Did not include [original title text]: [${rendered_component}].`,
       );

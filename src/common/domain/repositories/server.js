@@ -36,19 +36,40 @@ export default class ServerRepo {
     router.get("/", async (request, response) => {
       const home_page = loadPage("ROOT");
       const rendered_home_page = await this.#rendering_repo.renderPage(home_page);
-      response.writeHtml(rendered_home_page);
+      if (rendered_home_page.has_error) {
+        const error = rendered_home_page.error.message;
+        response.setStatus(getHttpStatusCodes().codes.INTERNAL_SERVER_ERROR);
+        response.writeHtml(error);
+      }
+
+      response.setStatus(getHttpStatusCodes().codes.OK);
+      response.writeHtml(rendered_home_page.data);
     });
 
     router.get("/test", async (request, response) => {
       const test_page = loadPage("TEST");
       const rendered_test_page = await this.#rendering_repo.renderPage(test_page);
-      response.writeHtml(rendered_test_page);
+      if (rendered_test_page.has_error) {
+        const error = rendered_test_page.error.message;
+        response.setStatus(getHttpStatusCodes().codes.INTERNAL_SERVER_ERROR);
+        response.writeHtml(error);
+      }
+
+      response.setStatus(getHttpStatusCodes().codes.OK);
+      response.writeHtml(rendered_test_page.data);
     });
 
     router.get("/blank", async (request, response) => {
       const blank_page = loadPage("BLANK");
       const rendered_blank_page = await this.#rendering_repo.renderPage(blank_page);
-      response.writeHtml(rendered_blank_page);
+      if (rendered_blank_page.has_error) {
+        const error = rendered_blank_page.error.message;
+        response.setStatus(getHttpStatusCodes().codes.INTERNAL_SERVER_ERROR);
+        response.writeHtml(error);
+      }
+
+      response.setStatus(getHttpStatusCodes().codes.OK);
+      response.writeHtml(rendered_blank_page.data);
     });
   }
 

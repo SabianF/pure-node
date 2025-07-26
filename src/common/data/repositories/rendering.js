@@ -1,5 +1,6 @@
 import Component from "../../domain/entities/component.js";
 import Page from "../../domain/entities/page.js";
+import Result from "../../domain/entities/result.js";
 import { getNameOfVariable } from "../../domain/repositories/utilities.js";
 import layout from "../../presentation/components/layout.js";
 import FileSystemLib from "../sources/file_system_lib.js";
@@ -84,7 +85,7 @@ export default class RenderingRepo {
    * @param {Component} component The component to render
    * @param {Component} [parent_component]
    * @param {string} [parent_placeholder_key]
-   * @returns {Promise<string>}
+   * @returns {Promise<Result>}
    */
   async #renderNestedComponents(
     component,
@@ -140,7 +141,9 @@ export default class RenderingRepo {
       return parent_component;
     }
 
-    return rendered_component_full;
+    return new Result({
+      data: rendered_component_full,
+    });
   }
 
   /**
