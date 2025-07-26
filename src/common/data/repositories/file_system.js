@@ -11,13 +11,13 @@ export default class FileSystemRepo {
   /**
    * @type {FileSystemLib}
    */
-  fs_lib;
+  #fs_lib;
 
   /**
    * @type {FileSystemRepoProps}
    */
   constructor({ fs_lib }) {
-    this.fs_lib = fs_lib;
+    this.#fs_lib = fs_lib;
   }
 
   /**
@@ -25,10 +25,10 @@ export default class FileSystemRepo {
    * @param {string} path
    */
   checkPathExists(path) {
-    return this.fs_lib.checkPathExists(path);
+    return this.#fs_lib.checkPathExists(path);
   }
 
   async readFile(path) {
-    return this.fs_lib.readFile(path);
+    return this.#fs_lib.readFile(path);
   }
 }
