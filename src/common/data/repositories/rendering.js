@@ -42,7 +42,11 @@ export default class RenderingRepo {
    *
    * @param {RenderingRepoProps} props
    */
-  constructor({ file_system_io_library, html_renderer_library, config }) {
+  constructor({
+    file_system_io_library,
+    html_renderer_library,
+    config,
+  }) {
     this.#file_system_io_library = validateFileSystemIoLib(
       file_system_io_library,
     );
@@ -61,6 +65,7 @@ export default class RenderingRepo {
       title: page.title,
       body: page,
     });
+
     try {
       const rendered_layout = await this.#renderNestedComponents(layout_component);
       return new Result({
