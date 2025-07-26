@@ -16,7 +16,10 @@ function runApp() {
     domain_repos,
   } = initRepos();
 
-  data_repos.env.initEnv();
+  const init_env = data_repos.env.initEnv();
+  if (init_env.has_error) {
+    return console.error(init_env.error);
+  }
 
   const router = data_repos.routing.createRouter();
   const port = process.env.PORT;

@@ -1,3 +1,4 @@
+import Result from "../../domain/entities/result.js";
 import { validateType } from "../../domain/repositories/utilities.js";
 import EnvLib from "../sources/env_lib.js";
 
@@ -19,12 +20,22 @@ export default class EnvRepo {
   }
 
   initEnv() {
-    this.#env_lib.config();
-    validateEnv();
+    try {
+      this.#env_lib.config();
+      _validateEnv();
+      return new Result({
+        data: true,
+      })
+
+    } catch (error) {
+      return new Result({
+        error: error,
+      });
+    }
   }
 }
 
-function validateEnv() {
+function _validateEnv() {
   if (!process.env.PORT) {
     throw new Error("PORT environment variable is not set.");
   }
