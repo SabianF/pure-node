@@ -61,8 +61,17 @@ export default class RenderingRepo {
       title: page.title,
       body: page,
     });
-    const rendered_layout = await this.#renderNestedComponents(layout_component);
-    return rendered_layout;
+    try {
+      const rendered_layout = await this.#renderNestedComponents(layout_component);
+      return new Result({
+        data: rendered_layout,
+      });
+
+    } catch (error) {
+      return new Result({
+        error: error,
+      });
+    }
   }
 
   /**
@@ -70,8 +79,17 @@ export default class RenderingRepo {
    * @param {Component} component
    */
   async renderComponent(component) {
-    const rendered_component = await this.#renderNestedComponents(component);
-    return rendered_component;
+    try {
+      const rendered_component = await this.#renderNestedComponents(component);
+      return new Result({
+        data: rendered_component,
+      });
+
+    } catch (error) {
+      return new Result({
+        error: error,
+      });
+    }
   }
 
   async #getFileAsString(path) {
@@ -85,7 +103,7 @@ export default class RenderingRepo {
    * @param {Component} component The component to render
    * @param {Component} [parent_component]
    * @param {string} [parent_placeholder_key]
-   * @returns {Promise<Result>}
+   * @returns {Promise<string>}
    */
   async #renderNestedComponents(
     component,
@@ -141,9 +159,7 @@ export default class RenderingRepo {
       return parent_component;
     }
 
-    return new Result({
-      data: rendered_component_full,
-    });
+    return rendered_component_full;
   }
 
   /**
