@@ -61,12 +61,11 @@ export default class RenderingRepo {
    * @param {Page} page
    */
   async renderPage(page) {
-    const layout_component = layout({
-      title: page.title,
-      body: page,
-    });
-
     try {
+      const layout_component = layout({
+        title: page.title,
+        body: page,
+      });
       const rendered_layout = await this.#renderNestedComponents(layout_component);
       return new Result({
         data: rendered_layout,
