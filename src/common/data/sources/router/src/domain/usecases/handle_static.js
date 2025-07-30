@@ -49,6 +49,9 @@ export default function handleStatic({
       return;
     }
 
+    /**
+     * @type {String}
+     */
     const sanitized_file_path = sanitize_path.data;
 
     let is_file = false;
@@ -92,19 +95,19 @@ export default function handleStatic({
  * @param {HttpRequest} request
  * @param {ResponseModel} response_model
  */
-async function handleCaching(fs_repo, sanitized_file_path, request, response_model) {
-  const client_file_last_modified = request.headers["if-modified-since"];
+    async function handleCaching(fs_repo, sanitized_file_path, request, response_model) {
+      const client_file_last_modified = request.headers["if-modified-since"];
 
-  const file_stats = await fs_repo.readFileStats(sanitized_file_path);
-  const file_last_modified = file_stats.mtime.toUTCString();
+      const file_stats = await fs_repo.readFileStats(sanitized_file_path);
+      const file_last_modified = file_stats.mtime.toUTCString();
 
-  response_model.setHeader("Cache-Control", "public, max-age=5, must-revalidate");
-  response_model.setHeader("Last-Modified", file_last_modified);
+      response_model.setHeader("Cache-Control", "public, max-age=5, must-revalidate");
+      response_model.setHeader("Last-Modified", file_last_modified);
 
-  const was_modified = (
-    !client_file_last_modified ||
-    client_file_last_modified !== file_last_modified
-  );
+      const was_modified = (
+        !client_file_last_modified ||
+        client_file_last_modified !== file_last_modified
+      );
 
-  return was_modified;
-}
+      return was_modified;
+    }
