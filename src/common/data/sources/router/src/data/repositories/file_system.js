@@ -1,4 +1,5 @@
 import { validateType } from "../../../../../../domain/repositories/utilities.js";
+import Result from "../../domain/entities/result.js";
 import FileSystemLib from "../sources/file_system_lib.js";
 
 /**
@@ -27,7 +28,18 @@ export default class FileSystemRepo {
    * @param {string} path
    */
   sanitizePath(path) {
-    return path.replace(/^(\.\.[\/\\])+/, "");
+    try {
+      const sanitized_path = path.replace(/^(\.\.[\/\\])+/, "");
+
+      return new Result({
+        data: sanitized_path,
+      });
+
+    } catch (error) {
+      return new Result({
+        error: error,
+      });
+    }
   }
 
   /**

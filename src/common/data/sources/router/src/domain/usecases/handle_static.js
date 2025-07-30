@@ -40,7 +40,15 @@ export default function handleStatic({
    */
   const handler_function = async (request, response) => {
     const requested_path = request.url;
-    const sanitized_file_path = fs_repo.sanitizePath(normalized_base_path + requested_path);
+
+    const sanitize_path = fs_repo.sanitizePath(normalized_base_path + requested_path);
+    if (sanitize_path.has_error) {
+      response.setStatus(400)
+      response.writeRaw(sanitize_path.error.message);
+      return;
+    }
+
+    const sanitized_file_path = sanitize_path.data;
 
     let is_file = false;
     for (const file_ext in accepted_file_exts) {

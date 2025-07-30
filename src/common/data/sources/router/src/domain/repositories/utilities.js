@@ -9,6 +9,74 @@ import http_status_codes from "../../data/sources/http_status_codes.js";
  * @typedef {import("../entities/types.js").HttpRequest} HttpRequest
  */
 
+export function validateExists(data) {
+  const is_unset = (data === undefined);
+  if (is_unset) {
+    return false;
+  }
+
+  const is_null = (data === null);
+  if (is_null) {
+    return false;
+  }
+
+  const type = typeof data;
+  switch (type) {
+    case "boolean":
+    case "number":
+    case "string":
+    case "object":
+      return true;
+
+    default:
+      throw new Error(`Unexpected type: [${type}]`);
+  }
+}
+
+export function validateHasData(data) {
+  const exists = validateExists(data);
+  if (!exists) {
+    return false;
+  }
+
+  const type = typeof data;
+  let class_name;
+  switch (type) {
+    case "boolean":
+    case "number":
+      return true;
+
+    case "string":
+      return data.length > 0;
+
+    case "object":
+      class_name = data.constructor.name;
+      if (
+        class_name !== "Array" &&
+        class_name !== "Object"
+      ) {
+        break;
+      }
+
+      const keys = Object.keys(data);
+      if (keys.length === 0) {
+        return false;
+      }
+      for (const key of keys) {
+        const val = data[key];
+        if (validateExists(val)) {
+          return true;
+        }
+      }
+      return false;
+
+    default:
+      break;
+  }
+
+  throw new Error(`Unexpected type: [${type}][${class_name}]`);
+}
+
 /**
  *
  * @param {any[]} array
