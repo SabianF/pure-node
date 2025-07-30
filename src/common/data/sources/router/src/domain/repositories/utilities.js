@@ -1,5 +1,6 @@
 import Handler from "../entities/handler.js";
 import http_status_codes from "../../data/sources/http_status_codes.js";
+import Result from "../entities/result.js";
 
 /**
  * @typedef {import("../entities/types.js").ResponseModel} ResponseModel
@@ -83,19 +84,29 @@ export function validateHasData(data) {
  * @param {any} item
  */
 export function addToArray(array, item) {
-  if (array === undefined || Array.isArray(array) === false) {
-    throw new Error(`No array provided to ${addToArray.name}`);
-  }
+  try {
+    if (array === undefined || Array.isArray(array) === false) {
+      throw new Error(`No array provided to ${addToArray.name}`);
+    }
 
-  if (!item) {
-    throw new Error(`No valid item provided to ${addToArray.name}`);
-  }
+    if (!item) {
+      throw new Error(`No valid item provided to ${addToArray.name}`);
+    }
 
-  if (array.includes(item)) {
-    throw new Error(`Item already exists in array`);
-  }
+    if (array.includes(item)) {
+      throw new Error(`Item already exists in array`);
+    }
 
-  return array.push(item);
+    const new_length_of_array = array.push(item);
+    return new Result({
+      data: new_length_of_array,
+    });
+
+  } catch (error) {
+    return new Result({
+      error: error,
+    });
+  }
 }
 
 /**

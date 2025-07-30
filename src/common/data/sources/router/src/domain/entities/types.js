@@ -60,6 +60,7 @@
 
 /**
  * @typedef {import("./request_error.js").default} RequestError
+ * @typedef {import("./result.js").default} Result
  */
 
 /**

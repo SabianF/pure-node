@@ -69,10 +69,16 @@ export default class RouterModel {
    * @param {ErrorHandlerFunction} error_handler_function
    */
   handleError(error_handler_function) {
-    return addErrorHandler({
+    const add_error_handler = addErrorHandler({
       router: this.#router,
       error_handler_function: error_handler_function,
     });
+    if (add_error_handler.has_error) {
+      throw add_error_handler.error;
+    }
+
+    const new_length_of_array = add_error_handler.data;
+    return new_length_of_array;
   }
 
   /**
