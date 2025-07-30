@@ -43,7 +43,8 @@ export default function handleStatic({
 
     const sanitize_path = fs_repo.sanitizePath(normalized_base_path + requested_path);
     if (sanitize_path.has_error) {
-      response.setStatus(400)
+      console.error(sanitize_path.error);
+      response.setStatus(500)
       response.writeRaw(sanitize_path.error.message);
       return;
     }
