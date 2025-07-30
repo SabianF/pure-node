@@ -12,21 +12,10 @@ const accepted_file_exts = {
 
 /**
  * @typedef {import("../entities/types.js").HttpRequest} HttpRequest
- */
-
-/**
  * @typedef {import("../entities/types.js").ResponseModel} ResponseModel
- */
-
-/**
  * @typedef {import("../entities/types.js").HttpRequestHandler} HttpRequestHandler
- */
-
-/**
  * @typedef {import("../entities/types.js").FileSystemRepo} FileSystemRepo
- */
-
-/**
+ *
  * @typedef CreateStaticHandlerProps
  * @property {FileSystemRepo} fs_repo
  * @property {string} base_path

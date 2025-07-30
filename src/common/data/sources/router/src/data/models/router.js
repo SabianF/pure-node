@@ -5,21 +5,10 @@ import startServer from "../../domain/usecases/start_server.js";
 
 /**
  * @typedef {import("../../domain/entities/router.js").default} Router
- */
-
-/**
  * @typedef {import("../../domain/entities/types.js").HttpRequestHandler} HttpRequestHandler
- */
-
-/**
  * @typedef {import("../../domain/entities/types.js").ErrorHandlerFunction} ErrorHandlerFunction
- */
-
-/**
- * @typedef {import("../../domain/repositories/routing.js").default} RoutingRepo
- */
-
-/**
+ * @typedef {import("../../domain/entities/types.js").RoutingRepo} RoutingRepo
+ *
  * @typedef {object} RouterModelProps
  * @property {RoutingRepo} routing_repo
  * @property {Router} router
