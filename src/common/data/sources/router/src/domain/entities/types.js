@@ -23,7 +23,7 @@
  */
 
 /**
- * @typedef {import("../../data/sources/http_lib.js").default.Server} Server
+ * @typedef {import("../../data/sources/http_lib.js").Server} Server
  */
 
 /**

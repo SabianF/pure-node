@@ -8,6 +8,7 @@ import startServer from "../../domain/usecases/start_server.js";
  * @typedef {import("../../domain/entities/types.js").HttpRequestHandler} HttpRequestHandler
  * @typedef {import("../../domain/entities/types.js").ErrorHandlerFunction} ErrorHandlerFunction
  * @typedef {import("../../domain/entities/types.js").RoutingRepo} RoutingRepo
+ * @typedef {import("../../domain/entities/types.js").Server} Server
  *
  * @typedef {object} RouterModelProps
  * @property {RoutingRepo} routing_repo
@@ -81,8 +82,19 @@ export default class RouterModel {
    * @param {HttpRequestHandler} listen_handler
    */
   listen(port, listen_handler) {
+    const create_server = this.#routing_repo.createServer(this.#router);
+    if (create_server.has_error) {
+      console.error(error);
+      return error;
+    }
+
+    /**
+     * @type {Server}
+     */
+    const server = create_server.data;
+
     startServer({
-      server: this.#routing_repo.createServer(this.#router),
+      server: server,
       port: port,
       listen_handler: listen_handler,
     })

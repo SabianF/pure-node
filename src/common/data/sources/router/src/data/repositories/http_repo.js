@@ -1,3 +1,4 @@
+import Result from "../../domain/entities/result.js";
 import HttpLib from "../sources/http_lib.js";
 
 /**
@@ -21,7 +22,22 @@ export default class HttpRepo {
     this.#http_lib = http_lib;
   }
 
+  /**
+   *
+   * @param {import("../sources/http_lib.js").HttpRequestHandler} handler
+   */
   createServer(handler) {
-    return this.#http_lib.createServer(handler);
+    try {
+      const server = this.#http_lib.createServer(handler);
+
+      return new Result({
+        data: server,
+      });
+
+    } catch (error) {
+      return new Result({
+        error: error,
+      });
+    }
   }
 }

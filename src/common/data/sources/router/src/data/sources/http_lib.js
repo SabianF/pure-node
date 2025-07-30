@@ -2,14 +2,9 @@ import http from "node:http";
 
 /**
  * @typedef {http.IncomingMessage} HttpRequest
- */
-
-/**
  * @typedef {http.ServerResponse<HttpRequest>} HttpResponse
- */
-
-/**
  * @typedef {http.RequestListener} HttpRequestHandler
+ * @typedef {http.Server} Server
  */
 
 export default class HttpLib {
