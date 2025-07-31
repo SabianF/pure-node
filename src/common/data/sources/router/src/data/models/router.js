@@ -70,7 +70,12 @@ export default class RouterModel {
       throw handle_static.error;
     }
 
-    return handle_static.data;
+    /**
+     * @type {HttpRequestHandler}
+     */
+    const static_handler = handle_static.data;
+
+    return static_handler;
   }
 
   /**

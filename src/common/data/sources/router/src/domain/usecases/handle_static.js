@@ -25,6 +25,7 @@ const accepted_file_exts = {
 /**
  *
  * @param {CreateStaticHandlerProps} props
+ * @returns {Result} {data: HttpRequestHandler}
  */
 export default function handleStatic({
   fs_repo,

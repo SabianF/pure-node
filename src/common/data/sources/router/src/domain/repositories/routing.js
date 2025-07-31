@@ -80,7 +80,7 @@ export default class RoutingRepo {
     return handleStatic({
       fs_repo: this.#fs_repo,
       base_path,
-    })
+    });
   }
 
   /**
