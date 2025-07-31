@@ -1,3 +1,4 @@
+import Result from "../../domain/entities/result.js";
 import addErrorHandler from "../../domain/usecases/add_error_handler.js";
 import addMiddleware from "../../domain/usecases/add_middleware.js";
 import addRequestHandler from "../../domain/usecases/add_request_handler.js";
@@ -43,7 +44,10 @@ export default class RouterModel {
    * @param {HttpRequestHandler} handler_function
    */
   use(handler_function) {
-    addMiddleware(this.#router, handler_function);
+    const add_middleware = addMiddleware(this.#router, handler_function);
+    if (add_middleware.has_error) {
+      throw new Error("Failed to add middleware", { cause: add_middleware.error });
+    }
   }
 
   /**
@@ -52,12 +56,15 @@ export default class RouterModel {
    * @param {HttpRequestHandler} handler_function
    */
   get(url, handler_function) {
-    addRequestHandler({
+    const add_request_handler = addRequestHandler({
       router: this.#router,
       request_type: this.get.name.toUpperCase(),
       url: url,
       handler_function: handler_function,
     });
+    if (add_request_handler.has_error) {
+      throw new Error("Failed to add get route", { cause: add_request_handler.error });
+    }
   }
 
   /**
@@ -67,7 +74,7 @@ export default class RouterModel {
   handleStatic(base_path) {
     const handle_static = this.#routing_repo.handleStatic(base_path);
     if (handle_static.has_error) {
-      throw handle_static.error;
+      throw new Error("Failed to handle static route", { cause: handle_static.error });
     }
 
     /**
@@ -88,7 +95,7 @@ export default class RouterModel {
       error_handler_function: error_handler_function,
     });
     if (add_error_handler.has_error) {
-      throw add_error_handler.error;
+      throw new Error("Failed to add error handler", {cause: add_error_handler.error});
     }
 
     const new_length_of_array = add_error_handler.data;
@@ -104,8 +111,7 @@ export default class RouterModel {
   listen(port, listen_handler) {
     const create_server = this.#routing_repo.createServer(this.#router);
     if (create_server.has_error) {
-      console.error(error);
-      return error;
+      throw new Error("Failed to listen", { cause: create_server.error });
     }
 
     /**
