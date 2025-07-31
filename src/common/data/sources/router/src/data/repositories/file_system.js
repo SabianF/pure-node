@@ -55,11 +55,20 @@ export default class FileSystemRepo {
    * @param {string} path
    */
   normalizePath(path) {
-    const normalized_path_str = path
-      .replace(/((\\)|(\/\/))/, "/")
-      .replace(/((\/)(?!.))/, "");
+    try {
+      const normalized_path_str = path
+        .replace(/((\\)|(\/\/))/, "/")
+        .replace(/((\/)(?!.))/, "");
 
-    return normalized_path_str;
+      return new Result({
+        data: normalized_path_str,
+      });
+
+    } catch (error) {
+      return new Result({
+        error: error,
+      });
+    }
   }
 
   /**

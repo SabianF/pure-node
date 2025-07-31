@@ -34,7 +34,7 @@ export default class Result {
         this.error = new Error(error);
 
       } else if (error instanceof Error) {
-        this.error = error;
+        this.error = new Error(undefined, { cause: error });
 
       } else {
         this.error = new Error(JSON.stringify(error));

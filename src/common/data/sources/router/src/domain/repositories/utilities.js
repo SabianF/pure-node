@@ -24,9 +24,10 @@ export function validateExists(data) {
   const type = typeof data;
   switch (type) {
     case "boolean":
+    case "function":
     case "number":
-    case "string":
     case "object":
+    case "string":
       return true;
 
     default:

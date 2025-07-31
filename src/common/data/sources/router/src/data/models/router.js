@@ -60,8 +60,17 @@ export default class RouterModel {
     });
   }
 
+  /**
+   *
+   * @param {String} base_path e.g. `/public`
+   */
   handleStatic(base_path) {
-    return this.#routing_repo.handleStatic(base_path);
+    const handle_static = this.#routing_repo.handleStatic(base_path);
+    if (handle_static.has_error) {
+      throw handle_static.error;
+    }
+
+    return handle_static.data;
   }
 
   /**
