@@ -1,12 +1,12 @@
 import FileSystemLib from "../sources/file_system_lib.js";
 import HtmlRenderingLib from "../sources/html_rendering_lib.js";
 import EnvLib from "../sources/env_lib.js";
-import Router from "../sources/router/index.js";
 import EnvRepo from "./environment.js";
 import RenderingRepo from "./rendering.js";
 import RoutingRepo from "./routing.js";
 import FileSystemRepo from "./file_system.js";
 import ServerRepo from "../../domain/repositories/server.js";
+import RouterLib from "../sources/router_lib.js";
 
 /**
  * @typedef Repositories
@@ -68,7 +68,7 @@ function initFsRepo() {
  * @param {FileSystemRepo} fs_repo
  */
 function initRoutingRepo(fs_repo) {
-  const router_lib = new Router();
+  const router_lib = new RouterLib();
 
   const routing = new RoutingRepo({
     router_lib,
@@ -119,6 +119,7 @@ class DomainRepos {
     data_repos,
   }) {
     this.server = new ServerRepo({
+      routing_repo: data_repos.routing,
       rendering_repo: data_repos.rendering,
     });
   }

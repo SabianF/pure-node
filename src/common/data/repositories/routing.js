@@ -1,5 +1,5 @@
 import { validateType } from "../../domain/repositories/utilities.js";
-import RouterLib from "../sources/router/index.js";
+import RouterLib from "../sources/router_lib.js";
 import FileSystemRepo from "./file_system.js";
 
 /**
@@ -33,7 +33,11 @@ export default class RoutingRepo {
   }
 
   createRouter() {
-    return this.#router_lib.create();
+    return this.#router_lib.createRouter();
+  }
+
+  createStaticHandler(base_path) {
+    return this.#router_lib.createStaticHandler(base_path);
   }
 }
 
